@@ -13,9 +13,11 @@
             "",
             "interface IProps {}",
             "",
-            "export default (props: IProps) => {",
+            "const $1 = (props: IProps) => {",
             "\treturn <></>;",
             "};",
+            "",
+            "export default $1;",
             "",
         ],
         "description": "React functional component"

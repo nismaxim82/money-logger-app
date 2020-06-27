@@ -34,6 +34,10 @@
                 ]
             }
         ],
-        "react/jsx-props-no-spreading": 0
+        "react/jsx-props-no-spreading": 0,
+        "indent": [
+            "error",
+            2
+        ]
     }
 }
