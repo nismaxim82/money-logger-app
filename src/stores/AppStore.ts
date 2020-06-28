@@ -27,9 +27,12 @@ class AppStore {
 
   private _loadSelectedMenuIndex = async () => {
     if (this.services && this.services.cache) {
-      this.selectedMenuIndex = await this.services.cache.get(
+      const selectedMenuIndex = await this.services.cache.get(
         'selectedMenuIndex'
       );
+      if (selectedMenuIndex) {
+        this.selectedMenuIndex = selectedMenuIndex;
+      }
     }
   };
 }

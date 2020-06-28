@@ -3,7 +3,7 @@ import {
   IconButton,
   makeStyles,
   Theme,
-  useTheme
+  useTheme,
 } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import React from 'react';
