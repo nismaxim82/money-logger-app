@@ -21,6 +21,7 @@ import React from 'react';
 import classes from './App.module.css';
 import CashPanel from './components/CashPanel/CashPanel';
 import store from './stores';
+import Helpers from './utility/Helpers';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const App = () => {
   const styles = useStyles();
+  const css = Helpers.combineStyles(styles, classes);
 
   const [value, setValue] = React.useState(0);
   const menuTabChanged = (event: any, newValue: number) => {
@@ -57,21 +59,21 @@ const App = () => {
   return (
     <Provider store={store}>
       <CssBaseline />
-      <div className={classes.page}>
-        <AppBar position="static" className={styles.firstBar}>
+      <div className={css.page}>
+        <AppBar position="static" className={css.firstBar}>
           <Toolbar>
-            <Typography variant="h6" className={classes.headerTitle}>
+            <Typography variant="h6" className={css.headerTitle}>
               Внести оплату
             </Typography>
             <IconButton
               edge="start"
-              className={classes.menuButton}
+              className={css.menuButton}
               color="inherit"
               aria-label="menu"
             />
           </Toolbar>
         </AppBar>
-        <AppBar position="static" color="primary" className={styles.secondBar}>
+        <AppBar position="static" color="primary" className={css.secondBar}>
           <Tabs
             value={value}
             onChange={menuTabChanged}
@@ -84,7 +86,7 @@ const App = () => {
             <Tab {...menuTabProps('menu')} icon={<MoreHorizIcon />} />
           </Tabs>
         </AppBar>
-        <div className={[classes.body, styles.body].join(' ')}>
+        <div className={css.body}>
           <CashPanel value={value} />
         </div>
       </div>

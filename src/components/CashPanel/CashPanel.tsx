@@ -1,17 +1,34 @@
-import { Box, createStyles, makeStyles, Theme } from '@material-ui/core';
-import { Fastfood as FastfoodIcon } from '@material-ui/icons';
+import {
+  createStyles,
+  Fab,
+  IconButton,
+  makeStyles,
+  Theme,
+  useTheme
+} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import { observer } from 'mobx-react';
 import React from 'react';
+import TypeEntry from '../../models/entries/TypeEntry';
+import TypesStore from '../../stores/TypesStore';
+import useStores from '../../stores/UseStores';
+import Helpers from '../../utility/Helpers';
 import TabPanel from '../TabPanel/TabPanel';
 import classes from './CashPanel.module.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    card: {
-      fontSize: theme.typography.h1.fontSize,
+    tabPanel: {
+      gridGap: theme.spacing(2),
     },
-    foodIcon: {
-      color: '#dd0f1d',
-      fontSize: theme.typography.body1.fontSize,
+    cardLabelText: {
+      marginTop: theme.spacing(1),
+      color: theme.palette.text.primary,
+    },
+    fab: {
+      position: 'absolute',
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
     },
   })
 );
@@ -20,9 +37,27 @@ interface IProps {
   value: number;
 }
 
-const CashPanel = (props: IProps) => {
+const CashPanel = observer((props: IProps) => {
+  const { typesStore }: { typesStore: TypesStore } = useStores();
   const { value } = props;
+
   const styles = useStyles();
+  const css = Helpers.combineStyles(styles, classes);
+  const theme = useTheme();
+
+  const getThemeColorStyle = (color?: string) => {
+    if (!color || !color.length) {
+      return '';
+    }
+    if (color[0] === '#') {
+      return color;
+    }
+    let result = theme as any;
+    color.split('.').forEach((p: string) => {
+      result = result[p];
+    });
+    return result;
+  };
 
   return (
     <TabPanel
@@ -30,106 +65,25 @@ const CashPanel = (props: IProps) => {
       labelledby="menu-tab-panel"
       value={value}
       index={0}
-      other={{ className: classes.tabPanel }}
+      other={{ className: css.tabPanel }}
     >
-      <Box className={classes.card}>
-        <FastfoodIcon className={styles.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
-      <Box className={classes.card}>
-        <FastfoodIcon className={classes.foodIcon} />
-        <div>Еда</div>
-      </Box>
+      {typesStore.types.map((type: TypeEntry) => (
+        <IconButton
+          key={type.name}
+          className={css.card}
+          classes={{ label: css.cardLabel }}
+        >
+          <type.IconComponent
+            style={{ color: getThemeColorStyle(type.iconColor) }}
+          />
+          <div className={css.cardLabelText}>{type.label}</div>
+        </IconButton>
+      ))}
+      <Fab size="medium" color="primary" aria-label="add" className={css.fab}>
+        <AddIcon />
+      </Fab>
     </TabPanel>
   );
-};
+});
 
 export default CashPanel;
