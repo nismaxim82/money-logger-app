@@ -1,15 +1,14 @@
 import {
   createStyles,
-  Fab,
   IconButton,
   makeStyles,
   Theme,
   useTheme
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
 import { observer } from 'mobx-react';
 import React from 'react';
 import TypeEntry from '../../models/entries/TypeEntry';
+import AppStore from '../../stores/AppStore';
 import TypesStore from '../../stores/TypesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
@@ -25,21 +24,14 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(1),
       color: theme.palette.text.primary,
     },
-    fab: {
-      position: 'absolute',
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
-    },
   })
 );
 
-interface IProps {
-  value: number;
-}
-
-const CashPanel = observer((props: IProps) => {
-  const { typesStore }: { typesStore: TypesStore } = useStores();
-  const { value } = props;
+const CashPanel = observer(() => {
+  const {
+    appStore,
+    typesStore,
+  }: { appStore: AppStore; typesStore: TypesStore } = useStores();
 
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
@@ -61,9 +53,9 @@ const CashPanel = observer((props: IProps) => {
 
   return (
     <TabPanel
-      id="menu-tab-panel"
-      labelledby="menu-tab-panel"
-      value={value}
+      id="menu-cash-tab-panel"
+      labelledby="menu-cash-tab-panel"
+      value={appStore.selectedMenuIndex}
       index={0}
       other={{ className: css.tabPanel }}
     >
@@ -79,9 +71,6 @@ const CashPanel = observer((props: IProps) => {
           <div className={css.cardLabelText}>{type.label}</div>
         </IconButton>
       ))}
-      <Fab size="medium" color="primary" aria-label="add" className={css.fab}>
-        <AddIcon />
-      </Fab>
     </TabPanel>
   );
 });

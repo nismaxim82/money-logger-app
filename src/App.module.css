@@ -9,10 +9,6 @@
   overflow: auto;
 }
 
-.headerTitle {
-  flex: 1;
-}
-
 .footer {
   text-align: center;
   line-height: 2rem;

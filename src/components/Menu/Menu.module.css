@@ -1,0 +1,18 @@
+.headerBox {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.headerTitle {
+  flex: 1;
+}
+
+.comboButton {
+  flex: 1;
+}
+
+.comboButtonTextBox {
+  display: flex;
+  flex-direction: column;
+}
