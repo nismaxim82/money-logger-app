@@ -6,7 +6,7 @@ import {
   LocalGasStation,
   LocalGroceryStore,
   LocalMall,
-  MoreVert
+  MoreVert,
 } from '@material-ui/icons';
 import { observable } from 'mobx';
 import TypeEntry from '../models/entries/TypeEntry';
