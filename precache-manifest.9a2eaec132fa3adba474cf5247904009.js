@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "edb7a236b0539c776245803f3305c78c",
+    "revision": "e8b1117343f8110dba00a185791b7f56",
     "url": "/money-logger-app/index.html"
   },
   {
-    "revision": "bd617da5cf4f977d1995",
+    "revision": "0a0c67d3174f7c1b87b9",
     "url": "/money-logger-app/static/css/main.d25043df.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/money-logger-app/static/js/2.651cd188.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "bd617da5cf4f977d1995",
-    "url": "/money-logger-app/static/js/main.383fcc36.chunk.js"
+    "revision": "0a0c67d3174f7c1b87b9",
+    "url": "/money-logger-app/static/js/main.0ef2a480.chunk.js"
   },
   {
     "revision": "99ee58d7f14ebea21cfd",
