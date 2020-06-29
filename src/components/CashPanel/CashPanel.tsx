@@ -1,20 +1,18 @@
 import {
   createStyles,
+  Grid,
   IconButton,
   makeStyles,
   Theme,
-  useTheme,
-  Grid,
   Typography,
+  useTheme,
 } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import React from 'react';
 import TypeEntry from '../../models/entries/TypeEntry';
-import AppStore from '../../stores/AppStore';
 import TypesStore from '../../stores/TypesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
-import TabPanel from '../TabPanel/TabPanel';
 import classes from './CashPanel.module.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,10 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const CashPanel = observer(() => {
-  const {
-    appStore,
-    typesStore,
-  }: { appStore: AppStore; typesStore: TypesStore } = useStores();
+  const { typesStore }: { typesStore: TypesStore } = useStores();
 
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
@@ -54,38 +49,31 @@ const CashPanel = observer(() => {
   };
 
   return (
-    <TabPanel
-      id="menu-cash-tab-panel"
-      labelledby="menu-cash-tab-panel"
-      value={appStore.selectedMenuIndex}
-      index={0}
-    >
-      <Grid container className={css.grid} spacing={2}>
-        {typesStore.types.map((type: TypeEntry) => (
-          <Grid
-            key={type.name}
-            item
-            xs
-            container
-            alignItems="center"
-            justify="center"
-          >
-            <IconButton className={css.card} classes={{ label: css.cardLabel }}>
-              <type.IconComponent
-                style={{
-                  color: getThemeColorStyle(type.iconColor),
-                  fontSize: '2rem',
-                }}
-                className={css.cardIcon}
-              />
-              <Typography variant="subtitle1" className={css.cardLabelText}>
-                {type.label}
-              </Typography>
-            </IconButton>
-          </Grid>
-        ))}
-      </Grid>
-    </TabPanel>
+    <Grid container className={css.grid} spacing={2}>
+      {typesStore.types.map((type: TypeEntry) => (
+        <Grid
+          key={type.name}
+          item
+          xs
+          container
+          alignItems="center"
+          justify="center"
+        >
+          <IconButton className={css.card} classes={{ label: css.cardLabel }}>
+            <type.IconComponent
+              style={{
+                color: getThemeColorStyle(type.iconColor),
+                fontSize: '2rem',
+              }}
+              className={css.cardIcon}
+            />
+            <Typography variant="subtitle1" className={css.cardLabelText}>
+              {type.label}
+            </Typography>
+          </IconButton>
+        </Grid>
+      ))}
+    </Grid>
   );
 });
 

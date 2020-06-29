@@ -5,7 +5,6 @@ import {
   createStyles,
   IconButton,
   makeStyles,
-  Tab,
   Tabs,
   Theme,
   Toolbar,
@@ -21,11 +20,13 @@ import {
   Search as SearchIcon,
 } from '@material-ui/icons';
 import { observer } from 'mobx-react';
-import React from 'react';
-import AppStore from '../../stores/AppStore';
-import useStores from '../../stores/UseStores';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Helpers from '../../utility/Helpers';
+import LinkTab from '../LinkTab/LinkTab';
 import classes from './Menu.module.css';
+import useStores from '../../stores/UseStores';
+import AppStore from '../../stores/AppStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,14 +54,28 @@ const Menu = observer(() => {
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
 
+  const history = useHistory();
   const menuTabChanged = (event: any, newValue: number) => {
     appStore.setSelectedMenuIndex(newValue);
   };
 
-  const menuTabProps = (name: string) => {
+  useEffect(() => {
+    appStore.loadSelectedMenuIndex(history.location.pathname);
+    const listener = history.listen(() => {
+      appStore.loadSelectedMenuIndex(history.location.pathname);
+    });
+
+    return () => {
+      listener();
+    };
+  });
+
+  const menuTabProps = (name: string, href?: string) => {
     return {
       id: `menu-tab-${name}`,
       'aria-controls': `menu-tab-${name}`,
+      to: href || `/${name}`,
+      currentUrl: appStore.selectedMenuUrl,
     };
   };
 
@@ -111,10 +126,10 @@ const Menu = observer(() => {
           aria-label="menu tabs"
           variant="fullWidth"
         >
-          <Tab {...menuTabProps('cash')} icon={<AttachMoneyIcon />} />
-          <Tab {...menuTabProps('last-records')} icon={<MenuBookIcon />} />
-          <Tab {...menuTabProps('types')} icon={<ListIcon />} />
-          <Tab {...menuTabProps('menu')} icon={<MoreHorizIcon />} />
+          <LinkTab {...menuTabProps('cash', '/')} icon={<AttachMoneyIcon />} />
+          <LinkTab {...menuTabProps('records')} icon={<MenuBookIcon />} />
+          <LinkTab {...menuTabProps('types')} icon={<ListIcon />} />
+          <LinkTab {...menuTabProps('menu')} icon={<MoreHorizIcon />} />
         </Tabs>
       </AppBar>
     </>
