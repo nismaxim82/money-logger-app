@@ -5,6 +5,7 @@ import React from 'react';
 import Helpers from '../../utility/Helpers';
 import CashPanel from '../CashPanel/CashPanel';
 import LastRecordsPanel from '../LastRecordsPanel/LastRecordsPanel';
+import TypesPanel from '../TypesPanel/TypesPanel';
 import classes from './Body.module.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -13,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2),
     },
     fab: {
-      position: 'absolute',
+      position: 'fixed',
       bottom: theme.spacing(2),
       right: theme.spacing(2),
     },
@@ -30,6 +31,7 @@ const Body = observer(() => {
     <div className={css.body}>
       <CashPanel />
       <LastRecordsPanel />
+      <TypesPanel />
       <Fab size="medium" color="primary" aria-label="add" className={css.fab}>
         <AddIcon />
       </Fab>

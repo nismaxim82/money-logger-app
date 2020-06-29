@@ -9,7 +9,7 @@ import {
   Tabs,
   Theme,
   Toolbar,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import {
   ArrowDropDown as ArrowDropDownIcon,
@@ -18,7 +18,7 @@ import {
   Menu as MenuIcon,
   MenuBook as MenuBookIcon,
   MoreHoriz as MoreHorizIcon,
-  Search as SearchIcon
+  Search as SearchIcon,
 } from '@material-ui/icons';
 import { observer } from 'mobx-react';
 import React from 'react';

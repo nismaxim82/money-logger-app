@@ -1,8 +1,5 @@
-.tabPanel {
-  display: grid;
-  grid-auto-columns: max-content;
-  grid-template-columns: repeat(auto-fill, minmax(50px, auto));
-  align-items: center;
+.grid {
+  flex: 1;
 }
 
 .card {
@@ -14,10 +11,6 @@
 
 .cardLabel {
   flex-direction: column;
-}
-
-.cardLabel > div {
-  font-size: medium;
 }
 
 .lastCard {

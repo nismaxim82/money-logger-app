@@ -4,6 +4,8 @@ import {
   makeStyles,
   Theme,
   useTheme,
+  Grid,
+  Typography,
 } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import React from 'react';
@@ -57,20 +59,32 @@ const CashPanel = observer(() => {
       labelledby="menu-cash-tab-panel"
       value={appStore.selectedMenuIndex}
       index={0}
-      other={{ className: css.tabPanel }}
     >
-      {typesStore.types.map((type: TypeEntry) => (
-        <IconButton
-          key={type.name}
-          className={css.card}
-          classes={{ label: css.cardLabel }}
-        >
-          <type.IconComponent
-            style={{ color: getThemeColorStyle(type.iconColor) }}
-          />
-          <div className={css.cardLabelText}>{type.label}</div>
-        </IconButton>
-      ))}
+      <Grid container className={css.grid} spacing={2}>
+        {typesStore.types.map((type: TypeEntry) => (
+          <Grid
+            key={type.name}
+            item
+            xs
+            container
+            alignItems="center"
+            justify="center"
+          >
+            <IconButton className={css.card} classes={{ label: css.cardLabel }}>
+              <type.IconComponent
+                style={{
+                  color: getThemeColorStyle(type.iconColor),
+                  fontSize: '2rem',
+                }}
+                className={css.cardIcon}
+              />
+              <Typography variant="subtitle1" className={css.cardLabelText}>
+                {type.label}
+              </Typography>
+            </IconButton>
+          </Grid>
+        ))}
+      </Grid>
     </TabPanel>
   );
 });
