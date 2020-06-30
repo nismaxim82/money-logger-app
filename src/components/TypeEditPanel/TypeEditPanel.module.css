@@ -18,3 +18,13 @@
   display: grid;
   grid-auto-rows: max-content;
 }
+
+.colorDialogHeader, .iconDialogHeader {
+  display: flex;
+  align-items: center;
+}
+
+.colorDialogFooter, .iconDialogFooter {
+  display: grid;
+  grid-template-columns: auto auto;
+}

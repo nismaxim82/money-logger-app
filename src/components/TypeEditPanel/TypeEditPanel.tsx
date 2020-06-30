@@ -1,19 +1,30 @@
 import {
   AppBar,
+  Backdrop,
   Box,
+  Button,
+  ClickAwayListener,
   createStyles,
   Fade,
+  Icon,
   IconButton,
   makeStyles,
   MenuItem,
+  Paper,
+  Popper,
   Slide,
   TextField,
   Theme,
   Toolbar,
   Typography,
   useTheme,
+  InputAdornment,
 } from '@material-ui/core';
-import { Close as CloseIcon, Done as DoneIcon } from '@material-ui/icons';
+import {
+  Close as CloseIcon,
+  Done as DoneIcon,
+  Menu as MenuIcon,
+} from '@material-ui/icons';
 import { observer } from 'mobx-react';
 import React from 'react';
 import { ChromePicker } from 'react-color';
@@ -42,6 +53,45 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2),
       gridGap: theme.spacing(2),
     },
+    backdrop: {
+      zIndex: theme.zIndex.modal,
+    },
+    colorDialogBox: {
+      // background: theme.palette.background.paper,
+      zIndex: theme.zIndex.modal,
+    },
+    colorDialogHeader: {
+      minHeight: theme.mixins.toolbar.minHeight,
+      background: theme.palette.primary.light,
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
+      color: theme.palette.background.default,
+    },
+    colorDialogBody: {
+      padding: theme.spacing(2),
+    },
+    colorDialogFooter: {
+      padding: theme.spacing(2),
+      gridGap: theme.spacing(2),
+    },
+    iconDialogBox: {
+      // background: theme.palette.background.paper,
+      zIndex: theme.zIndex.modal,
+    },
+    iconDialogHeader: {
+      minHeight: theme.mixins.toolbar.minHeight,
+      background: theme.palette.primary.light,
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
+      color: theme.palette.background.default,
+    },
+    iconDialogBody: {
+      padding: theme.spacing(2),
+    },
+    iconDialogFooter: {
+      padding: theme.spacing(2),
+      gridGap: theme.spacing(2),
+    },
   })
 );
 
@@ -52,18 +102,60 @@ const TypeEditPanel = observer(() => {
   const css = Helpers.combineStyles(styles, classes);
   const theme = useTheme();
 
+  const colorRef = React.useRef<HTMLDivElement>(null);
   const [colorPickerOpened, setColorPickerOpened] = React.useState(false);
+  const colorHandleOpen = () => {
+    setColorPickerOpened(true);
+  };
+  const colorHandleClose = () => {
+    setColorPickerOpened(false);
+  };
   const [color, setColor] = React.useState(theme.palette.primary.main);
+  const [appliedColor, setAppliedColor] = React.useState(
+    theme.palette.primary.main
+  );
   const colorChange = (pickerProps: any) => {
     setColor(pickerProps.hex);
   };
+  const applyColorSelect = () => {
+    setAppliedColor(color);
+    colorHandleClose();
+  };
+  const cancelColorSelect = () => {
+    setColor(appliedColor);
+    colorHandleClose();
+  };
 
-  const iconChange = () => {};
+  const iconRef = React.useRef<HTMLDivElement>(null);
+  const [iconPickerOpened, setIconPickerOpened] = React.useState(false);
+  const iconHandleOpen = () => {
+    setIconPickerOpened(true);
+  };
+  const iconHandleClose = () => {
+    setIconPickerOpened(false);
+  };
+  const [icon, setIcon] = React.useState('');
+  const [appliedIcon, setAppliedIcon] = React.useState('');
+  const iconChange = (newIcon: string) => {
+    setIcon(newIcon);
+  };
+  const applyIconSelect = () => {
+    setAppliedIcon(color);
+    iconHandleClose();
+  };
+  const cancelIconSelect = () => {
+    setIcon(appliedColor);
+    iconHandleClose();
+  };
 
   return (
     <Fade in timeout={1000}>
       <Slide direction="up" in mountOnEnter unmountOnExit timeout={300}>
         <div className={css.modalContainer}>
+          <Box
+            className={css.overlay}
+            style={{ display: colorPickerOpened ? 'block' : 'none' }}
+          />
           <AppBar position="static" className={css.firstBar}>
             <Toolbar>
               <Typography variant="h6">Новый тип</Typography>
@@ -88,28 +180,111 @@ const TypeEditPanel = observer(() => {
               helperText="Type name is required"
             />
             <TextField
+              fullWidth
+              label="Position"
+              helperText="If empty then it will be placed to the end of list"
+            />
+            <TextField
+              ref={colorRef}
               select
+              disabled
               fullWidth
               label="Color"
+              InputLabelProps={{ style: { color: appliedColor } }}
+              SelectProps={{ style: { color: appliedColor } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Icon>stop</Icon>
+                  </InputAdornment>
+                ),
+              }}
               value={0}
-              onChange={colorChange}
-              style={{ color }}
+              onClick={colorHandleOpen}
             >
-              <MenuItem value={0}>{color}</MenuItem>
+              <MenuItem value={0}>{appliedColor}</MenuItem>
             </TextField>
+            <Backdrop open={colorPickerOpened} className={css.backdrop}>
+              <Popper
+                open={colorPickerOpened}
+                anchorEl={colorRef.current}
+                role={undefined}
+                transition
+                disablePortal
+                className={css.colorDialogBox}
+              >
+                <ClickAwayListener onClickAway={colorHandleClose}>
+                  <Paper>
+                    <div className={css.colorDialogHeader}>
+                      <Typography variant="h6">Выберите цвет</Typography>
+                    </div>
+                    <div className={css.colorDialogBody}>
+                      <ChromePicker color={color} onChange={colorChange} />
+                    </div>
+                    <div className={css.colorDialogFooter}>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={applyColorSelect}
+                      >
+                        Выбрать
+                      </Button>
+                      <Button variant="contained" onClick={cancelColorSelect}>
+                        Отмена
+                      </Button>
+                    </div>
+                  </Paper>
+                </ClickAwayListener>
+              </Popper>
+            </Backdrop>
             <TextField
+              ref={iconRef}
               select
+              disabled
               fullWidth
               label="Icon"
               value={0}
-              onChange={iconChange}
+              SelectProps={{ style: { color: appliedColor } }}
+              onClick={iconHandleOpen}
             >
-              <MenuItem value={0}>Icon</MenuItem>
+              <MenuItem value={0}>
+                <MenuIcon />
+              </MenuItem>
             </TextField>
+            <Backdrop open={iconPickerOpened} className={css.backdrop}>
+              <Popper
+                open={iconPickerOpened}
+                anchorEl={iconRef.current}
+                role={undefined}
+                transition
+                disablePortal
+                className={css.iconDialogBox}
+              >
+                <ClickAwayListener onClickAway={iconHandleClose}>
+                  <Paper>
+                    <div className={css.iconDialogHeader}>
+                      <Typography variant="h6">Выберите иконку</Typography>
+                    </div>
+                    <div className={css.iconDialogBody}>
+                      <Icon>assignment_turned_in</Icon>
+                    </div>
+                    <div className={css.iconDialogFooter}>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={applyIconSelect}
+                      >
+                        Выбрать
+                      </Button>
+                      <Button variant="contained" onClick={cancelIconSelect}>
+                        Отмена
+                      </Button>
+                    </div>
+                  </Paper>
+                </ClickAwayListener>
+              </Popper>
+            </Backdrop>
           </div>
-          {colorPickerOpened && (
-            <ChromePicker color={color} onChange={colorChange} />
-          )}
         </div>
       </Slide>
     </Fade>
