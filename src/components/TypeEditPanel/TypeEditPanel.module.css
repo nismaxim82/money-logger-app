@@ -19,9 +19,19 @@
   grid-auto-rows: max-content;
 }
 
+.iconDialogBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .colorDialogHeader, .iconDialogHeader {
   display: flex;
   align-items: center;
+}
+
+.iconDialogBody {
+  flex: 1;
 }
 
 .colorDialogFooter, .iconDialogFooter {

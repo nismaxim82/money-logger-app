@@ -5,9 +5,11 @@ import {
   Button,
   ClickAwayListener,
   createStyles,
+  Dialog,
   Fade,
   Icon,
   IconButton,
+  InputAdornment,
   makeStyles,
   MenuItem,
   Paper,
@@ -18,17 +20,13 @@ import {
   Toolbar,
   Typography,
   useTheme,
-  InputAdornment,
 } from '@material-ui/core';
-import {
-  Close as CloseIcon,
-  Done as DoneIcon,
-  Menu as MenuIcon,
-} from '@material-ui/icons';
+import { Close as CloseIcon, Done as DoneIcon } from '@material-ui/icons';
 import { observer } from 'mobx-react';
 import React from 'react';
 import { ChromePicker } from 'react-color';
 import Helpers from '../../utility/Helpers';
+import IconsChooser from '../IconsChooser/IconsChooser';
 import classes from './TypeEditPanel.module.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -76,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     iconDialogBox: {
       // background: theme.palette.background.paper,
-      zIndex: theme.zIndex.modal,
+      // zIndex: theme.zIndex.modal,
     },
     iconDialogHeader: {
       minHeight: theme.mixins.toolbar.minHeight,
@@ -140,7 +138,7 @@ const TypeEditPanel = observer(() => {
     setIcon(newIcon);
   };
   const applyIconSelect = () => {
-    setAppliedIcon(color);
+    setAppliedIcon(icon);
     iconHandleClose();
   };
   const cancelIconSelect = () => {
@@ -248,42 +246,35 @@ const TypeEditPanel = observer(() => {
               onClick={iconHandleOpen}
             >
               <MenuItem value={0}>
-                <MenuIcon />
+                <Icon>apps</Icon>
               </MenuItem>
             </TextField>
-            <Backdrop open={iconPickerOpened} className={css.backdrop}>
-              <Popper
-                open={iconPickerOpened}
-                anchorEl={iconRef.current}
-                role={undefined}
-                transition
-                disablePortal
-                className={css.iconDialogBox}
-              >
-                <ClickAwayListener onClickAway={iconHandleClose}>
-                  <Paper>
-                    <div className={css.iconDialogHeader}>
-                      <Typography variant="h6">Выберите иконку</Typography>
-                    </div>
-                    <div className={css.iconDialogBody}>
-                      <Icon>assignment_turned_in</Icon>
-                    </div>
-                    <div className={css.iconDialogFooter}>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={applyIconSelect}
-                      >
-                        Выбрать
-                      </Button>
-                      <Button variant="contained" onClick={cancelIconSelect}>
-                        Отмена
-                      </Button>
-                    </div>
-                  </Paper>
-                </ClickAwayListener>
-              </Popper>
-            </Backdrop>
+            <Dialog
+              open={iconPickerOpened}
+              className={css.iconDialogBox}
+              fullScreen
+            >
+              <Paper className={css.iconDialogBox}>
+                <div className={css.iconDialogHeader}>
+                  <Typography variant="h6">Выберите иконку</Typography>
+                </div>
+                <div className={css.iconDialogBody}>
+                  <IconsChooser />
+                </div>
+                <div className={css.iconDialogFooter}>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={applyIconSelect}
+                  >
+                    Выбрать
+                  </Button>
+                  <Button variant="contained" onClick={cancelIconSelect}>
+                    Отмена
+                  </Button>
+                </div>
+              </Paper>
+            </Dialog>
           </div>
         </div>
       </Slide>
