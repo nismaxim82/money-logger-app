@@ -85,6 +85,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     iconDialogBody: {
       padding: theme.spacing(2),
+      paddingBottom: 0,
     },
     iconDialogFooter: {
       padding: theme.spacing(2),

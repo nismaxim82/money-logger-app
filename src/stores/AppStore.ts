@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import * as AppJson from '../../package.json';
 import ServicesStore from './ServicesStore';
-import { MenuTypes } from '../models/Enum';
+import { MenuTypesEnum } from '../models/Enum';
 
 class AppStore {
   version = AppJson.version;
@@ -19,11 +19,11 @@ class AppStore {
   @action loadSelectedMenuIndex = (url: string) => {
     const urlParts = url.split('/');
     if (urlParts.length > 1) {
-      if (urlParts[1] === MenuTypes.Records) {
+      if (urlParts[1] === MenuTypesEnum.Records) {
         this.selectedMenuIndex = 1;
-      } else if (urlParts[1] === MenuTypes.Types) {
+      } else if (urlParts[1] === MenuTypesEnum.Types) {
         this.selectedMenuIndex = 2;
-      } else if (urlParts[1] === MenuTypes.Menu) {
+      } else if (urlParts[1] === MenuTypesEnum.Menu) {
         this.selectedMenuIndex = 3;
       } else {
         this.selectedMenuIndex = 0;
@@ -32,13 +32,13 @@ class AppStore {
       this.selectedMenuIndex = 0;
     }
     if (this.selectedMenuIndex === 0) {
-      this.selectedMenuUrl = `/${MenuTypes.Cash}`;
+      this.selectedMenuUrl = `/${MenuTypesEnum.Cash}`;
     } else if (this.selectedMenuIndex === 1) {
-      this.selectedMenuUrl = `/${MenuTypes.Records}`;
+      this.selectedMenuUrl = `/${MenuTypesEnum.Records}`;
     } else if (this.selectedMenuIndex === 2) {
-      this.selectedMenuUrl = `/${MenuTypes.Types}`;
+      this.selectedMenuUrl = `/${MenuTypesEnum.Types}`;
     } else if (this.selectedMenuIndex === 3) {
-      this.selectedMenuUrl = `/${MenuTypes.Menu}`;
+      this.selectedMenuUrl = `/${MenuTypesEnum.Menu}`;
     }
   };
 }

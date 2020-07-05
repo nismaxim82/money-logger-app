@@ -1,17 +1,10 @@
-.grid {
-  flex: 1;
-  display: grid;
-  grid-auto-columns: max-content;
+.typesSelectChips {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-@media(max-width: 4000px) {
-  .grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-@media(max-width: 400px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-  }
+.foundedIconsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
 }

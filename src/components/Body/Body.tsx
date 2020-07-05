@@ -9,7 +9,7 @@ import Helpers from '../../utility/Helpers';
 import classes from './Body.module.css';
 import useStores from '../../stores/UseStores';
 import AppStore from '../../stores/AppStore';
-import { MenuTypes } from '../../models/Enum';
+import { MenuTypesEnum } from '../../models/Enum';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,7 +33,7 @@ const Body = observer(() => {
   const getAddButtonLinkUrl = () => {
     let prefix = appStore.selectedMenuUrl;
     if (prefix === '/') {
-      prefix += MenuTypes.Cash;
+      prefix += MenuTypesEnum.Cash;
     }
     return `${appStore.selectedMenuUrl}/add`;
   };
@@ -44,7 +44,7 @@ const Body = observer(() => {
         // eslint-disable-next-line react/no-array-index-key
         <RouteWithSubRoutes key={i} {...route} />
       ))}
-      {appStore.selectedMenuUrl !== `/${MenuTypes.Menu}` && (
+      {appStore.selectedMenuUrl !== `/${MenuTypesEnum.Menu}` && (
         <Link to={getAddButtonLinkUrl()}>
           <Fab
             size="medium"

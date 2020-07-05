@@ -2,7 +2,7 @@ import CashPanel from '../components/CashPanel/CashPanel';
 import RecordsPanel from '../components/RecordsPanel/RecordsPanel';
 import TypesPanel from '../components/TypesPanel/TypesPanel';
 import MenuPanel from '../components/MenuPanel/MenuPanel';
-import { MenuTypes } from '../models/Enum';
+import { MenuTypesEnum } from '../models/Enum';
 import TypeEditPanel from '../components/TypeEditPanel/TypeEditPanel';
 
 const routes = [
@@ -12,27 +12,27 @@ const routes = [
     components: CashPanel,
   },
   {
-    path: `/${MenuTypes.Cash}`,
+    path: `/${MenuTypesEnum.Cash}`,
     exact: true,
     components: CashPanel,
   },
   {
-    path: `/${MenuTypes.Records}`,
+    path: `/${MenuTypesEnum.Records}`,
     exact: true,
     components: RecordsPanel,
   },
   {
-    path: `/${MenuTypes.Types}`,
+    path: `/${MenuTypesEnum.Types}`,
     exact: true,
     components: TypesPanel,
   },
   {
-    path: `/${MenuTypes.Types}/add`,
+    path: `/${MenuTypesEnum.Types}/add`,
     exact: true,
     components: TypeEditPanel,
   },
   {
-    path: `/${MenuTypes.Menu}`,
+    path: `/${MenuTypesEnum.Menu}`,
     exact: true,
     components: MenuPanel,
   },
