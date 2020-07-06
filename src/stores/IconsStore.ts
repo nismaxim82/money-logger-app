@@ -1,5 +1,5 @@
 import * as AllIcons from '@material-ui/icons';
-import { action, observable } from 'mobx';
+import { action, observable, computed } from 'mobx';
 import CacheService from '../services/CacheService';
 import { IconTypesEnum } from '../models/Enum';
 
@@ -13,6 +13,10 @@ class IconsStore {
   @observable iconsOnOnePage = 100;
   @observable foundedIcons: string[] = [];
   @observable foundedTotalCount = 0;
+
+  @computed get pagesCount() {
+    return Math.ceil(this.foundedTotalCount / this.iconsOnOnePage);
+  }
 
   private cacheService: CacheService;
 

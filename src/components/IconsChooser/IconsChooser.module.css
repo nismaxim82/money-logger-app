@@ -4,7 +4,14 @@
 }
 
 .foundedIconsContainer {
-  display: flex;
-  flex-wrap: wrap;
   overflow: auto;
+  flex: 1;
+}
+
+.foundedIconsButton {
+  align-self: flex-start;
+}
+
+.pagination {
+  align-self: center;
 }
