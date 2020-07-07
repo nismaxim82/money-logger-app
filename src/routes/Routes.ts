@@ -4,6 +4,7 @@ import TypesPanel from '../components/TypesPanel/TypesPanel';
 import MenuPanel from '../components/MenuPanel/MenuPanel';
 import { MenuTypesEnum } from '../models/Enum';
 import TypeEditPanel from '../components/TypeEditPanel/TypeEditPanel';
+import CashEditPanel from '../components/CashEditPanel/CashEditPanel';
 
 const routes = [
   {
@@ -15,6 +16,21 @@ const routes = [
     path: `/${MenuTypesEnum.Cash}`,
     exact: true,
     components: CashPanel,
+  },
+  {
+    path: `/${MenuTypesEnum.Cash}/add`,
+    exact: true,
+    components: CashEditPanel,
+  },
+  {
+    path: `/${MenuTypesEnum.Cash}/add/:typeId`,
+    exact: true,
+    components: CashEditPanel,
+  },
+  {
+    path: `/${MenuTypesEnum.Cash}/edit/:id`,
+    exact: true,
+    components: CashEditPanel,
   },
   {
     path: `/${MenuTypesEnum.Records}`,

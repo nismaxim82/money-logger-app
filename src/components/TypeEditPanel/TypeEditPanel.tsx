@@ -137,16 +137,7 @@ const TypeEditPanel = observer((props: IProps) => {
   };
 
   const getAppliedColor = () => {
-    if (typesStore.typeToSave?.iconColor) {
-      if (typesStore.typeToSave.iconColor.indexOf('#') === 0) {
-        return typesStore.typeToSave.iconColor;
-      }
-      return Helpers.getObjectValueByProp(
-        theme,
-        typesStore.typeToSave.iconColor
-      );
-    }
-    return '';
+    return typesStore.getColorInHex(theme, typesStore.typeToSave?.iconColor);
   };
 
   const colorHandleOpen = () => {
@@ -189,10 +180,6 @@ const TypeEditPanel = observer((props: IProps) => {
     <Fade in timeout={1000}>
       <Slide direction="up" in mountOnEnter unmountOnExit timeout={300}>
         <div className={css.modalContainer}>
-          <Box
-            className={css.overlay}
-            style={{ display: colorPickerOpened ? 'block' : 'none' }}
-          />
           <AppBar position="static" className={css.firstBar}>
             <Toolbar>
               <Typography variant="h6">

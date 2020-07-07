@@ -10,11 +10,13 @@ import {
 } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import TypeEntry from '../../models/entries/TypeEntry';
 import TypesStore from '../../stores/TypesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import classes from './CashPanel.module.css';
+import { MenuTypesEnum } from '../../models/Enum';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,6 +51,15 @@ const CashPanel = observer(() => {
     return result;
   };
 
+  const history = useHistory();
+
+  const buttonAddNewCashClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const { typeId } = event.currentTarget.dataset;
+    history.push(`/${MenuTypesEnum.Cash}/add/${typeId}`);
+  };
+
   return (
     <Grid container className={css.grid} spacing={2}>
       {typesStore.types.map((type: TypeEntry) => (
@@ -60,7 +71,12 @@ const CashPanel = observer(() => {
           alignItems="center"
           justify="center"
         >
-          <IconButton className={css.card} classes={{ label: css.cardLabel }}>
+          <IconButton
+            className={css.card}
+            classes={{ label: css.cardLabel }}
+            onClick={buttonAddNewCashClick}
+            data-type-id={type.name}
+          >
             <Icon
               style={{
                 color: getThemeColorStyle(type.iconColor),

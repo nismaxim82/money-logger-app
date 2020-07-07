@@ -38,13 +38,20 @@ const Body = observer(() => {
     return `${appStore.selectedMenuUrl}/add`;
   };
 
+  const showAddIcon = () => {
+    return (
+      appStore.selectedMenuUrl !== `/${MenuTypesEnum.Menu}` &&
+      appStore.selectedMenuUrl !== `/${MenuTypesEnum.Records}`
+    );
+  };
+
   return (
     <div className={css.body}>
       {routes.map((route, i) => (
         // eslint-disable-next-line react/no-array-index-key
         <RouteWithSubRoutes key={i} {...route} />
       ))}
-      {appStore.selectedMenuUrl !== `/${MenuTypesEnum.Menu}` && (
+      {showAddIcon() && (
         <Link to={getAddButtonLinkUrl()}>
           <Fab
             size="medium"

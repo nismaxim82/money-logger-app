@@ -1,3 +1,4 @@
+import { Theme } from '@material-ui/core';
 import { action, observable } from 'mobx';
 import TypeEntry from '../models/entries/TypeEntry';
 import CacheService from '../services/CacheService';
@@ -17,14 +18,15 @@ class TypesStore {
 
   @action getTypeToSaveByName = (name: string) => {
     this.typeToSave = {
-      ...(this.types.find((t) => t.name === name) || new TypeEntry()),
+      ...(this.getTypeByName(name) || new TypeEntry()),
     };
   };
 
-  @action updateTypeToSaveByProp = (
-    prop: string,
-    newValue: string | number
-  ) => {
+  getTypeByName = (name: string) => {
+    return this.types.find((t) => t.name === name);
+  };
+
+  @action updateTypeToSaveByProp = (prop: string, newValue: any) => {
     Helpers.setObjectValueByProp(this.typeToSave, prop, newValue);
   };
 
@@ -75,6 +77,16 @@ class TypesStore {
         await this.cacheService.add('allTypes', this.types);
       }
     }
+  };
+
+  getColorInHex = (theme: Theme, color?: string) => {
+    if (color) {
+      if (color.indexOf('#') === 0) {
+        return color;
+      }
+      return Helpers.getObjectValueByProp(theme, color);
+    }
+    return '';
   };
 
   private initializeDefaultTypes = () => {
