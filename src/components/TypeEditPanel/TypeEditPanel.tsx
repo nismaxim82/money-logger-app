@@ -1,9 +1,7 @@
 import {
   AppBar,
-  Backdrop,
   Box,
   Button,
-  ClickAwayListener,
   createStyles,
   Dialog,
   Fade,
@@ -13,7 +11,6 @@ import {
   makeStyles,
   MenuItem,
   Paper,
-  Popper,
   Slide,
   TextField,
   Theme,
@@ -21,10 +18,13 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { Close as CloseIcon, Done as DoneIcon } from '@material-ui/icons';
 import { observer } from 'mobx-react';
 import React from 'react';
 import { ChromePicker } from 'react-color';
+import { useHistory } from 'react-router-dom';
+import { MenuTypesEnum } from '../../models/Enum';
+import TypesStore from '../../stores/TypesStore';
+import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import IconsChooser from '../IconsChooser/IconsChooser';
 import classes from './TypeEditPanel.module.css';
@@ -41,21 +41,17 @@ const useStyles = makeStyles((theme: Theme) =>
     secondBar: {
       background: theme.palette.primary.dark,
     },
-    closeIcon: {
-      color: theme.palette.background.default,
-    },
-    doneIcon: {
+    toolbarIcon: {
       color: theme.palette.background.default,
     },
     body: {
       padding: theme.spacing(2),
       gridGap: theme.spacing(2),
     },
-    backdrop: {
-      zIndex: theme.zIndex.modal,
+    colorAndIconContainer: {
+      gridGap: theme.spacing(2),
     },
     colorDialogBox: {
-      // background: theme.palette.background.paper,
       zIndex: theme.zIndex.modal,
     },
     colorDialogHeader: {
@@ -71,10 +67,6 @@ const useStyles = makeStyles((theme: Theme) =>
     colorDialogFooter: {
       padding: theme.spacing(2),
       gridGap: theme.spacing(2),
-    },
-    iconDialogBox: {
-      // background: theme.palette.background.paper,
-      // zIndex: theme.zIndex.modal,
     },
     iconDialogHeader: {
       minHeight: theme.mixins.toolbar.minHeight,
@@ -94,56 +86,102 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const TypeEditPanel = observer(() => {
-  // const { appStore }: { appStore: AppStore } = useStores();
+interface IProps {
+  match: any;
+}
+
+const TypeEditPanel = observer((props: IProps) => {
+  const { typesStore }: { typesStore: TypesStore } = useStores();
 
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
   const theme = useTheme();
 
-  const colorRef = React.useRef<HTMLDivElement>(null);
+  const [typeId, setTypeId] = React.useState('');
+  const [color, setColor] = React.useState('');
   const [colorPickerOpened, setColorPickerOpened] = React.useState(false);
+  const [icon, setIcon] = React.useState('');
+  const [iconPickerOpened, setIconPickerOpened] = React.useState(false);
+
+  const history = useHistory();
+  React.useEffect(() => {
+    setTypeId(props.match.params?.id);
+    if (typesStore.typesLoaded) {
+      typesStore.getTypeToSaveByName(typeId);
+      setColor(typesStore.typeToSave?.iconColor || '');
+    }
+  }, [props.match.params, typeId, typesStore, typesStore.typesLoaded]);
+
+  const deleteType = async () => {
+    await typesStore.deleteType(typeId);
+    history.push(`/${MenuTypesEnum.Types}`);
+  };
+  const cancelEdit = () => {
+    history.push(`/${MenuTypesEnum.Types}`);
+  };
+  const saveEdit = async () => {
+    if (typesStore.validateTypeToSave()) {
+      await typesStore.saveType(typeId);
+      history.push(`/${MenuTypesEnum.Types}`);
+    }
+  };
+
+  const changeTypeField = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.currentTarget.value;
+    const prop = event.currentTarget.dataset.propName!;
+    typesStore.updateTypeToSaveByProp(prop, newValue);
+  };
+
+  const positionFieldFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.currentTarget.select();
+  };
+
+  const getAppliedColor = () => {
+    if (typesStore.typeToSave?.iconColor) {
+      if (typesStore.typeToSave.iconColor.indexOf('#') === 0) {
+        return typesStore.typeToSave.iconColor;
+      }
+      return Helpers.getObjectValueByProp(
+        theme,
+        typesStore.typeToSave.iconColor
+      );
+    }
+    return '';
+  };
+
   const colorHandleOpen = () => {
     setColorPickerOpened(true);
   };
   const colorHandleClose = () => {
     setColorPickerOpened(false);
   };
-  const [color, setColor] = React.useState(theme.palette.primary.main);
-  const [appliedColor, setAppliedColor] = React.useState(
-    theme.palette.primary.main
-  );
-  const colorChange = (pickerProps: any) => {
+  const pickerColorChange = (pickerProps: any) => {
     setColor(pickerProps.hex);
   };
-  const applyColorSelect = () => {
-    setAppliedColor(color);
+  const buttonApplyColorSelect = () => {
+    typesStore.updateTypeToSaveByProp('iconColor', color);
     colorHandleClose();
   };
-  const cancelColorSelect = () => {
-    setColor(appliedColor);
+  const buttonCancelColorSelect = () => {
+    setColor(getAppliedColor());
     colorHandleClose();
   };
 
-  const iconRef = React.useRef<HTMLDivElement>(null);
-  const [iconPickerOpened, setIconPickerOpened] = React.useState(false);
   const iconHandleOpen = () => {
     setIconPickerOpened(true);
   };
   const iconHandleClose = () => {
     setIconPickerOpened(false);
   };
-  const [icon, setIcon] = React.useState('');
-  const [appliedIcon, setAppliedIcon] = React.useState('');
   const iconChange = (newIcon: string) => {
     setIcon(newIcon);
   };
-  const applyIconSelect = () => {
-    setAppliedIcon(icon);
+  const buttonApplyIconSelect = () => {
+    typesStore.updateTypeToSaveByProp('icon', icon);
     iconHandleClose();
   };
-  const cancelIconSelect = () => {
-    setIcon(appliedColor);
+  const buttonCancelIconSelect = () => {
+    setIcon(typesStore.typeToSave?.icon || '');
     iconHandleClose();
   };
 
@@ -157,99 +195,139 @@ const TypeEditPanel = observer(() => {
           />
           <AppBar position="static" className={css.firstBar}>
             <Toolbar>
-              <Typography variant="h6">Новый тип</Typography>
+              <Typography variant="h6">
+                {typeId ? 'Редактирование типа' : 'Новый тип'}
+              </Typography>
             </Toolbar>
           </AppBar>
           <AppBar position="static" color="primary" className={css.secondBar}>
             <Toolbar>
               <Box className={css.emptyBox} />
-              <IconButton>
-                <CloseIcon className={css.closeIcon} />
+              {typeId && (
+                <IconButton onClick={deleteType}>
+                  <Icon className={css.toolbarIcon}>delete_forever</Icon>
+                </IconButton>
+              )}
+              <IconButton onClick={cancelEdit}>
+                <Icon className={css.toolbarIcon}>close</Icon>
               </IconButton>
-              <IconButton>
-                <DoneIcon className={css.doneIcon} />
+              <IconButton onClick={saveEdit}>
+                <Icon className={css.toolbarIcon}>done</Icon>
               </IconButton>
             </Toolbar>
           </AppBar>
           <div className={css.body}>
             <TextField
-              error
+              error={!typesStore.typeToSave?.name}
               fullWidth
-              label="Name"
-              helperText="Type name is required"
+              label="ID"
+              disabled={!!typeId}
+              value={typesStore.typeToSave?.name || ''}
+              onChange={changeTypeField}
+              inputProps={{ 'data-prop-name': 'name' }}
+              helperText={
+                !typesStore.typeToSave?.name
+                  ? 'ID обязательно для заполнения'
+                  : ''
+              }
             />
             <TextField
+              error={!typesStore.typeToSave?.label}
               fullWidth
-              label="Position"
-              helperText="If empty then it will be placed to the end of list"
+              label="Название"
+              value={typesStore.typeToSave?.label || ''}
+              onChange={changeTypeField}
+              inputProps={{ 'data-prop-name': 'label' }}
+              helperText={
+                !typesStore.typeToSave?.label
+                  ? 'Название обязательно для заполнения'
+                  : ''
+              }
             />
             <TextField
-              ref={colorRef}
-              select
-              disabled
+              error={
+                !typesStore.typeToSave?.position &&
+                typesStore.typeToSave?.position !== 0
+              }
               fullWidth
-              label="Color"
-              InputLabelProps={{ style: { color: appliedColor } }}
-              SelectProps={{ style: { color: appliedColor } }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Icon>stop</Icon>
-                  </InputAdornment>
-                ),
-              }}
-              value={0}
-              onClick={colorHandleOpen}
-            >
-              <MenuItem value={0}>{appliedColor}</MenuItem>
-            </TextField>
-            <Backdrop open={colorPickerOpened} className={css.backdrop}>
-              <Popper
-                open={colorPickerOpened}
-                anchorEl={colorRef.current}
-                role={undefined}
-                transition
-                disablePortal
-                className={css.colorDialogBox}
+              label="Позиция в списке"
+              value={
+                typesStore.typeToSave?.position ||
+                typesStore.typeToSave?.position === 0
+                  ? typesStore.typeToSave?.position
+                  : ''
+              }
+              onChange={changeTypeField}
+              type="number"
+              inputProps={{ 'data-prop-name': 'position' }}
+              onFocus={positionFieldFocus}
+              helperText={
+                !typesStore.typeToSave?.position &&
+                typesStore.typeToSave?.position !== 0
+                  ? 'Позиция в списке обязательна для заполнения'
+                  : ''
+              }
+            />
+            <div className={css.colorAndIconContainer}>
+              <TextField
+                select
+                disabled
+                fullWidth
+                label="Цвет иконки"
+                className={css.dialogSelect}
+                SelectProps={{ style: { color: getAppliedColor() } }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Icon>stop</Icon>
+                    </InputAdornment>
+                  ),
+                }}
+                value={0}
+                onClick={colorHandleOpen}
               >
-                <ClickAwayListener onClickAway={colorHandleClose}>
-                  <Paper>
-                    <div className={css.colorDialogHeader}>
-                      <Typography variant="h6">Выберите цвет</Typography>
-                    </div>
-                    <div className={css.colorDialogBody}>
-                      <ChromePicker color={color} onChange={colorChange} />
-                    </div>
-                    <div className={css.colorDialogFooter}>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={applyColorSelect}
-                      >
-                        Выбрать
-                      </Button>
-                      <Button variant="contained" onClick={cancelColorSelect}>
-                        Отмена
-                      </Button>
-                    </div>
-                  </Paper>
-                </ClickAwayListener>
-              </Popper>
-            </Backdrop>
-            <TextField
-              ref={iconRef}
-              select
-              disabled
-              fullWidth
-              label="Icon"
-              value={0}
-              SelectProps={{ style: { color: appliedColor } }}
-              onClick={iconHandleOpen}
+                <MenuItem value={0}>{getAppliedColor()}</MenuItem>
+              </TextField>
+              <TextField
+                select
+                disabled
+                fullWidth
+                label="Иконка"
+                value={typesStore.typeToSave?.icon ? '0' : ''}
+                SelectProps={{ style: { color: getAppliedColor() } }}
+                onClick={iconHandleOpen}
+              >
+                <MenuItem value="0">
+                  <Icon>{typesStore.typeToSave?.icon}</Icon>
+                </MenuItem>
+              </TextField>
+            </div>
+            <Dialog
+              open={colorPickerOpened}
+              className={css.colorDialogBox}
+              fullScreen
             >
-              <MenuItem value={0}>
-                <Icon>apps</Icon>
-              </MenuItem>
-            </TextField>
+              <Paper className={css.colorDialogBox}>
+                <div className={css.colorDialogHeader}>
+                  <Typography variant="h6">Выберите цвет иконки</Typography>
+                </div>
+                <div className={css.colorDialogBody}>
+                  <ChromePicker color={color} onChange={pickerColorChange} />
+                </div>
+                <div className={css.colorDialogFooter}>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={buttonApplyColorSelect}
+                  >
+                    Выбрать
+                  </Button>
+                  <Button variant="contained" onClick={buttonCancelColorSelect}>
+                    Отмена
+                  </Button>
+                </div>
+              </Paper>
+            </Dialog>
             <Dialog
               open={iconPickerOpened}
               className={css.iconDialogBox}
@@ -260,17 +338,20 @@ const TypeEditPanel = observer(() => {
                   <Typography variant="h6">Выберите иконку</Typography>
                 </div>
                 <div className={css.iconDialogBody}>
-                  <IconsChooser />
+                  <IconsChooser
+                    selectedIcon={typesStore.typeToSave?.icon}
+                    selectedIconChanged={iconChange}
+                  />
                 </div>
                 <div className={css.iconDialogFooter}>
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={applyIconSelect}
+                    onClick={buttonApplyIconSelect}
                   >
                     Выбрать
                   </Button>
-                  <Button variant="contained" onClick={cancelIconSelect}>
+                  <Button variant="contained" onClick={buttonCancelIconSelect}>
                     Отмена
                   </Button>
                 </div>

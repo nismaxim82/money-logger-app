@@ -1,6 +1,7 @@
 export default class TypeEntry {
-  IconComponent: any;
   name!: string;
-  iconColor?: string;
   label?: string;
+  position = 0;
+  iconColor?: string;
+  icon?: string;
 }

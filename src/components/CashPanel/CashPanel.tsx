@@ -6,6 +6,7 @@ import {
   Theme,
   Typography,
   useTheme,
+  Icon,
 } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import React from 'react';
@@ -60,13 +61,15 @@ const CashPanel = observer(() => {
           justify="center"
         >
           <IconButton className={css.card} classes={{ label: css.cardLabel }}>
-            <type.IconComponent
+            <Icon
               style={{
                 color: getThemeColorStyle(type.iconColor),
                 fontSize: '2rem',
               }}
               className={css.cardIcon}
-            />
+            >
+              {type.icon}
+            </Icon>
             <Typography variant="subtitle1" className={css.cardLabelText}>
               {type.label}
             </Typography>

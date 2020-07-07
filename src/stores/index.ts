@@ -8,7 +8,7 @@ const appStore = new AppStore();
 const cacheService = new CacheService(appStore);
 const servicesStore = new ServicesStore(cacheService);
 appStore.services = servicesStore;
-const typesStore = new TypesStore();
+const typesStore = new TypesStore(cacheService);
 const iconsStore = new IconsStore(cacheService);
 
 const stores = {

@@ -6,11 +6,12 @@ import classes from './App.module.css';
 import Body from './components/Body/Body';
 import Menu from './components/Menu/Menu';
 import store from './stores';
+import * as AppSettings from '../package.json';
 
 const App = () => {
   return (
     <Provider store={store}>
-      <Router>
+      <Router basename={`/${AppSettings.name}`}>
         <CssBaseline />
         <div className={classes.page}>
           <Menu />

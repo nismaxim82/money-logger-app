@@ -18,6 +18,22 @@ class Helpers {
     }
     return result;
   };
+
+  static getObjectValueByProp = (obj: any, prop: string): any => {
+    const splittedProps = prop.split('.');
+    if (splittedProps.length > 1) {
+      return Helpers.getObjectValueByProp(
+        obj[splittedProps[0]],
+        splittedProps.splice(1).join('.')
+      );
+    }
+    return obj[splittedProps[0]];
+  };
+
+  static setObjectValueByProp = (obj: any, prop: string, value: any) => {
+    // eslint-disable-next-line no-param-reassign
+    obj[prop] = value;
+  };
 }
 
 export default Helpers;

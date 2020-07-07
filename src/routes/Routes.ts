@@ -32,6 +32,11 @@ const routes = [
     components: TypeEditPanel,
   },
   {
+    path: `/${MenuTypesEnum.Types}/edit/:id`,
+    exact: true,
+    components: TypeEditPanel,
+  },
+  {
     path: `/${MenuTypesEnum.Menu}`,
     exact: true,
     components: MenuPanel,

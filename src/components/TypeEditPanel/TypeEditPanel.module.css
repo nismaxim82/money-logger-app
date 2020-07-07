@@ -19,7 +19,17 @@
   grid-auto-rows: max-content;
 }
 
-.iconDialogBox {
+.colorAndIconContainer {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr;
+}
+
+.dialogSelect {
+  justify-content: flex-end;
+}
+
+.colorDialogBox, .iconDialogBox {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -31,11 +41,16 @@
   align-items: center;
 }
 
-.iconDialogBody {
+.colorDialogBody, .iconDialogBody {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: auto;
+}
+
+.colorDialogBody {
+  align-items: center;
+  justify-content: center;
 }
 
 .colorDialogFooter, .iconDialogFooter {

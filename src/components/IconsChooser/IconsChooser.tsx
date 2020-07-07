@@ -4,6 +4,7 @@ import {
   createStyles,
   FormControl,
   Icon,
+  IconButton,
   Input,
   InputAdornment,
   InputLabel,
@@ -13,17 +14,16 @@ import {
   Select,
   Theme,
   Typography,
-  IconButton,
 } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
 import { observer } from 'mobx-react';
 import React from 'react';
-import Pagination from '@material-ui/lab/Pagination';
+import { IconTypesEnum } from '../../models/Enum';
 import IconsStore from '../../stores/IconsStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
-import classes from './IconsChooser.module.css';
 import useDebounce from '../../utility/UseDebounce';
-import { IconTypesEnum } from '../../models/Enum';
+import classes from './IconsChooser.module.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,7 +58,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const IconsChooser = observer(() => {
+interface IProps {
+  selectedIcon?: string;
+  selectedIconChanged?: (newIcon: string) => void;
+}
+
+const IconsChooser = observer((props: IProps) => {
   const { iconsStore }: { iconsStore: IconsStore } = useStores();
 
   const styles = useStyles();
@@ -95,6 +100,11 @@ const IconsChooser = observer(() => {
     setPage(1);
     setFilter(newFilter.target.value);
   };
+  const filterKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.keyCode === 13) {
+      event.currentTarget.blur();
+    }
+  };
   const onPageChange = (event: any, newPage: number) => {
     setPage(newPage);
   };
@@ -114,12 +124,19 @@ const IconsChooser = observer(() => {
       iconRightName = '';
     }
     setSelectedIcon(iconRightName);
+    if (props.selectedIconChanged) {
+      props.selectedIconChanged(iconRightName);
+    }
   };
+
+  React.useEffect(() => {
+    setSelectedIcon(props.selectedIcon || '');
+  }, [props.selectedIcon]);
 
   return (
     <>
       <FormControl className={classes.typeSelect} fullWidth>
-        <InputLabel id="types-select-label">Icon types</InputLabel>
+        <InputLabel id="types-select-label">Типы иконок</InputLabel>
         <Select
           labelId="types-select-label"
           multiple
@@ -139,9 +156,10 @@ const IconsChooser = observer(() => {
       </FormControl>
       <Input
         fullWidth
-        placeholder="Enter icon name to search"
+        placeholder="Введите для поиска"
         value={filter}
         onChange={filterChanged}
+        onKeyUp={filterKeyUp}
         className={css.searchInput}
         startAdornment={
           <InputAdornment position="start">
@@ -151,7 +169,7 @@ const IconsChooser = observer(() => {
       />
       <div className={css.foundedTotalCount}>
         <Typography variant="caption">
-          {iconsStore.foundedTotalCount} matching results
+          всего найдено {iconsStore.foundedTotalCount}
         </Typography>
       </div>
       <div ref={iconsButtonsContainerRef} className={css.foundedIconsContainer}>
