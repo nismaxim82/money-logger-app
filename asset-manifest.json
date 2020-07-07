@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/money-logger-app/static/css/main.1e32a30d.chunk.css",
-    "main.js": "/money-logger-app/static/js/main.4a8b6d54.chunk.js",
-    "main.js.map": "/money-logger-app/static/js/main.4a8b6d54.chunk.js.map",
+    "main.js": "/money-logger-app/static/js/main.7727fe97.chunk.js",
+    "main.js.map": "/money-logger-app/static/js/main.7727fe97.chunk.js.map",
     "runtime-main.js": "/money-logger-app/static/js/runtime-main.74ddd456.js",
     "runtime-main.js.map": "/money-logger-app/static/js/runtime-main.74ddd456.js.map",
-    "static/js/2.41af8edc.chunk.js": "/money-logger-app/static/js/2.41af8edc.chunk.js",
-    "static/js/2.41af8edc.chunk.js.map": "/money-logger-app/static/js/2.41af8edc.chunk.js.map",
+    "static/js/2.7ea66f37.chunk.js": "/money-logger-app/static/js/2.7ea66f37.chunk.js",
+    "static/js/2.7ea66f37.chunk.js.map": "/money-logger-app/static/js/2.7ea66f37.chunk.js.map",
     "index.html": "/money-logger-app/index.html",
-    "precache-manifest.417aa57e37ed4771923f0b5645d4f0d6.js": "/money-logger-app/precache-manifest.417aa57e37ed4771923f0b5645d4f0d6.js",
+    "precache-manifest.42e622262d5d5048b735282b02648e20.js": "/money-logger-app/precache-manifest.42e622262d5d5048b735282b02648e20.js",
     "service-worker.js": "/money-logger-app/service-worker.js",
     "static/css/main.1e32a30d.chunk.css.map": "/money-logger-app/static/css/main.1e32a30d.chunk.css.map",
-    "static/js/2.41af8edc.chunk.js.LICENSE.txt": "/money-logger-app/static/js/2.41af8edc.chunk.js.LICENSE.txt"
+    "static/js/2.7ea66f37.chunk.js.LICENSE.txt": "/money-logger-app/static/js/2.7ea66f37.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.74ddd456.js",
-    "static/js/2.41af8edc.chunk.js",
+    "static/js/2.7ea66f37.chunk.js",
     "static/css/main.1e32a30d.chunk.css",
-    "static/js/main.4a8b6d54.chunk.js"
+    "static/js/main.7727fe97.chunk.js"
   ]
 }
