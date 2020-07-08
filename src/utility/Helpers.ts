@@ -34,6 +34,14 @@ class Helpers {
     // eslint-disable-next-line no-param-reassign
     obj[prop] = value;
   };
+
+  static getDateFromString = (date: Date | string) => {
+    if (typeof date === 'string') {
+      // eslint-disable-next-line no-param-reassign
+      date = new Date(date);
+    }
+    return date;
+  };
 }
 
 export default Helpers;

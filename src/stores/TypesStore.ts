@@ -93,7 +93,7 @@ class TypesStore {
     this.types = [];
 
     this.cacheService
-      .get<TypeEntry[]>('allTypes')
+      .get<TypeEntry>('allTypes', true)
       .then((types: TypeEntry[]) => {
         if (types) {
           this.types = types;

@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme: Theme) =>
     selectTypeIcon: {
       marginRight: theme.spacing(2),
     },
+    totalInput: {
+      marginTop: theme.spacing(1),
+    },
   })
 );
 
@@ -80,10 +83,7 @@ const CashEditPanel = observer((props: IProps) => {
     if (cashStore.cashesLoaded) {
       cashStore.getCashToSaveById(cashId);
       if (!cashStore.cashToSave?.id) {
-        cashStore.updateTypeToSaveByProp(
-          'type',
-          typesStore.getTypeByName(typeId)
-        );
+        cashStore.updateTypeToSaveByProp('typeName', typeId);
       }
     }
   }, [
@@ -96,7 +96,10 @@ const CashEditPanel = observer((props: IProps) => {
     typeId,
   ]);
 
-  const deleteCash = () => {
+  const createdDate = new Date();
+
+  const deleteCash = async () => {
+    await typesStore.deleteType(cashId);
     history.push(`/${MenuTypesEnum.Records}`);
   };
   const cancelEdit = () => {
@@ -106,23 +109,43 @@ const CashEditPanel = observer((props: IProps) => {
       history.push(`/${MenuTypesEnum.Cash}`);
     }
   };
-  const saveEdit = () => {
-    history.push(`/${MenuTypesEnum.Cash}`);
+  const saveEdit = async () => {
+    if (!cashStore.cashToSave?.createdDate) {
+      cashStore.updateTypeToSaveByProp('createdDate', createdDate);
+    }
+    if (cashStore.validateCashToSave()) {
+      await cashStore.saveCash(cashId);
+      history.push(`/${MenuTypesEnum.Cash}`);
+    }
   };
 
   const selectTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedTypeId = event.currentTarget.dataset.value!;
-    const newType = typesStore.getTypeByName(selectedTypeId);
-    cashStore.updateTypeToSaveByProp('type', newType);
+    cashStore.updateTypeToSaveByProp('typeName', selectedTypeId);
   };
 
   const getIconColor = (color?: string) => {
     return typesStore.getColorInHex(theme, color);
   };
 
-  const createdDate = new Date();
   const pickerDateChange = (date: MaterialUiPickersDate) => {
     cashStore.updateTypeToSaveByProp('createdDate', date);
+  };
+
+  const changeTotalField = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseFloat(event.currentTarget.value);
+    const prop = event.currentTarget.dataset.propName!;
+    cashStore.updateTypeToSaveByProp(prop, newValue);
+  };
+
+  const totalFieldFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.currentTarget.select();
+  };
+
+  const totalKeyUp = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.keyCode === 13) {
+      await saveEdit();
+    }
   };
 
   return (
@@ -154,12 +177,18 @@ const CashEditPanel = observer((props: IProps) => {
           </AppBar>
           <div className={css.body}>
             <TextField
+              error={!cashStore.cashToSave?.typeName}
               select
               fullWidth
               label="Тип оплаты"
               className={css.dialogSelect}
-              value={cashStore.cashToSave?.type?.name || ''}
+              value={cashStore.cashToSave?.typeName || ''}
               onChange={selectTypeChange}
+              helperText={
+                !cashStore.cashToSave?.typeName
+                  ? 'Тип оплаты обязателен для заполнения'
+                  : ''
+              }
             >
               {typesStore.types.map((type) => (
                 <MenuItem key={type.name} value={type.name}>
@@ -192,6 +221,23 @@ const CashEditPanel = observer((props: IProps) => {
                 />
               </Grid>
             </MuiPickersUtilsProvider>
+            <TextField
+              error={!cashStore.cashToSave?.total}
+              fullWidth
+              className={css.totalInput}
+              label="Сумма оплаты"
+              value={cashStore.cashToSave?.total || ''}
+              onChange={changeTotalField}
+              onFocus={totalFieldFocus}
+              onKeyUp={totalKeyUp}
+              type="number"
+              inputProps={{ 'data-prop-name': 'total' }}
+              helperText={
+                !cashStore.cashToSave?.total
+                  ? 'Сумма оплаты обязательна для заполнения'
+                  : ''
+              }
+            />
           </div>
         </div>
       </Slide>

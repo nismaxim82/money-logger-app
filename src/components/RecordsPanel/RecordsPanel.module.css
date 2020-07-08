@@ -1,0 +1,11 @@
+.root {
+  overflow: auto;
+  height: 100%;
+}
+
+.cashesUl {
+  padding: 0;
+}
+
+.stickyHeader {
+}

@@ -5,7 +5,7 @@ export default class CacheService {
 
   constructor(appStore: AppStore) {
     this.appStore = appStore;
-    this.get('appVersion', new Date()).then((r) => {
+    this.get<String>('appVersion', false, new Date()).then((r) => {
       if (appStore.version !== r) {
         this.clear();
         this.add('appVersion', appStore.version);
@@ -25,7 +25,11 @@ export default class CacheService {
     return result;
   }
 
-  public async get<T>(key: string, validAt?: Date): Promise<any> {
+  public async get<T>(
+    key: string,
+    isArray?: boolean,
+    validAt?: Date
+  ): Promise<any> {
     let result: string | null = null;
     if (!this.appStore.enableCache) {
       return result;
@@ -49,6 +53,16 @@ export default class CacheService {
         return null;
       }
       return parsedResult.entry;
+      // let returnResult: any;
+      // if (isArray) {
+      //   returnResult = [];
+      //   parsedResult.entry.forEach((t: any) => {
+      //     returnResult.push(t as T);
+      //   });
+      // } else {
+      //   returnResult = parsedResult.entry as T;
+      // }
+      // return returnResult;
     } catch {
       return result;
     }
