@@ -10,6 +10,7 @@ import classes from './Body.module.css';
 import useStores from '../../stores/UseStores';
 import AppStore from '../../stores/AppStore';
 import { MenuTypesEnum } from '../../models/Enum';
+import FirstTimeShowPanel from '../FirstTimeShowPanel/FirstTimeShowPanel';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,6 +64,7 @@ const Body = observer(() => {
           </Fab>
         </Link>
       )}
+      {/* <FirstTimeShowPanel /> */}
     </div>
   );
 });
