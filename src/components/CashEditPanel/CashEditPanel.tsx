@@ -99,7 +99,7 @@ const CashEditPanel = observer((props: IProps) => {
   const createdDate = new Date();
 
   const deleteCash = async () => {
-    await typesStore.deleteType(cashId);
+    await cashStore.deleteCash(cashId);
     history.push(`/${MenuTypesEnum.Records}`);
   };
   const cancelEdit = () => {
@@ -132,6 +132,22 @@ const CashEditPanel = observer((props: IProps) => {
     cashStore.updateTypeToSaveByProp('createdDate', date);
   };
 
+  const totalInputRef = React.useRef<HTMLInputElement>(null);
+  const descriptionKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.keyCode === 13) {
+      console.log(totalInputRef.current);
+      // eslint-disable-next-line no-unused-expressions
+      totalInputRef.current?.focus();
+    }
+  };
+
+  const changeDescriptionField = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const description = event.currentTarget.value;
+    cashStore.updateTypeToSaveByProp('description', description);
+  };
+
   const changeTotalField = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseFloat(event.currentTarget.value);
     const prop = event.currentTarget.dataset.propName!;
@@ -142,7 +158,9 @@ const CashEditPanel = observer((props: IProps) => {
     event.currentTarget.select();
   };
 
-  const totalKeyUp = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const submitOnEnterKeyUp = async (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (event.keyCode === 13) {
       await saveEdit();
     }
@@ -222,6 +240,16 @@ const CashEditPanel = observer((props: IProps) => {
               </Grid>
             </MuiPickersUtilsProvider>
             <TextField
+              fullWidth
+              className={css.descriptionInput}
+              label="Описание"
+              value={cashStore.cashToSave?.description || ''}
+              onChange={changeDescriptionField}
+              onKeyUp={descriptionKeyUp}
+              inputProps={{ 'data-prop-name': 'description' }}
+            />
+            <TextField
+              inputRef={totalInputRef}
               error={!cashStore.cashToSave?.total}
               fullWidth
               className={css.totalInput}
@@ -229,7 +257,7 @@ const CashEditPanel = observer((props: IProps) => {
               value={cashStore.cashToSave?.total || ''}
               onChange={changeTotalField}
               onFocus={totalFieldFocus}
-              onKeyUp={totalKeyUp}
+              onKeyUp={submitOnEnterKeyUp}
               type="number"
               inputProps={{ 'data-prop-name': 'total' }}
               helperText={

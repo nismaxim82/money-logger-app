@@ -45,7 +45,7 @@ class IconsStore {
       IconTypesEnum[IconTypesEnum.Sharp]
     );
 
-    this.cacheService.get<any>('allIcons').then((allIcons) => {
+    this.cacheService.get<Object>('allIcons', Object).then((allIcons) => {
       if (!allIcons) {
         Object.keys(AllIcons).forEach((k: string) => {
           if (

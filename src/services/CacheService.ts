@@ -1,3 +1,4 @@
+import { plainToClass } from 'class-transformer';
 import AppStore from '../stores/AppStore';
 
 export default class CacheService {
@@ -5,7 +6,7 @@ export default class CacheService {
 
   constructor(appStore: AppStore) {
     this.appStore = appStore;
-    this.get<String>('appVersion', false, new Date()).then((r) => {
+    this.get<String>('appVersion', String, false, new Date()).then((r) => {
       if (appStore.version !== r) {
         this.clear();
         this.add('appVersion', appStore.version);
@@ -27,6 +28,7 @@ export default class CacheService {
 
   public async get<T>(
     key: string,
+    TCreator: new (...args: any[]) => T,
     isArray?: boolean,
     validAt?: Date
   ): Promise<any> {
@@ -52,17 +54,15 @@ export default class CacheService {
         );
         return null;
       }
-      return parsedResult.entry;
-      // let returnResult: any;
-      // if (isArray) {
-      //   returnResult = [];
-      //   parsedResult.entry.forEach((t: any) => {
-      //     returnResult.push(t as T);
-      //   });
-      // } else {
-      //   returnResult = parsedResult.entry as T;
-      // }
-      // return returnResult;
+      if (isArray) {
+        const arrayResult: T[] = [];
+        parsedResult.entry.forEach((entry: any) => {
+          const parsedEntry = plainToClass(TCreator, entry);
+          arrayResult.push(parsedEntry);
+        });
+        return arrayResult;
+      }
+      return plainToClass(TCreator, parsedResult.entry);
     } catch {
       return result;
     }

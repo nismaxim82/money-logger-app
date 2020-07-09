@@ -1,13 +1,13 @@
 import { observable, action } from 'mobx';
 // import DateFnsUtils from '@date-io/date-fns';
 import { v4 as uuidv4 } from 'uuid';
-import ICash from '../models/entries/ICash';
+import CashEntry from '../models/entries/CashEntry';
 import CacheService from '../services/CacheService';
 import Helpers from '../utility/Helpers';
 
 class CashStore {
-  @observable cashes: ICash[] = [];
-  @observable cashToSave?: ICash;
+  @observable cashes: CashEntry[] = [];
+  @observable cashToSave?: CashEntry;
   @observable cashesLoaded = false;
 
   private cacheService: CacheService;
@@ -20,7 +20,7 @@ class CashStore {
 
   @action getCashToSaveById = (id: string) => {
     this.cashToSave = {
-      ...(this.cashes.find((t) => t.id === id) || ({} as ICash)),
+      ...(this.cashes.find((t) => t.id === id) || ({} as CashEntry)),
     };
   };
 
@@ -89,19 +89,25 @@ class CashStore {
 
   private loadAllCashes = async () => {
     this.cashes = [];
-    const cashes = await this.cacheService.get<ICash>('allCashes', true);
+    const cashes = await this.cacheService.get<CashEntry>(
+      'allCashes',
+      CashEntry,
+      true
+    );
     if (cashes) {
-      cashes.forEach((c: ICash) => {
-        // eslint-disable-next-line no-param-reassign
-        c.createdDate = new Date(c.createdDate);
-        this.cashes.push(c);
-      });
+      // cashes.forEach((c: CashEntry) => {
+      //   // eslint-disable-next-line no-param-reassign
+      //   c.createdDate = new Date(c.createdDate);
+      //   this.cashes.push(c);
+      // });
+      this.cashes = cashes;
+      console.log(this.cashes);
       this.cashes = this.getSortedCashes();
     }
     this.cashesLoaded = true;
   };
 
-  getCashesDistinctDates = (cashes: ICash[]) => {
+  getCashesDistinctDates = (cashes: CashEntry[]) => {
     const datesOfCashes = cashes.map((c) =>
       c.createdDate
         .toISOString()
@@ -116,7 +122,7 @@ class CashStore {
     return result;
   };
 
-  getCashesStartedByDate = (cashes: ICash[], dateYYYYMMDD: string) => {
+  getCashesStartedByDate = (cashes: CashEntry[], dateYYYYMMDD: string) => {
     return cashes.filter((c) =>
       c.createdDate.toISOString().startsWith(dateYYYYMMDD)
     );
