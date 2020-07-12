@@ -11,6 +11,7 @@ import useStores from '../../stores/UseStores';
 import AppStore from '../../stores/AppStore';
 import { MenuTypesEnum } from '../../models/Enum';
 import FirstTimeShowPanel from '../FirstTimeShowPanel/FirstTimeShowPanel';
+import PropertiesStore from '../../stores/PropertiesStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,7 +27,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Body = observer(() => {
-  const { appStore }: { appStore: AppStore } = useStores();
+  const {
+    appStore,
+    propertiesStore,
+  }: { appStore: AppStore; propertiesStore: PropertiesStore } = useStores();
 
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
@@ -64,7 +68,7 @@ const Body = observer(() => {
           </Fab>
         </Link>
       )}
-      {/* <FirstTimeShowPanel /> */}
+      {!propertiesStore.firstTimeOptionsSelected && <FirstTimeShowPanel />}
     </div>
   );
 });

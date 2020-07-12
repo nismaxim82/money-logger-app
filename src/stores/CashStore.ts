@@ -95,13 +95,7 @@ class CashStore {
       true
     );
     if (cashes) {
-      // cashes.forEach((c: CashEntry) => {
-      //   // eslint-disable-next-line no-param-reassign
-      //   c.createdDate = new Date(c.createdDate);
-      //   this.cashes.push(c);
-      // });
       this.cashes = cashes;
-      console.log(this.cashes);
       this.cashes = this.getSortedCashes();
     }
     this.cashesLoaded = true;

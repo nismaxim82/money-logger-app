@@ -8,18 +8,11 @@
   flex-direction: column;
 }
 
+.emptyBox {
+  flex: 1;
+}
+
 .body {
   flex: 1;
-}
-
-.currenciesContainer {
-  display: flex;
-}
-
-.currenciesSelect {
-  flex: 1;
-}
-
-.addCurrencyButton {
-  flex: 1;
+  overflow: auto;
 }
