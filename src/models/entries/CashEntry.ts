@@ -6,5 +6,6 @@ export default class CashEntry {
   @Type(() => Date)
   createdDate!: Date;
   total!: number;
+  currency!: string;
   description?: string;
 }

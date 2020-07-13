@@ -24,7 +24,7 @@ class CashStore {
     };
   };
 
-  @action updateTypeToSaveByProp = (prop: string, newValue: any) => {
+  @action updateCashToSaveByProp = (prop: string, newValue: any) => {
     Helpers.setObjectValueByProp(this.cashToSave, prop, newValue);
   };
 

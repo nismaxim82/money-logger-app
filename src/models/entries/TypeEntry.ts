@@ -4,4 +4,5 @@ export default class TypeEntry {
   position = 0;
   iconColor?: string;
   icon?: string;
+  system?: boolean;
 }

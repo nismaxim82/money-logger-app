@@ -13,7 +13,10 @@ class TypesStore {
 
   constructor(cacheService: CacheService) {
     this.cacheService = cacheService;
-    this.initializeDefaultTypes();
+    const loadTypes = async () => {
+      await this.loadTypes();
+    };
+    loadTypes();
   }
 
   @action getTypeToSaveByName = (name: string) => {
@@ -57,6 +60,9 @@ class TypesStore {
   @action saveType = async (typeId: string) => {
     const editType = this.types.find((t) => t.name === typeId);
     if (editType) {
+      if (editType.system && editType.label !== this.typeToSave!.label) {
+        this.typeToSave!.system = false;
+      }
       Object.keys(editType).forEach((k) => {
         const v = Helpers.getObjectValueByProp(this.typeToSave, k);
         Helpers.setObjectValueByProp(editType, k, v);
@@ -89,84 +95,95 @@ class TypesStore {
     return '';
   };
 
-  private initializeDefaultTypes = () => {
+  @action loadTypes = async () => {
     this.types = [];
 
-    this.cacheService
-      .get<TypeEntry>('allTypes', TypeEntry, true)
-      .then((types: TypeEntry[]) => {
-        if (types) {
-          this.types = types;
-        } else {
-          this.types.push({
-            name: 'menuFood',
-            label: 'Еда',
-            position: 1,
-            iconColor: 'palette.secondary.dark',
-            icon: 'fastfood',
-          });
+    const language = await this.cacheService.get<String>('language', String);
+    const translate: any = Helpers.getTranslateByLanguage(language);
 
-          this.types.push({
-            name: 'menuStore',
-            label: 'Магазин',
-            position: 2,
-            iconColor: 'palette.success.dark',
-            icon: 'local_grocery_store',
-          });
-
-          this.types.push({
-            name: 'menuBus',
-            label: 'Автобус',
-            position: 3,
-            iconColor: 'palette.warning.dark',
-            icon: 'directions_bus',
-          });
-
-          this.types.push({
-            name: 'menuClothes',
-            label: 'Вещи',
-            position: 4,
-            iconColor: 'palette.primary.dark',
-            icon: 'local_mall',
-          });
-
-          this.types.push({
-            name: 'menuGasStation',
-            label: 'Заправка',
-            position: 5,
-            iconColor: 'palette.primary.light',
-            icon: 'local_gas_station',
-          });
-
-          this.types.push({
-            name: 'menuChilds',
-            label: 'Дети',
-            position: 6,
-            iconColor: 'palette.warning.light',
-            icon: 'child_friendly',
-          });
-
-          this.types.push({
-            name: 'menuServices',
-            label: 'Услуги',
-            position: 7,
-            iconColor: 'palette.secondary.light',
-            icon: 'important_devices',
-          });
-
-          this.types.push({
-            name: 'menuOther',
-            label: 'Другое',
-            position: 8,
-            iconColor: 'palette.success.light',
-            icon: 'more_vert',
-          });
-
-          this.types = this.getSortedTypes();
-          this.cacheService.add('allTypes', this.types);
-        }
-        this.typesLoaded = true;
+    this.typesLoaded = false;
+    const types = await this.cacheService.get<TypeEntry>(
+      'allTypes',
+      TypeEntry,
+      true
+    );
+    if (types) {
+      this.types = types;
+    } else {
+      this.types.push({
+        name: 'MenuFood',
+        position: 1,
+        iconColor: 'palette.secondary.dark',
+        icon: 'fastfood',
+        system: true,
       });
+
+      this.types.push({
+        name: 'MenuStore',
+        position: 2,
+        iconColor: 'palette.success.dark',
+        icon: 'local_grocery_store',
+        system: true,
+      });
+
+      this.types.push({
+        name: 'MenuBus',
+        position: 3,
+        iconColor: 'palette.warning.dark',
+        icon: 'directions_bus',
+        system: true,
+      });
+
+      this.types.push({
+        name: 'MenuClothes',
+        position: 4,
+        iconColor: 'palette.primary.dark',
+        icon: 'local_mall',
+        system: true,
+      });
+
+      this.types.push({
+        name: 'MenuGasStation',
+        position: 5,
+        iconColor: 'palette.primary.light',
+        icon: 'local_gas_station',
+        system: true,
+      });
+
+      this.types.push({
+        name: 'MenuChilds',
+        position: 6,
+        iconColor: 'palette.warning.light',
+        icon: 'child_friendly',
+        system: true,
+      });
+
+      this.types.push({
+        name: 'MenuServices',
+        position: 7,
+        iconColor: 'palette.secondary.light',
+        icon: 'important_devices',
+        system: true,
+      });
+
+      this.types.push({
+        name: 'MenuOther',
+        position: 8,
+        iconColor: 'palette.success.light',
+        icon: 'more_vert',
+        system: true,
+      });
+
+      this.types = this.getSortedTypes();
+      this.cacheService.add('allTypes', this.types);
+    }
+    this.types.forEach((t: TypeEntry) => {
+      if (t.system) {
+        // eslint-disable-next-line no-param-reassign
+        t.label = translate[t.name];
+      }
+    });
+    this.typesLoaded = true;
   };
 }
 

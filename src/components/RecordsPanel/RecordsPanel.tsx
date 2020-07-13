@@ -1,28 +1,25 @@
-import { observer } from 'mobx-react';
-import React from 'react';
 import {
+  createStyles,
+  Icon,
+  List,
+  ListItem,
+  ListSubheader,
   makeStyles,
   Theme,
-  createStyles,
-  List,
-  ListSubheader,
-  ListItem,
-  ListItemText,
-  Icon,
   Typography,
   useTheme,
 } from '@material-ui/core';
-import DateFnsUtils from '@date-io/date-fns';
-import heLocale from 'date-fns/locale/he';
-import ruLocale from 'date-fns/locale/ru';
+import { observer } from 'mobx-react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
+import CashEntry from '../../models/entries/CashEntry';
+import { MenuTypesEnum } from '../../models/Enum';
 import CashStore from '../../stores/CashStore';
+import PropertiesStore from '../../stores/PropertiesStore';
+import TypesStore from '../../stores/TypesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import * as classes from './RecordsPanel.module.css';
-import CashEntry from '../../models/entries/CashEntry';
-import TypesStore from '../../stores/TypesStore';
-import { MenuTypesEnum } from '../../models/Enum';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -61,16 +58,20 @@ const RecordsPanel = observer(() => {
   const {
     cashStore,
     typesStore,
-  }: { cashStore: CashStore; typesStore: TypesStore } = useStores();
+    propertiesStore,
+  }: {
+    cashStore: CashStore;
+    typesStore: TypesStore;
+    propertiesStore: PropertiesStore;
+  } = useStores();
 
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
   const theme = useTheme();
   const history = useHistory();
 
-  const dateFns = new DateFnsUtils({ locale: ruLocale });
   const getFormattedDate = (date: Date) => {
-    return dateFns.format(date, 'd MMMM, EEEE');
+    return propertiesStore.dateFns.format(date, 'd MMMM, EEEE');
   };
 
   const getIconColor = (color?: string) => {
@@ -109,10 +110,14 @@ const RecordsPanel = observer(() => {
                     </Icon>
                     <Typography variant="body1">{type?.label}</Typography>
                     <Typography variant="body2">
-                      {dateFns.format(cash.createdDate, 'HH:mm')}
+                      {propertiesStore.dateFns.format(
+                        cash.createdDate,
+                        'HH:mm'
+                      )}
                     </Typography>
                     <Typography variant="body1" className={css.totalCell}>
-                      {cash.total} ₪
+                      {cash.total}{' '}
+                      {propertiesStore.getCurrencyByName(cash.currency).symbol}
                     </Typography>
                     {cash.description && (
                       <Typography className={css.desctiptionCell}>

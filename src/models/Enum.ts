@@ -13,3 +13,9 @@ export enum IconTypesEnum {
   TwoTone = 'Two tone',
   Sharp = 'Sharp',
 }
+
+export enum LanguagesEnum {
+  English = 'en-US',
+  Hebrew = 'he-IL',
+  Russian = 'ru-RU',
+}

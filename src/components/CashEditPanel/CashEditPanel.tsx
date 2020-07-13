@@ -31,6 +31,8 @@ import TypesStore from '../../stores/TypesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import classes from './CashEditPanel.module.css';
+import TranslatesStore from '../../stores/TranslatesStore';
+import PropertiesStore from '../../stores/PropertiesStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,6 +58,9 @@ const useStyles = makeStyles((theme: Theme) =>
     totalInput: {
       marginTop: theme.spacing(1),
     },
+    currencySelect: {
+      marginTop: theme.spacing(1),
+    },
   })
 );
 
@@ -67,7 +72,16 @@ const CashEditPanel = observer((props: IProps) => {
   const {
     cashStore,
     typesStore,
-  }: { cashStore: CashStore; typesStore: TypesStore } = useStores();
+    translatesStore,
+    propertiesStore,
+  }: {
+    cashStore: CashStore;
+    typesStore: TypesStore;
+    translatesStore: TranslatesStore;
+    propertiesStore: PropertiesStore;
+  } = useStores();
+
+  const { translate } = translatesStore;
 
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
@@ -75,6 +89,7 @@ const CashEditPanel = observer((props: IProps) => {
 
   const [cashId, setCashId] = React.useState('');
   const [typeId, setTypeId] = React.useState('');
+  const [cashCurrency, setCashCurrency] = React.useState('');
 
   const history = useHistory();
   React.useEffect(() => {
@@ -83,7 +98,7 @@ const CashEditPanel = observer((props: IProps) => {
     if (cashStore.cashesLoaded) {
       cashStore.getCashToSaveById(cashId);
       if (!cashStore.cashToSave?.id) {
-        cashStore.updateTypeToSaveByProp('typeName', typeId);
+        cashStore.updateCashToSaveByProp('typeName', typeId);
       }
     }
   }, [
@@ -111,7 +126,7 @@ const CashEditPanel = observer((props: IProps) => {
   };
   const saveEdit = async () => {
     if (!cashStore.cashToSave?.createdDate) {
-      cashStore.updateTypeToSaveByProp('createdDate', createdDate);
+      cashStore.updateCashToSaveByProp('createdDate', createdDate);
     }
     if (cashStore.validateCashToSave()) {
       await cashStore.saveCash(cashId);
@@ -121,7 +136,7 @@ const CashEditPanel = observer((props: IProps) => {
 
   const selectTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedTypeId = event.currentTarget.dataset.value!;
-    cashStore.updateTypeToSaveByProp('typeName', selectedTypeId);
+    cashStore.updateCashToSaveByProp('typeName', selectedTypeId);
   };
 
   const getIconColor = (color?: string) => {
@@ -129,7 +144,7 @@ const CashEditPanel = observer((props: IProps) => {
   };
 
   const pickerDateChange = (date: MaterialUiPickersDate) => {
-    cashStore.updateTypeToSaveByProp('createdDate', date);
+    cashStore.updateCashToSaveByProp('createdDate', date);
   };
 
   const totalInputRef = React.useRef<HTMLInputElement>(null);
@@ -145,13 +160,26 @@ const CashEditPanel = observer((props: IProps) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const description = event.currentTarget.value;
-    cashStore.updateTypeToSaveByProp('description', description);
+    cashStore.updateCashToSaveByProp('description', description);
   };
 
   const changeTotalField = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseFloat(event.currentTarget.value);
     const prop = event.currentTarget.dataset.propName!;
-    cashStore.updateTypeToSaveByProp(prop, newValue);
+    cashStore.updateCashToSaveByProp(prop, newValue);
+  };
+
+  const updateCashCurrency = () => {
+    const currency =
+      propertiesStore.getCurrencyByName(cashStore.cashToSave?.currency || '')
+        .name || '';
+    setCashCurrency(currency);
+  };
+
+  const changeCurrencyField = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    cashStore.updateCashToSaveByProp('currency', newValue);
+    updateCashCurrency();
   };
 
   const totalFieldFocus = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -166,6 +194,11 @@ const CashEditPanel = observer((props: IProps) => {
     }
   };
 
+  React.useEffect(() => {
+    updateCashCurrency();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cashStore.cashToSave, propertiesStore.defaultCurrency]);
+
   return (
     <Fade in timeout={1000}>
       <Slide direction="up" in mountOnEnter unmountOnExit timeout={300}>
@@ -173,7 +206,7 @@ const CashEditPanel = observer((props: IProps) => {
           <AppBar position="static" className={css.firstBar}>
             <Toolbar>
               <Typography variant="h6">
-                {cashId ? 'Редактирование оплаты' : 'Новая оплата'}
+                {cashId ? translate.PaymentEdit : translate.PaymentNew}
               </Typography>
             </Toolbar>
           </AppBar>
@@ -198,13 +231,13 @@ const CashEditPanel = observer((props: IProps) => {
               error={!cashStore.cashToSave?.typeName}
               select
               fullWidth
-              label="Тип оплаты"
+              label={translate.PaymentType}
               className={css.dialogSelect}
               value={cashStore.cashToSave?.typeName || ''}
               onChange={selectTypeChange}
               helperText={
                 !cashStore.cashToSave?.typeName
-                  ? 'Тип оплаты обязателен для заполнения'
+                  ? translate.PaymentTypeIsRequired
                   : ''
               }
             >
@@ -226,14 +259,14 @@ const CashEditPanel = observer((props: IProps) => {
               <Grid container justify="space-around" className={css.datesGrid}>
                 <KeyboardDatePicker
                   margin="normal"
-                  label="Дата"
+                  label={translate.Date}
                   format="dd/MM/yyyy"
                   value={cashStore.cashToSave?.createdDate || createdDate}
                   onChange={pickerDateChange}
                 />
                 <KeyboardTimePicker
                   margin="normal"
-                  label="Время"
+                  label={translate.Time}
                   value={cashStore.cashToSave?.createdDate || createdDate}
                   onChange={pickerDateChange}
                 />
@@ -242,30 +275,47 @@ const CashEditPanel = observer((props: IProps) => {
             <TextField
               fullWidth
               className={css.descriptionInput}
-              label="Описание"
+              label={translate.Description}
               value={cashStore.cashToSave?.description || ''}
               onChange={changeDescriptionField}
               onKeyUp={descriptionKeyUp}
               inputProps={{ 'data-prop-name': 'description' }}
             />
-            <TextField
-              inputRef={totalInputRef}
-              error={!cashStore.cashToSave?.total}
-              fullWidth
-              className={css.totalInput}
-              label="Сумма оплаты"
-              value={cashStore.cashToSave?.total || ''}
-              onChange={changeTotalField}
-              onFocus={totalFieldFocus}
-              onKeyUp={submitOnEnterKeyUp}
-              type="number"
-              inputProps={{ 'data-prop-name': 'total' }}
-              helperText={
-                !cashStore.cashToSave?.total
-                  ? 'Сумма оплаты обязательна для заполнения'
-                  : ''
-              }
-            />
+            <div className={css.totalContainer}>
+              <TextField
+                inputRef={totalInputRef}
+                error={!cashStore.cashToSave?.total}
+                fullWidth
+                className={css.totalInput}
+                label={translate.PaymentTotal}
+                value={cashStore.cashToSave?.total || ''}
+                onChange={changeTotalField}
+                onFocus={totalFieldFocus}
+                onKeyUp={submitOnEnterKeyUp}
+                type="number"
+                inputProps={{ 'data-prop-name': 'total' }}
+                helperText={
+                  !cashStore.cashToSave?.total
+                    ? translate.PaymentTotalIsRequired
+                    : ''
+                }
+              />
+              <TextField
+                fullWidth
+                select
+                className={css.currencySelect}
+                label={translate.Currency}
+                value={cashCurrency}
+                onChange={changeCurrencyField}
+                inputProps={{ 'data-prop-name': 'currency' }}
+              >
+                {propertiesStore.currencies.map((c) => (
+                  <MenuItem key={c.name} value={c.name}>
+                    {c.symbol}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
           </div>
         </div>
       </Slide>

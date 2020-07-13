@@ -24,6 +24,7 @@ import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import useDebounce from '../../utility/UseDebounce';
 import classes from './IconsChooser.module.css';
+import TranslatesStore from '../../stores/TranslatesStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,7 +65,12 @@ interface IProps {
 }
 
 const IconsChooser = observer((props: IProps) => {
-  const { iconsStore }: { iconsStore: IconsStore } = useStores();
+  const {
+    iconsStore,
+    translatesStore,
+  }: { iconsStore: IconsStore; translatesStore: TranslatesStore } = useStores();
+
+  const { translate } = translatesStore;
 
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
@@ -136,7 +142,7 @@ const IconsChooser = observer((props: IProps) => {
   return (
     <>
       <FormControl className={classes.typeSelect} fullWidth>
-        <InputLabel id="types-select-label">Типы иконок</InputLabel>
+        <InputLabel id="types-select-label">{translate.IconsTypes}</InputLabel>
         <Select
           labelId="types-select-label"
           multiple
@@ -156,7 +162,7 @@ const IconsChooser = observer((props: IProps) => {
       </FormControl>
       <Input
         fullWidth
-        placeholder="Введите для поиска"
+        placeholder={translate.EnterToSearch}
         value={filter}
         onChange={filterChanged}
         onKeyUp={filterKeyUp}
@@ -169,7 +175,10 @@ const IconsChooser = observer((props: IProps) => {
       />
       <div className={css.foundedTotalCount}>
         <Typography variant="caption">
-          всего найдено {iconsStore.foundedTotalCount}
+          {Helpers.formatString(
+            translate.MatchingResultsN,
+            iconsStore.foundedTotalCount
+          )}
         </Typography>
       </div>
       <div ref={iconsButtonsContainerRef} className={css.foundedIconsContainer}>

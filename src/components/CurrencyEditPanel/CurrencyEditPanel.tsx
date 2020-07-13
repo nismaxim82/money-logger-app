@@ -19,6 +19,7 @@ import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import SnackErrors from '../SnackErrors/SnackErrors';
 import classes from './CurrencyEditPanel.module.css';
+import TranslatesStore from '../../stores/TranslatesStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,7 +51,15 @@ interface IProps {
 }
 
 const CurrencyEditPanel = observer((props: IProps) => {
-  const { propertiesStore }: { propertiesStore: PropertiesStore } = useStores();
+  const {
+    propertiesStore,
+    translatesStore,
+  }: {
+    propertiesStore: PropertiesStore;
+    translatesStore: TranslatesStore;
+  } = useStores();
+
+  const { translate } = translatesStore;
 
   const [currencyId, setCurrencyId] = React.useState('');
   const [currencyName, setCurrencyName] = React.useState('');
@@ -68,7 +77,7 @@ const CurrencyEditPanel = observer((props: IProps) => {
     }
   };
   const saveEdit = async () => {
-    const saveResult = await propertiesStore.addNewCurrency({
+    const saveResult = await propertiesStore.addNewCurrency(translate, {
       name: currencyName,
       symbol: currencySymbol,
     });
@@ -102,7 +111,7 @@ const CurrencyEditPanel = observer((props: IProps) => {
         <div className={css.modalContainer}>
           <AppBar position="static" className={css.firstBar}>
             <Toolbar>
-              <Typography variant="h6">New currency</Typography>
+              <Typography variant="h6">{translate.NewCurrency}</Typography>
             </Toolbar>
           </AppBar>
           <AppBar position="static" color="primary" className={css.secondBar}>
@@ -125,24 +134,24 @@ const CurrencyEditPanel = observer((props: IProps) => {
             <TextField
               error={!currencyName}
               fullWidth
-              label="Name"
+              label={translate.Name}
               value={currencyName}
               onChange={changeCurrencyNameField}
               inputProps={{ 'data-prop-name': 'name' }}
               helperText={
-                !currencyName ? 'Name is required, for example USD' : ''
+                !currencyName ? translate.NameIsRequiredForExampleUSD : ''
               }
             />
             <TextField
               error={!currencySymbol}
               fullWidth
-              label="Symbol"
+              label={translate.Symbol}
               value={currencySymbol}
               onChange={changeCurrencySymbol}
               inputProps={{ 'data-prop-name': 'symbol' }}
               className={css.currencySymbolField}
               helperText={
-                !currencyName ? 'Symbol is required, for example $' : ''
+                !currencyName ? translate.SymbolIsRequiredForExample$ : ''
               }
             />
             <SnackErrors

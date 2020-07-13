@@ -27,6 +27,7 @@ import LinkTab from '../LinkTab/LinkTab';
 import classes from './Menu.module.css';
 import useStores from '../../stores/UseStores';
 import AppStore from '../../stores/AppStore';
+import TranslatesStore from '../../stores/TranslatesStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,7 +50,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Menu = observer(() => {
-  const { appStore }: { appStore: AppStore } = useStores();
+  const {
+    appStore,
+    translatesStore,
+  }: { appStore: AppStore; translatesStore: TranslatesStore } = useStores();
+
+  const { translate } = translatesStore;
 
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
@@ -85,7 +91,7 @@ const Menu = observer(() => {
         <Toolbar>
           {appStore.selectedMenuIndex === 0 && (
             <Typography variant="h6" className={css.headerTitle}>
-              Внести оплату
+              {translate.AddPayment}
             </Typography>
           )}
           {appStore.selectedMenuIndex === 1 && (
@@ -99,7 +105,7 @@ const Menu = observer(() => {
               >
                 <span className={css.comboButtonTextBox}>
                   <span>{new Date().toDateString()}</span>
-                  <span>Записей 21</span>
+                  <span>{Helpers.formatString(translate.RecordsN, 21)}</span>
                 </span>
               </Button>
               <IconButton>
@@ -109,12 +115,12 @@ const Menu = observer(() => {
           )}
           {appStore.selectedMenuIndex === 2 && (
             <Typography variant="h6" className={css.headerTitle}>
-              Типы
+              {translate.Types}
             </Typography>
           )}
           {appStore.selectedMenuIndex === 3 && (
             <Typography variant="h6" className={css.headerTitle}>
-              Еще
+              {translate.More}
             </Typography>
           )}
         </Toolbar>

@@ -1,3 +1,5 @@
+import TranslateEntry from '../models/entries/TranslateEntry';
+
 class Helpers {
   static combineStyles = (...styles: any) => {
     let result: any;
@@ -41,6 +43,33 @@ class Helpers {
       date = new Date(date);
     }
     return date;
+  };
+
+  static getTranslateByLanguage = (language: string) => {
+    let result: TranslateEntry;
+    if (language === 'en-US') {
+      // eslint-disable-next-line global-require
+      result = require('../translates/index.json');
+    } else if (language === 'he-IL') {
+      // eslint-disable-next-line global-require
+      result = require('../translates/index.he.json');
+    } else if (language === 'ru-RU') {
+      // eslint-disable-next-line global-require
+      result = require('../translates/index.ru.json');
+    } else {
+      result = new TranslateEntry();
+    }
+    return result;
+  };
+
+  static formatString = (value: string, ...args: any[]) => {
+    if (args.length) {
+      for (let i = 0; i < args.length; i += 1) {
+        // eslint-disable-next-line no-param-reassign
+        value = value.replace(`{${i}}`, args[i]);
+      }
+    }
+    return value;
   };
 }
 

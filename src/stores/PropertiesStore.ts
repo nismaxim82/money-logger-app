@@ -1,20 +1,36 @@
 import { observable, action } from 'mobx';
+import enLocale from 'date-fns/locale/en-US';
+import heLocale from 'date-fns/locale/he';
+import ruLocale from 'date-fns/locale/ru';
+import DateFnsUtils from '@date-io/date-fns';
+import { LanguagesEnum } from '../models/Enum';
 import CacheService from '../services/CacheService';
 import LanguageEntry from '../models/entries/LanguageEntry';
 import CurrencyEntry from '../models/entries/CurrencyEntry';
 import ErrorEntry from '../models/entries/ErrorEntry';
+import TranslateEntry from '../models/entries/TranslateEntry';
 
 export default class PropertiesStore {
   @observable firstTimeOptionsSelected = true;
   @observable languages!: LanguageEntry[];
+  @observable currentLanguage!: LanguageEntry;
   @observable currencies!: CurrencyEntry[];
+  @observable defaultCurrency!: CurrencyEntry;
+  @observable dateFns = new DateFnsUtils({ locale: enLocale });
 
   private cacheService: CacheService;
 
   constructor(cacheService: CacheService) {
     this.cacheService = cacheService;
-    this.fillLanguages();
-    this.loadCurrencies();
+    const fillLanguages = async () => {
+      await this.fillLanguages();
+    };
+    fillLanguages();
+
+    const loadCurrencies = async () => {
+      await this.loadCurrencies();
+    };
+    loadCurrencies();
 
     this.cacheService
       .get<Boolean>('firstTimeOptionsSelected', Boolean)
@@ -23,38 +39,73 @@ export default class PropertiesStore {
       });
   }
 
-  private fillLanguages = () => {
+  private fillLanguages = async () => {
     this.languages = [];
-    this.languages.push({ name: 'en-US', title: 'English' });
-    this.languages.push({ name: 'ru-RU', title: 'Русский' });
-    this.languages.push({ name: 'he-IL', title: 'עברית' });
+    this.languages.push({ name: LanguagesEnum.English, title: 'English' });
+    this.languages.push({
+      name: LanguagesEnum.Hebrew,
+      title: 'עברית',
+      rtl: true,
+    });
+    this.languages.push({ name: LanguagesEnum.Russian, title: 'Русский' });
+
+    this.loadCurrentLanguage('');
   };
 
-  private loadCurrencies = () => {
+  @action changeLanguage = async (languageName: string) => {
+    await this.cacheService.add('language', languageName);
+    await this.loadCurrentLanguage(languageName);
+  };
+
+  @action loadCurrentLanguage = async (languageName: string) => {
+    let language = languageName;
+    if (!language) {
+      language = await this.cacheService.get<String>('language', String);
+    }
+    this.currentLanguage = this.languages.find((l) => l.name === language)!;
+
+    if (this.currentLanguage.name === LanguagesEnum.English) {
+      this.dateFns = new DateFnsUtils({ locale: enLocale });
+    } else if (this.currentLanguage.name === LanguagesEnum.Hebrew) {
+      this.dateFns = new DateFnsUtils({ locale: heLocale });
+    } else if (this.currentLanguage.name === LanguagesEnum.Russian) {
+      this.dateFns = new DateFnsUtils({ locale: ruLocale });
+    }
+  };
+
+  private loadCurrencies = async () => {
     this.currencies = [];
 
-    this.cacheService
-      .get<CurrencyEntry>('allCurrencies', CurrencyEntry, true)
-      .then((c: CurrencyEntry[]) => {
-        if (c && c.length) {
-          this.currencies = c;
-        } else {
-          this.currencies.push({ name: 'USD', symbol: '$' });
-          this.currencies.push({ name: 'EUR', symbol: '€' });
-        }
-      });
+    const currencies = await this.cacheService.get<CurrencyEntry>(
+      'allCurrencies',
+      CurrencyEntry,
+      true
+    );
+    if (currencies && currencies.length) {
+      this.currencies = currencies;
+    } else {
+      this.currencies.push({ name: 'USD', symbol: '$' });
+      this.currencies.push({ name: 'EUR', symbol: '€' });
+      this.currencies.push({ name: 'ILS', symbol: '₪' });
+    }
+    const currency = await this.cacheService.get<String>('currency', String);
+    this.defaultCurrency =
+      this.currencies.find((c) => c.name === currency) || new CurrencyEntry();
   };
 
-  @action addNewCurrency = async (currency: CurrencyEntry) => {
+  @action addNewCurrency = async (
+    translate: TranslateEntry,
+    currency: CurrencyEntry
+  ) => {
     const result = new ErrorEntry();
     if (!currency.name) {
-      result.addError('Currency name is required');
+      result.addError(translate.CurrencyNameIsRequired);
     }
     if (!currency.symbol) {
-      result.addError('Currency symbol is required');
+      result.addError(translate.CurrencySymbolIsRequired);
     }
     if (this.currencies.some((c) => c.name === currency.name)) {
-      result.addError('Currency with this name is already exists');
+      result.addError(translate.CurrencyWithThisNameIsAlreadyExists);
     }
     if (result.success) {
       this.currencies.push(currency);
@@ -64,22 +115,28 @@ export default class PropertiesStore {
   };
 
   @action saveFirstTimeOptions = async (
+    translate: TranslateEntry,
     languageName: string,
     currencyName: string
   ) => {
     const result = new ErrorEntry();
     if (!languageName) {
-      result.addError('Language selection is required');
+      result.addError(translate.LanguageSelectionIsRequired);
     }
     if (!currencyName) {
-      result.addError('Currency selection is required');
+      result.addError(translate.CurrencySelectionIsRequired);
     }
     if (result.success) {
-      await this.cacheService.add('language', languageName);
+      await this.changeLanguage(languageName);
       await this.cacheService.add('currency', currencyName);
       await this.cacheService.add('firstTimeOptionsSelected', true);
       this.firstTimeOptionsSelected = true;
     }
     return result;
+  };
+
+  @action getCurrencyByName = (name: string) => {
+    const currency = this.currencies.find((c) => c.name === name);
+    return currency || this.defaultCurrency || new CurrencyEntry();
   };
 }

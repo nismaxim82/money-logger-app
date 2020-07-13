@@ -62,36 +62,37 @@ const CashPanel = observer(() => {
 
   return (
     <Grid container className={css.grid} spacing={2}>
-      {typesStore.types.map((type: TypeEntry) => (
-        <Grid
-          key={type.name}
-          item
-          xs
-          container
-          alignItems="center"
-          justify="center"
-        >
-          <IconButton
-            className={css.card}
-            classes={{ label: css.cardLabel }}
-            onClick={buttonAddNewCashClick}
-            data-type-id={type.name}
+      {typesStore.typesLoaded &&
+        typesStore.types.map((type: TypeEntry) => (
+          <Grid
+            key={type.name}
+            item
+            xs
+            container
+            alignItems="center"
+            justify="center"
           >
-            <Icon
-              style={{
-                color: getThemeColorStyle(type.iconColor),
-                fontSize: '2rem',
-              }}
-              className={css.cardIcon}
+            <IconButton
+              className={css.card}
+              classes={{ label: css.cardLabel }}
+              onClick={buttonAddNewCashClick}
+              data-type-id={type.name}
             >
-              {type.icon}
-            </Icon>
-            <Typography variant="subtitle1" className={css.cardLabelText}>
-              {type.label}
-            </Typography>
-          </IconButton>
-        </Grid>
-      ))}
+              <Icon
+                style={{
+                  color: getThemeColorStyle(type.iconColor),
+                  fontSize: '2rem',
+                }}
+                className={css.cardIcon}
+              >
+                {type.icon}
+              </Icon>
+              <Typography variant="subtitle1" className={css.cardLabelText}>
+                {type.label}
+              </Typography>
+            </IconButton>
+          </Grid>
+        ))}
     </Grid>
   );
 });

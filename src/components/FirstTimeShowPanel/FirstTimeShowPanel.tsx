@@ -19,6 +19,8 @@ import Helpers from '../../utility/Helpers';
 import CurrencyEditPanel from '../CurrencyEditPanel/CurrencyEditPanel';
 import SnackErrors from '../SnackErrors/SnackErrors';
 import classes from './FirstTimeShowPanel.module.css';
+import TranslatesStore from '../../stores/TranslatesStore';
+import TypesStore from '../../stores/TypesStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,7 +53,17 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const FirstTimeShowPanel = observer(() => {
-  const { propertiesStore }: { propertiesStore: PropertiesStore } = useStores();
+  const {
+    propertiesStore,
+    translatesStore,
+    typesStore,
+  }: {
+    propertiesStore: PropertiesStore;
+    translatesStore: TranslatesStore;
+    typesStore: TypesStore;
+  } = useStores();
+
+  const { translate } = translatesStore;
 
   const [language, setLanguage] = React.useState('');
   const [currency, setCurrency] = React.useState('');
@@ -68,12 +80,16 @@ const FirstTimeShowPanel = observer(() => {
 
   const buttonSaveProperties = async () => {
     const saveResult = await propertiesStore.saveFirstTimeOptions(
+      translate,
       language,
       currency
     );
     if (!saveResult.success) {
       setSaveErrors(saveResult.errors);
       setOpenErrors(true);
+    } else {
+      await typesStore.loadTypes();
+      await translatesStore.loadTranslate(language);
     }
   };
 
@@ -102,7 +118,7 @@ const FirstTimeShowPanel = observer(() => {
         <div className={css.modalContainer}>
           <AppBar position="static" className={css.firstBar}>
             <Toolbar>
-              <Typography variant="h6">Main properties</Typography>
+              <Typography variant="h6">{translate.MainProperties}</Typography>
             </Toolbar>
           </AppBar>
           <div className={css.body}>
@@ -112,8 +128,8 @@ const FirstTimeShowPanel = observer(() => {
               error={!language}
               value={language}
               onChange={changeLanguage}
-              label="Language"
-              helperText={!language ? 'Language is required' : ''}
+              label={translate.Language}
+              helperText={!language ? translate.LanguageIsRequired : ''}
             >
               {propertiesStore.languages.map((l) => (
                 <MenuItem key={l.name} value={l.name}>
@@ -126,11 +142,11 @@ const FirstTimeShowPanel = observer(() => {
                 select
                 fullWidth
                 error={!currency}
-                label="Currency"
+                label={translate.Currency}
                 value={currency}
                 onChange={changeCurrency}
                 className={css.currenciesSelect}
-                helperText={!currency ? 'Currency is required' : ''}
+                helperText={!currency ? translate.CurrencyIsRequired : ''}
               >
                 {propertiesStore.currencies.map((c) => (
                   <MenuItem key={c.name} value={c.name}>
@@ -146,7 +162,7 @@ const FirstTimeShowPanel = observer(() => {
                 size="small"
                 onClick={buttonAddCurrency}
               >
-                Add new currency
+                {translate.AddNewCurrency}
               </Button>
             </div>
             <SnackErrors
@@ -162,7 +178,7 @@ const FirstTimeShowPanel = observer(() => {
               variant="contained"
               onClick={buttonSaveProperties}
             >
-              Save
+              {translate.Save}
             </Button>
           </div>
           {addNewCurrencyOpened && (

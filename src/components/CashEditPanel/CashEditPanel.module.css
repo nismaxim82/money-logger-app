@@ -26,3 +26,16 @@
 .datesGrid {
   flex-direction: column;
 }
+
+.totalContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.descriptionInput {
+  flex: 1;
+}
+
+.currencySelect {
+  max-width: 70px;
+}

@@ -28,6 +28,7 @@ import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import IconsChooser from '../IconsChooser/IconsChooser';
 import classes from './TypeEditPanel.module.css';
+import TranslatesStore from '../../stores/TranslatesStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -91,7 +92,12 @@ interface IProps {
 }
 
 const TypeEditPanel = observer((props: IProps) => {
-  const { typesStore }: { typesStore: TypesStore } = useStores();
+  const {
+    typesStore,
+    translatesStore,
+  }: { typesStore: TypesStore; translatesStore: TranslatesStore } = useStores();
+
+  const { translate } = translatesStore;
 
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
@@ -183,7 +189,7 @@ const TypeEditPanel = observer((props: IProps) => {
           <AppBar position="static" className={css.firstBar}>
             <Toolbar>
               <Typography variant="h6">
-                {typeId ? 'Редактирование типа' : 'Новый тип'}
+                {typeId ? translate.TypeEdit : translate.TypeNew}
               </Typography>
             </Toolbar>
           </AppBar>
@@ -213,22 +219,18 @@ const TypeEditPanel = observer((props: IProps) => {
               onChange={changeTypeField}
               inputProps={{ 'data-prop-name': 'name' }}
               helperText={
-                !typesStore.typeToSave?.name
-                  ? 'ID обязательно для заполнения'
-                  : ''
+                !typesStore.typeToSave?.name ? translate.IDIsRequired : ''
               }
             />
             <TextField
               error={!typesStore.typeToSave?.label}
               fullWidth
-              label="Название"
+              label={translate.Name}
               value={typesStore.typeToSave?.label || ''}
               onChange={changeTypeField}
               inputProps={{ 'data-prop-name': 'label' }}
               helperText={
-                !typesStore.typeToSave?.label
-                  ? 'Название обязательно для заполнения'
-                  : ''
+                !typesStore.typeToSave?.label ? translate.NameIsRequired : ''
               }
             />
             <TextField
@@ -237,7 +239,7 @@ const TypeEditPanel = observer((props: IProps) => {
                 typesStore.typeToSave?.position !== 0
               }
               fullWidth
-              label="Позиция в списке"
+              label={translate.PositionInTheList}
               value={
                 typesStore.typeToSave?.position ||
                 typesStore.typeToSave?.position === 0
@@ -251,7 +253,7 @@ const TypeEditPanel = observer((props: IProps) => {
               helperText={
                 !typesStore.typeToSave?.position &&
                 typesStore.typeToSave?.position !== 0
-                  ? 'Позиция в списке обязательна для заполнения'
+                  ? translate.PositionInTheListIsRequired
                   : ''
               }
             />
@@ -260,7 +262,7 @@ const TypeEditPanel = observer((props: IProps) => {
                 select
                 disabled
                 fullWidth
-                label="Цвет иконки"
+                label={translate.IconColor}
                 className={css.dialogSelect}
                 SelectProps={{ style: { color: getAppliedColor() } }}
                 InputProps={{
@@ -279,7 +281,7 @@ const TypeEditPanel = observer((props: IProps) => {
                 select
                 disabled
                 fullWidth
-                label="Иконка"
+                label={translate.Icon}
                 value={typesStore.typeToSave?.icon ? '0' : ''}
                 SelectProps={{ style: { color: getAppliedColor() } }}
                 onClick={iconHandleOpen}
@@ -296,7 +298,9 @@ const TypeEditPanel = observer((props: IProps) => {
             >
               <Paper className={css.colorDialogBox}>
                 <div className={css.colorDialogHeader}>
-                  <Typography variant="h6">Выберите цвет иконки</Typography>
+                  <Typography variant="h6">
+                    {translate.SelectTheColorOfTheIcon}
+                  </Typography>
                 </div>
                 <div className={css.colorDialogBody}>
                   <ChromePicker color={color} onChange={pickerColorChange} />
@@ -307,10 +311,10 @@ const TypeEditPanel = observer((props: IProps) => {
                     variant="contained"
                     onClick={buttonApplyColorSelect}
                   >
-                    Выбрать
+                    {translate.Select}
                   </Button>
                   <Button variant="contained" onClick={buttonCancelColorSelect}>
-                    Отмена
+                    {translate.Cancel}
                   </Button>
                 </div>
               </Paper>
@@ -322,7 +326,7 @@ const TypeEditPanel = observer((props: IProps) => {
             >
               <Paper className={css.iconDialogBox}>
                 <div className={css.iconDialogHeader}>
-                  <Typography variant="h6">Выберите иконку</Typography>
+                  <Typography variant="h6">{translate.SelectIcon}</Typography>
                 </div>
                 <div className={css.iconDialogBody}>
                   <IconsChooser
@@ -336,10 +340,10 @@ const TypeEditPanel = observer((props: IProps) => {
                     variant="contained"
                     onClick={buttonApplyIconSelect}
                   >
-                    Выбрать
+                    {translate.Select}
                   </Button>
                   <Button variant="contained" onClick={buttonCancelIconSelect}>
-                    Отмена
+                    {translate.Cancel}
                   </Button>
                 </div>
               </Paper>

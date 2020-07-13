@@ -49,27 +49,28 @@ const TypesPanel = observer(() => {
 
   return (
     <List component="nav" className={css.list}>
-      {typesStore.types.map((type: TypeEntry) => (
-        <div key={type.name}>
-          <ListItem button onClick={typeClick} data-id={type.name}>
-            <ListItemAvatar>
-              <Icon
-                style={{
-                  color: getThemeColorStyle(type.iconColor),
-                  fontSize: '2rem',
-                }}
-              >
-                {type.icon}
-              </Icon>
-            </ListItemAvatar>
-            <ListItemText
-              primary={type.label}
-              primaryTypographyProps={{ variant: 'subtitle1' }}
-            />
-          </ListItem>
-          <Divider component="div" />
-        </div>
-      ))}
+      {typesStore.typesLoaded &&
+        typesStore.types.map((type: TypeEntry) => (
+          <div key={type.name}>
+            <ListItem button onClick={typeClick} data-id={type.name}>
+              <ListItemAvatar>
+                <Icon
+                  style={{
+                    color: getThemeColorStyle(type.iconColor),
+                    fontSize: '2rem',
+                  }}
+                >
+                  {type.icon}
+                </Icon>
+              </ListItemAvatar>
+              <ListItemText
+                primary={type.label}
+                primaryTypographyProps={{ variant: 'subtitle1' }}
+              />
+            </ListItem>
+            <Divider component="div" />
+          </div>
+        ))}
     </List>
   );
 });
