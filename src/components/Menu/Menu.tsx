@@ -22,12 +22,14 @@ import {
 import { observer } from 'mobx-react';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import AppStore from '../../stores/AppStore';
+import TranslatesStore from '../../stores/TranslatesStore';
+import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import LinkTab from '../LinkTab/LinkTab';
 import classes from './Menu.module.css';
-import useStores from '../../stores/UseStores';
-import AppStore from '../../stores/AppStore';
-import TranslatesStore from '../../stores/TranslatesStore';
+import PropertiesStore from '../../stores/PropertiesStore';
+import CashStore from '../../stores/CashStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,13 +40,14 @@ const useStyles = makeStyles((theme: Theme) =>
       background: theme.palette.primary.dark,
     },
     menuIcon: {
-      color: theme.palette.background.default,
+      color: theme.palette.primary.contrastText,
     },
     comboButton: {
-      color: theme.palette.background.default,
+      color: theme.palette.primary.contrastText,
+      textTransform: 'none',
     },
     searchIcon: {
-      color: theme.palette.background.default,
+      color: theme.palette.primary.contrastText,
     },
   })
 );
@@ -53,7 +56,14 @@ const Menu = observer(() => {
   const {
     appStore,
     translatesStore,
-  }: { appStore: AppStore; translatesStore: TranslatesStore } = useStores();
+    propertiesStore,
+    cashStore,
+  }: {
+    appStore: AppStore;
+    translatesStore: TranslatesStore;
+    propertiesStore: PropertiesStore;
+    cashStore: CashStore;
+  } = useStores();
 
   const { translate } = translatesStore;
 
@@ -85,6 +95,8 @@ const Menu = observer(() => {
     };
   };
 
+  const cashesByPeriod = cashStore.getCashesByPeriod(cashStore.cashes);
+
   return (
     <>
       <AppBar position="static" className={css.firstBar}>
@@ -104,8 +116,18 @@ const Menu = observer(() => {
                 endIcon={<ArrowDropDownIcon />}
               >
                 <span className={css.comboButtonTextBox}>
-                  <span>{new Date().toDateString()}</span>
-                  <span>{Helpers.formatString(translate.RecordsN, 21)}</span>
+                  <span>
+                    {propertiesStore.dateFns.format(
+                      cashStore.cashPeriodFilter.from,
+                      'MMMM yyyy'
+                    )}
+                  </span>
+                  <span>
+                    {Helpers.formatString(
+                      translate.RecordsN,
+                      cashesByPeriod.length
+                    )}
+                  </span>
                 </span>
               </Button>
               <IconButton>

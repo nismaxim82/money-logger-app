@@ -41,6 +41,9 @@
   "PaymentTotal": "Сумма оплаты",
   "PaymentTotalIsRequired": "Сумма оплаты обязательна для заполнения",
 
+  "NoDataFoundForTheSelectedPeriod": "Не найдено данных за выбранный период",
+  "Total": "Итого",
+
   "TypeEdit": "Редактирование типа",
   "TypeNew": "Новый тип",
   "IDIsRequired": "ID обязательно для заполнения",

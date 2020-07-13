@@ -9,6 +9,7 @@ import LanguageEntry from '../models/entries/LanguageEntry';
 import CurrencyEntry from '../models/entries/CurrencyEntry';
 import ErrorEntry from '../models/entries/ErrorEntry';
 import TranslateEntry from '../models/entries/TranslateEntry';
+import FormatsStore from './FormatsStore';
 
 export default class PropertiesStore {
   @observable firstTimeOptionsSelected = true;
@@ -19,9 +20,11 @@ export default class PropertiesStore {
   @observable dateFns = new DateFnsUtils({ locale: enLocale });
 
   private cacheService: CacheService;
+  private formatsStore: FormatsStore;
 
-  constructor(cacheService: CacheService) {
+  constructor(cacheService: CacheService, formatsStore: FormatsStore) {
     this.cacheService = cacheService;
+    this.formatsStore = formatsStore;
     const fillLanguages = async () => {
       await this.fillLanguages();
     };
@@ -74,6 +77,7 @@ export default class PropertiesStore {
       currentLanguage.title = 'English';
     }
     this.currentLanguage = currentLanguage;
+    this.formatsStore.localeChanged(this.currentLanguage.name);
 
     if (this.currentLanguage.name === LanguagesEnum.English) {
       this.dateFns = new DateFnsUtils({ locale: enLocale });

@@ -41,6 +41,9 @@
   "PaymentTotal": "Payment total",
   "PaymentTotalIsRequired": "Payment total is required",
 
+  "NoDataFoundForTheSelectedPeriod": "No data found for the selected period",
+  "Total": "Total",
+
   "TypeEdit": "Edit type",
   "TypeNew": "New type",
   "IDIsRequired": "ID is required",

@@ -19,3 +19,11 @@ export enum LanguagesEnum {
   Hebrew = 'he-IL',
   Russian = 'ru-RU',
 }
+
+export enum PeriodTypeEnum {
+  Custom = 1,
+  Daily = 2,
+  Weekly = 3,
+  Monthly = 4,
+  Year = 5,
+}

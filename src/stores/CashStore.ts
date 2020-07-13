@@ -1,21 +1,22 @@
 import { observable, action } from 'mobx';
-// import DateFnsUtils from '@date-io/date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import CashEntry from '../models/entries/CashEntry';
 import CacheService from '../services/CacheService';
 import Helpers from '../utility/Helpers';
+import CashPeriodFilterEntry from '../models/entries/CashPeriodFilterEntry';
 
 class CashStore {
   @observable cashes: CashEntry[] = [];
+  @observable cashPeriodFilter!: CashPeriodFilterEntry;
   @observable cashToSave?: CashEntry;
   @observable cashesLoaded = false;
 
   private cacheService: CacheService;
-  // private dateFns: DateFnsUtils;
 
   constructor(cacheService: CacheService) {
     this.cacheService = cacheService;
     this.loadAllCashes();
+    this.loadCashPeriodFilter();
   }
 
   @action getCashToSaveById = (id: string) => {
@@ -79,14 +80,6 @@ class CashStore {
     }
   };
 
-  @action getCashesByPeriod = (dateFrom: Date, dateTo?: Date) => {
-    if (!dateTo) {
-      // eslint-disable-next-line no-param-reassign
-      dateTo = new Date();
-    }
-    console.log(dateFrom, dateTo);
-  };
-
   private loadAllCashes = async () => {
     this.cashes = [];
     const cashes = await this.cacheService.get<CashEntry>(
@@ -101,8 +94,38 @@ class CashStore {
     this.cashesLoaded = true;
   };
 
+  private loadCashPeriodFilter = async () => {
+    this.cashPeriodFilter = await this.cacheService.get<CashPeriodFilterEntry>(
+      'cashPeriodFilter',
+      CashPeriodFilterEntry
+    );
+    if (!this.cashPeriodFilter) {
+      this.cashPeriodFilter = new CashPeriodFilterEntry();
+    }
+    this.cashPeriodFilter.reinitializeByType();
+  };
+
+  getCashesByPeriod = (cashes: CashEntry[]) => {
+    const result = cashes.filter((c) => {
+      if (this.cashPeriodFilter.from && this.cashPeriodFilter.to) {
+        return (
+          c.createdDate >= this.cashPeriodFilter.from &&
+          c.createdDate <= this.cashPeriodFilter.to
+        );
+      }
+      if (this.cashPeriodFilter.from) {
+        return c.createdDate >= this.cashPeriodFilter.from;
+      }
+      if (this.cashPeriodFilter.to) {
+        return c.createdDate <= this.cashPeriodFilter.to;
+      }
+      return false;
+    });
+    return result;
+  };
+
   getCashesDistinctDates = (cashes: CashEntry[]) => {
-    const datesOfCashes = cashes.map((c) =>
+    const datesOfCashes = this.getCashesByPeriod(cashes).map((c) =>
       c.createdDate
         .toISOString()
         .substring(0, c.createdDate.toISOString().indexOf('T'))

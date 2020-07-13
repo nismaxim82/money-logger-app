@@ -20,6 +20,8 @@ import TypesStore from '../../stores/TypesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import * as classes from './RecordsPanel.module.css';
+import TranslatesStore from '../../stores/TranslatesStore';
+import FormatsStore from '../../stores/FormatsStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,11 +61,17 @@ const RecordsPanel = observer(() => {
     cashStore,
     typesStore,
     propertiesStore,
+    translatesStore,
+    formatsStore,
   }: {
     cashStore: CashStore;
     typesStore: TypesStore;
     propertiesStore: PropertiesStore;
+    translatesStore: TranslatesStore;
+    formatsStore: FormatsStore;
   } = useStores();
+
+  const { translate } = translatesStore;
 
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
@@ -83,54 +91,82 @@ const RecordsPanel = observer(() => {
     history.push(`/${MenuTypesEnum.Cash}/edit/${cashId}`);
   };
 
+  const cashesByPeriod = cashStore.getCashesByPeriod(cashStore.cashes);
+  const cashesDates = cashStore.getCashesDistinctDates(cashStore.cashes);
+
+  const getTotalSum = () => {
+    let sum = 0;
+    cashesByPeriod
+      .map((c) => c.total)
+      .forEach((total) => {
+        sum += total;
+      });
+    return formatsStore.numberWithDigits.format(sum);
+  };
+
   return (
-    <List className={css.root} subheader={<li />}>
-      {cashStore.getCashesDistinctDates(cashStore.cashes).map((d: string) => (
-        <li key={`section-${d}`} className={css.listSection}>
-          <ul className={css.cashesUl}>
-            <ListSubheader className={css.stickyHeader}>
-              <span className={css.stickyHeaderText}>
-                {getFormattedDate(Helpers.getDateFromString(d))}
-              </span>
-            </ListSubheader>
-            {cashStore
-              .getCashesStartedByDate(cashStore.cashes, d)
-              .map((cash: CashEntry) => {
-                const type = typesStore.getTypeByName(cash.typeName);
-                return (
-                  <ListItem
-                    key={cash.id}
-                    className={css.cashItem}
-                    button
-                    onClick={buttonCashClick}
-                    data-cash-id={cash.id}
-                  >
-                    <Icon style={{ color: getIconColor(type?.iconColor) }}>
-                      {type?.icon}
-                    </Icon>
-                    <Typography variant="body1">{type?.label}</Typography>
-                    <Typography variant="body2">
-                      {propertiesStore.dateFns.format(
-                        cash.createdDate,
-                        'HH:mm'
-                      )}
-                    </Typography>
-                    <Typography variant="body1" className={css.totalCell}>
-                      {cash.total}{' '}
-                      {propertiesStore.getCurrencyByName(cash.currency).symbol}
-                    </Typography>
-                    {cash.description && (
-                      <Typography className={css.desctiptionCell}>
-                        {cash.description}
+    <div className={css.root}>
+      {!cashesDates.length && (
+        <Typography variant="subtitle1" className={css.noData}>
+          {translate.NoDataFoundForTheSelectedPeriod}
+        </Typography>
+      )}
+      <Typography variant="subtitle1" className={css.total}>
+        {`${translate.Total}: ${getTotalSum()} ${
+          propertiesStore.defaultCurrency?.symbol
+        }`}
+      </Typography>
+      <List className={css.listRoot} subheader={<li />}>
+        {cashesDates.map((d: string) => (
+          <li key={`section-${d}`} className={css.listSection}>
+            <ul className={css.cashesUl}>
+              <ListSubheader className={css.stickyHeader}>
+                <span className={css.stickyHeaderText}>
+                  {getFormattedDate(Helpers.getDateFromString(d))}
+                </span>
+              </ListSubheader>
+              {cashStore
+                .getCashesStartedByDate(cashesByPeriod, d)
+                .map((cash: CashEntry) => {
+                  const type = typesStore.getTypeByName(cash.typeName);
+                  return (
+                    <ListItem
+                      key={cash.id}
+                      className={css.cashItem}
+                      button
+                      onClick={buttonCashClick}
+                      data-cash-id={cash.id}
+                    >
+                      <Icon style={{ color: getIconColor(type?.iconColor) }}>
+                        {type?.icon}
+                      </Icon>
+                      <Typography variant="body1">{type?.label}</Typography>
+                      <Typography variant="body2">
+                        {propertiesStore.dateFns.format(
+                          cash.createdDate,
+                          'HH:mm'
+                        )}
                       </Typography>
-                    )}
-                  </ListItem>
-                );
-              })}
-          </ul>
-        </li>
-      ))}
-    </List>
+                      <Typography variant="body1" className={css.totalCell}>
+                        {cash.total}{' '}
+                        {
+                          propertiesStore.getCurrencyByName(cash.currency)
+                            .symbol
+                        }
+                      </Typography>
+                      {cash.description && (
+                        <Typography className={css.desctiptionCell}>
+                          {cash.description}
+                        </Typography>
+                      )}
+                    </ListItem>
+                  );
+                })}
+            </ul>
+          </li>
+        ))}
+      </List>
+    </div>
   );
 });
 

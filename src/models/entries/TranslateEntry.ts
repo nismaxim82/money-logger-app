@@ -29,6 +29,8 @@ export default class TranslateEntry {
   Description!: string;
   PaymentTotal!: string;
   PaymentTotalIsRequired!: string;
+  NoDataFoundForTheSelectedPeriod!: string;
+  Total!: string;
   TypeEdit!: string;
   TypeNew!: string;
   IDIsRequired!: string;
