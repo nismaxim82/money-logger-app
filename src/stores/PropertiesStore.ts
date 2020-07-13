@@ -57,12 +57,23 @@ export default class PropertiesStore {
     await this.loadCurrentLanguage(languageName);
   };
 
+  @action changeCurrency = async (currencyName: string) => {
+    await this.cacheService.add('currency', currencyName);
+    await this.loadCurrencies();
+  };
+
   @action loadCurrentLanguage = async (languageName: string) => {
     let language = languageName;
     if (!language) {
       language = await this.cacheService.get<String>('language', String);
     }
-    this.currentLanguage = this.languages.find((l) => l.name === language)!;
+    let currentLanguage = this.languages.find((l) => l.name === language);
+    if (!currentLanguage) {
+      currentLanguage = new LanguageEntry();
+      currentLanguage.name = LanguagesEnum.English;
+      currentLanguage.title = 'English';
+    }
+    this.currentLanguage = currentLanguage;
 
     if (this.currentLanguage.name === LanguagesEnum.English) {
       this.dateFns = new DateFnsUtils({ locale: enLocale });
@@ -128,7 +139,7 @@ export default class PropertiesStore {
     }
     if (result.success) {
       await this.changeLanguage(languageName);
-      await this.cacheService.add('currency', currencyName);
+      await this.changeCurrency(currencyName);
       await this.cacheService.add('firstTimeOptionsSelected', true);
       this.firstTimeOptionsSelected = true;
     }
