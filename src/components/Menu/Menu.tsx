@@ -23,13 +23,13 @@ import { observer } from 'mobx-react';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AppStore from '../../stores/AppStore';
+import CashStore from '../../stores/CashStore';
+import PropertiesStore from '../../stores/PropertiesStore';
 import TranslatesStore from '../../stores/TranslatesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import LinkTab from '../LinkTab/LinkTab';
 import classes from './Menu.module.css';
-import PropertiesStore from '../../stores/PropertiesStore';
-import CashStore from '../../stores/CashStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

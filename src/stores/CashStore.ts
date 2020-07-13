@@ -107,16 +107,16 @@ class CashStore {
 
   getCashesByPeriod = (cashes: CashEntry[]) => {
     const result = cashes.filter((c) => {
-      if (this.cashPeriodFilter.from && this.cashPeriodFilter.to) {
+      if (this.cashPeriodFilter?.from && this.cashPeriodFilter?.to) {
         return (
           c.createdDate >= this.cashPeriodFilter.from &&
           c.createdDate <= this.cashPeriodFilter.to
         );
       }
-      if (this.cashPeriodFilter.from) {
+      if (this.cashPeriodFilter?.from) {
         return c.createdDate >= this.cashPeriodFilter.from;
       }
-      if (this.cashPeriodFilter.to) {
+      if (this.cashPeriodFilter?.to) {
         return c.createdDate <= this.cashPeriodFilter.to;
       }
       return false;

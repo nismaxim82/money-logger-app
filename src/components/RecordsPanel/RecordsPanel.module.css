@@ -8,10 +8,6 @@
   text-align: center;
 }
 
-.total {
-  text-align: right;
-}
-
 .listRoot {
   overflow: auto;
   flex: 1;
@@ -24,10 +20,6 @@
 .cashItem {
   grid-template-columns: auto auto auto 1fr;
   grid-template-rows: auto auto;
-}
-
-.totalCell {
-  text-align: right;
 }
 
 .desctiptionCell {

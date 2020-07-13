@@ -19,6 +19,7 @@
     "@types/uuid": "^8.0.0",
     "class-transformer": "^0.2.3",
     "date-fns": "^2.14.0",
+    "jss-rtl": "^0.3.0",
     "react": "^16.13.1",
     "react-color": "^2.18.1",
     "react-dom": "^16.13.1",

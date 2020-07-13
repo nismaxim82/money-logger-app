@@ -53,6 +53,12 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       gridColumnGap: theme.spacing(1),
     },
+    total: {
+      textAlign: 'right',
+    },
+    totalCell: {
+      textAlign: 'right',
+    },
   })
 );
 
