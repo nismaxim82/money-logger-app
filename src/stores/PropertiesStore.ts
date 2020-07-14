@@ -18,7 +18,7 @@ export default class PropertiesStore {
   @observable currencies!: CurrencyEntry[];
   @observable defaultCurrency!: CurrencyEntry;
   @observable dateFns = new DateFnsUtils({ locale: enLocale });
-  @observable themeLoaded = false;
+  @observable themeLoaded = true;
 
   private cacheService: CacheService;
   private formatsStore: FormatsStore;
@@ -67,7 +67,7 @@ export default class PropertiesStore {
   };
 
   @action loadCurrentLanguage = async (languageName: string) => {
-    this.themeLoaded = false;
+    // this.themeLoaded = false;
     let language = languageName;
     if (!language) {
       language = await this.cacheService.get<String>('language', String);
