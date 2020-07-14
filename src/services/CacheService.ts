@@ -10,7 +10,9 @@ export default class CacheService {
       if (appStore.version !== r) {
         this.clear();
         this.add('appVersion', appStore.version);
-        window.location.reload();
+        if (r) {
+          window.location.reload();
+        }
       }
     });
   }
