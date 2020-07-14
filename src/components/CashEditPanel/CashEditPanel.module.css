@@ -27,6 +27,10 @@
   flex-direction: column;
 }
 
+.pickersRtl :global .MuiDialogActions-root {
+  flex-direction: row-reverse;
+}
+
 .totalContainer {
   display: flex;
   flex-direction: row;
