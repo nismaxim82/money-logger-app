@@ -147,7 +147,7 @@ const CashEditPanel = observer((props: IProps) => {
     }
     if (cashStore.validateCashToSave()) {
       await cashStore.saveCash(cashId);
-      history.push(`/${MenuTypesEnum.Cash}`);
+      history.push(`/${MenuTypesEnum.Records}`);
     }
   };
 

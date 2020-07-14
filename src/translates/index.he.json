@@ -41,8 +41,8 @@
   "PaymentTotal": "סכום תשלום",
   "PaymentTotalIsRequired": "חובה למלא סכום תשלום",
 
-  "NoDataFoundForTheSelectedPeriod": "Не найдено данных за выбранный период",
-  "Total": "Итого",
+  "NoDataFoundForTheSelectedPeriod": "לא נמצאו נתונים לתקופה שנבחרה",
+  "Total": "סה\"כ",
 
   "TypeEdit": "עריכת סוג",
   "TypeNew": "סוג חדש",

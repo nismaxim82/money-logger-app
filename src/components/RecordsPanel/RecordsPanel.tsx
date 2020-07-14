@@ -118,9 +118,10 @@ const RecordsPanel = observer(() => {
         </Typography>
       )}
       <Typography variant="subtitle1" className={css.total}>
-        {`${translate.Total}: ${getTotalSum()} ${
-          propertiesStore.defaultCurrency?.symbol
-        }`}
+        <span>{translate.Total}: </span>
+        <span className={css.totalValue}>
+          {getTotalSum()} {propertiesStore.defaultCurrency?.symbol}
+        </span>
       </Typography>
       <List className={css.listRoot} subheader={<li />}>
         {cashesDates.map((d: string) => (
