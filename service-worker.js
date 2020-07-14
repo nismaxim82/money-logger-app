@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/money-logger-app/precache-manifest.6a3c8107777e2e13064b7845eaf48360.js"
+  "/money-logger-app/precache-manifest.783049fc8054223af0fcf5fb370c2c83.js"
 );
 
 self.addEventListener('message', (event) => {
