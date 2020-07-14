@@ -24,49 +24,38 @@ const ThemeCreator = observer(() => {
   const { propertiesStore }: { propertiesStore: PropertiesStore } = useStores();
 
   const [theme, setTheme] = React.useState(
-    createMuiTheme(
-      {
-        direction: 'ltr',
-      }
-      // enUS
-    )
+    createMuiTheme({
+      direction: 'ltr',
+    })
   );
   React.useEffect(() => {
     const direction = !propertiesStore.currentLanguage?.rtl ? 'ltr' : 'rtl';
     if (theme.direction !== direction) {
-      // let themeLocale = enUS;
-      // if (propertiesStore.currentLanguage.name === LanguagesEnum.Hebrew) {
-      //   themeLocale = heIL;
-      // } else if (
-      //   propertiesStore.currentLanguage.name === LanguagesEnum.Russian
-      // ) {
-      //   themeLocale = ruRU;
-      // }
       setTheme(
-        createMuiTheme(
-          {
-            direction,
-          }
-          // themeLocale
-        )
+        createMuiTheme({
+          direction,
+        })
       );
       document.body.style.direction = direction;
+      propertiesStore.setThemeLoaded(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [propertiesStore.currentLanguage?.rtl]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <StylesProvider jss={jss}>
-        <CssBaseline />
-        <Router basename={`/${AppSettings.name}`}>
-          <div className={classes.page}>
-            <Menu />
-            <Body />
-          </div>
-        </Router>
-      </StylesProvider>
-    </ThemeProvider>
+    <StylesProvider jss={jss}>
+      <CssBaseline />
+      {propertiesStore.themeLoaded && (
+        <ThemeProvider theme={theme}>
+          <Router basename={`/${AppSettings.name}`}>
+            <div className={classes.page}>
+              <Menu />
+              <Body />
+            </div>
+          </Router>
+        </ThemeProvider>
+      )}
+    </StylesProvider>
   );
 });
 
