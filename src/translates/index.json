@@ -58,5 +58,10 @@
   "SelectIcon": "Select icon",
   "IconsTypes": "Icons types",
   "EnterToSearch": "Enter to search",
-  "MatchingResultsN": "{0} matching results"
+  "MatchingResultsN": "{0} matching results",
+
+  "Reports": "Reports",
+  "Income": "Income",
+  "Sync": "Sync",
+  "Synchronization": "Synchronization"
 }

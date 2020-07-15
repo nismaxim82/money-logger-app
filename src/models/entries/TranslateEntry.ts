@@ -46,4 +46,8 @@ export default class TranslateEntry {
   IconsTypes!: string;
   EnterToSearch!: string;
   MatchingResultsN!: string;
+  Reports!: string;
+  Income!: string;
+  Sync!: string;
+  Synchronization!: string;
 }

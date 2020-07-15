@@ -58,5 +58,10 @@
   "SelectIcon": "בחירת תמונה",
   "IconsTypes": "סוגי תמונות",
   "EnterToSearch": "טקסט לחיפוש",
-  "MatchingResultsN": "נמצאו {0}"
+  "MatchingResultsN": "נמצאו {0}",
+
+  "Reports": "דיווחים",
+  "Income": "הכנסה",
+  "Sync": "סנכרון",
+  "Synchronization": "סנכרון"
 }

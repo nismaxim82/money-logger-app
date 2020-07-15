@@ -79,6 +79,7 @@ const Menu = observer(() => {
     appStore.loadSelectedMenuIndex(history.location.pathname);
     const listener = history.listen(() => {
       appStore.loadSelectedMenuIndex(history.location.pathname);
+      Helpers.removeDuplicateStyles();
     });
 
     return () => {

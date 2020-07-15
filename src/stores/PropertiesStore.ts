@@ -18,7 +18,6 @@ export default class PropertiesStore {
   @observable currencies!: CurrencyEntry[];
   @observable defaultCurrency!: CurrencyEntry;
   @observable dateFns = new DateFnsUtils({ locale: enLocale });
-  @observable themeLoaded = true;
 
   private cacheService: CacheService;
   private formatsStore: FormatsStore;
@@ -67,7 +66,6 @@ export default class PropertiesStore {
   };
 
   @action loadCurrentLanguage = async (languageName: string) => {
-    // this.themeLoaded = false;
     let language = languageName;
     if (!language) {
       language = await this.cacheService.get<String>('language', String);
@@ -155,9 +153,5 @@ export default class PropertiesStore {
   @action getCurrencyByName = (name: string) => {
     const currency = this.currencies.find((c) => c.name === name);
     return currency || this.defaultCurrency || new CurrencyEntry();
-  };
-
-  @action setThemeLoaded = (loaded: boolean) => {
-    this.themeLoaded = loaded;
   };
 }

@@ -64,7 +64,6 @@ const CurrencyEditPanel = observer((props: IProps) => {
   const [currencyId, setCurrencyId] = React.useState('');
   const [currencyName, setCurrencyName] = React.useState('');
   const [currencySymbol, setCurrencySymbol] = React.useState('');
-  const [openErrors, setOpenErrors] = React.useState(false);
   const [saveErrors, setSaveErrors] = React.useState<Array<string>>([]);
 
   const styles = useStyles();
@@ -87,12 +86,11 @@ const CurrencyEditPanel = observer((props: IProps) => {
       }
     } else {
       setSaveErrors(saveResult.errors);
-      setOpenErrors(true);
     }
   };
 
   const closeErrors = () => {
-    setOpenErrors(false);
+    setSaveErrors([]);
   };
 
   const changeCurrencyNameField = (
@@ -155,7 +153,7 @@ const CurrencyEditPanel = observer((props: IProps) => {
               }
             />
             <SnackErrors
-              open={openErrors}
+              open={saveErrors.length > 0}
               errors={saveErrors}
               onClose={closeErrors}
             />

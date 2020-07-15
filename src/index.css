@@ -19,3 +19,11 @@ code {
 #root {
   height: 100%;
 }
+
+input[type=number] {
+  direction: ltr;
+}
+
+.rtl input[type=number] {
+  text-align: right;
+}

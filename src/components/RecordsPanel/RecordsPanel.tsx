@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme: Theme) =>
     totalCell: {
       textAlign: 'right',
     },
+    totalValue: {
+      marginLeft: theme.spacing(1),
+    },
   })
 );
 
@@ -117,12 +120,14 @@ const RecordsPanel = observer(() => {
           {translate.NoDataFoundForTheSelectedPeriod}
         </Typography>
       )}
-      <Typography variant="subtitle1" className={css.total}>
-        <span>{translate.Total}: </span>
-        <span className={css.totalValue}>
-          {getTotalSum()} {propertiesStore.defaultCurrency?.symbol}
-        </span>
-      </Typography>
+      {cashesDates.length > 0 && (
+        <Typography variant="subtitle1" className={css.total}>
+          <span>{translate.Total}: </span>
+          <span className={css.totalValue}>
+            {getTotalSum()} {propertiesStore.defaultCurrency?.symbol}
+          </span>
+        </Typography>
+      )}
       <List className={css.listRoot} subheader={<li />}>
         {cashesDates.map((d: string) => (
           <li key={`section-${d}`} className={css.listSection}>

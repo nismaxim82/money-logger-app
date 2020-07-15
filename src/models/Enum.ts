@@ -6,6 +6,13 @@ export enum MenuTypesEnum {
   Menu = 'menu',
 }
 
+export enum MenuSubTypesEnum {
+  Properties = 'properties',
+  Reports = 'reports',
+  Income = 'income',
+  Synchronization = 'synchronization',
+}
+
 export enum IconTypesEnum {
   Filled = 'Filled',
   Outlined = 'Outlined',

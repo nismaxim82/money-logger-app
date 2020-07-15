@@ -67,7 +67,6 @@ const FirstTimeShowPanel = observer(() => {
 
   const [language, setLanguage] = React.useState('');
   const [currency, setCurrency] = React.useState('');
-  const [openErrors, setOpenErrors] = React.useState(false);
   const [saveErrors, setSaveErrors] = React.useState<Array<string>>([]);
 
   const styles = useStyles();
@@ -86,7 +85,6 @@ const FirstTimeShowPanel = observer(() => {
     );
     if (!saveResult.success) {
       setSaveErrors(saveResult.errors);
-      setOpenErrors(true);
     } else {
       await typesStore.loadTypes();
       await translatesStore.loadTranslate(language);
@@ -109,7 +107,7 @@ const FirstTimeShowPanel = observer(() => {
   };
 
   const closeErrors = () => {
-    setOpenErrors(false);
+    setSaveErrors([]);
   };
 
   return (
@@ -166,10 +164,16 @@ const FirstTimeShowPanel = observer(() => {
               </Button>
             </div>
             <SnackErrors
-              open={openErrors}
+              open={saveErrors.length > 0}
               errors={saveErrors}
               onClose={closeErrors}
             />
+            {addNewCurrencyOpened && (
+              <CurrencyEditPanel
+                onCancelEdit={addNewCurrencyPanelOnCancelEdit}
+                onSaveEdit={addNewCurrencyPanelOnSaveEdit}
+              />
+            )}
           </div>
           <div className={css.footer}>
             <Button
@@ -181,12 +185,6 @@ const FirstTimeShowPanel = observer(() => {
               {translate.Save}
             </Button>
           </div>
-          {addNewCurrencyOpened && (
-            <CurrencyEditPanel
-              onCancelEdit={addNewCurrencyPanelOnCancelEdit}
-              onSaveEdit={addNewCurrencyPanelOnSaveEdit}
-            />
-          )}
         </div>
       </Slide>
     </Fade>

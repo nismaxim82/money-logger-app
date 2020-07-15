@@ -1,0 +1,15 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  font-size: large;
+  align-items: center;
+}
+
+.cardLabel {
+  flex-direction: column;
+}

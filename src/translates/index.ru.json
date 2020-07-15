@@ -58,5 +58,10 @@
   "SelectIcon": "Выберите иконку",
   "IconsTypes": "Типы иконок",
   "EnterToSearch": "Введите для поиска",
-  "MatchingResultsN": "всего найдено {0}"
+  "MatchingResultsN": "всего найдено {0}",
+
+  "Reports": "Отчеты",
+  "Income": "Доход",
+  "Sync": "Синхр",
+  "Synchronization": "Синхронизация"
 }

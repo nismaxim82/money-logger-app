@@ -71,6 +71,36 @@ class Helpers {
     }
     return value;
   };
+
+  static removeDuplicateStyles = () => {
+    setTimeout(() => {
+      const allHeadStyles = document.head.getElementsByTagName('style');
+      const specificMeta: string[] = ['MuiSelect'];
+      const removedMeta: string[] = [];
+      for (let i = 0; i < allHeadStyles.length; i += 1) {
+        const style = allHeadStyles[i];
+        const { jss, meta } = style.dataset;
+        if (specificMeta.indexOf(meta || '') !== -1) {
+          if (
+            jss === '' &&
+            meta &&
+            meta !== 'makeStyles' &&
+            removedMeta.indexOf(meta) === -1
+          ) {
+            const nextStyle = style.nextSibling as HTMLStyleElement;
+            if (
+              nextStyle &&
+              nextStyle.dataset.jss === jss &&
+              nextStyle.dataset.meta === meta
+            ) {
+              removedMeta.push(meta);
+              style.remove();
+            }
+          }
+        }
+      }
+    }, 100);
+  };
 }
 
 export default Helpers;
