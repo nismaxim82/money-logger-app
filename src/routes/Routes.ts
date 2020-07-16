@@ -6,6 +6,7 @@ import { MenuTypesEnum, MenuSubTypesEnum } from '../models/Enum';
 import TypeEditPanel from '../components/TypeEditPanel/TypeEditPanel';
 import CashEditPanel from '../components/CashEditPanel/CashEditPanel';
 import PropertiesPanel from '../components/PropertiesPanel/PropertiesPanel';
+import IncomesPanel from '../components/IncomesPanel/IncomesPanel';
 
 const routes = [
   {
@@ -62,6 +63,11 @@ const routes = [
     path: `/${MenuTypesEnum.Menu}/${MenuSubTypesEnum.Properties}`,
     exact: true,
     components: PropertiesPanel,
+  },
+  {
+    path: `/${MenuTypesEnum.Menu}/${MenuSubTypesEnum.Incomes}`,
+    exact: true,
+    components: IncomesPanel,
   },
 ];
 

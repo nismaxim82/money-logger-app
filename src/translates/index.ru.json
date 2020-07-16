@@ -61,7 +61,13 @@
   "MatchingResultsN": "всего найдено {0}",
 
   "Reports": "Отчеты",
-  "Income": "Доход",
+  "Incomes": "Доходы",
   "Sync": "Синхр",
-  "Synchronization": "Синхронизация"
+  "Synchronization": "Синхронизация",
+  
+  "IncomesFilter": "Фильтр доходов",
+  "ApplyFilter": "Применить фильтр",
+  "IncomeType": "Тип дохода",
+  "Periodic": "Периодический",
+  "Fixed": "Постоянный"
 }

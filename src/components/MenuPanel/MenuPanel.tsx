@@ -58,9 +58,9 @@ const MenuPanel = observer(() => {
       label: translate.Reports,
     },
     {
-      endUrl: MenuSubTypesEnum.Income,
+      endUrl: MenuSubTypesEnum.Incomes,
       icon: 'monetization_on',
-      label: translate.Income,
+      label: translate.Incomes,
     },
     {
       endUrl: MenuSubTypesEnum.Synchronization,

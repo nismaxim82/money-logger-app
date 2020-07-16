@@ -9,7 +9,7 @@ export enum MenuTypesEnum {
 export enum MenuSubTypesEnum {
   Properties = 'properties',
   Reports = 'reports',
-  Income = 'income',
+  Incomes = 'incomes',
   Synchronization = 'synchronization',
 }
 

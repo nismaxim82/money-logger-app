@@ -61,7 +61,13 @@
   "MatchingResultsN": "נמצאו {0}",
 
   "Reports": "דיווחים",
-  "Income": "הכנסה",
+  "Incomes": "הכנסות",
   "Sync": "סנכרון",
-  "Synchronization": "סנכרון"
+  "Synchronization": "סנכרון",
+  
+  "IncomesFilter": "מסנן הכנסות",
+  "ApplyFilter": "החל מסנן",
+  "IncomeType": "סוג הכנסה",
+  "Periodic": "תקופתי",
+  "Fixed": "תוקן"
 }

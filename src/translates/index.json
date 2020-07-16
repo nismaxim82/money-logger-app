@@ -61,7 +61,13 @@
   "MatchingResultsN": "{0} matching results",
 
   "Reports": "Reports",
-  "Income": "Income",
+  "Incomes": "Incomes",
   "Sync": "Sync",
-  "Synchronization": "Synchronization"
+  "Synchronization": "Synchronization",
+  
+  "IncomesFilter": "Incomes filter",
+  "ApplyFilter": "Apply filter",
+  "IncomeType": "Income type",
+  "Periodic": "Periodic",
+  "Fixed": "Fixed"
 }

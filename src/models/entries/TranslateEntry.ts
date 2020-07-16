@@ -47,7 +47,12 @@ export default class TranslateEntry {
   EnterToSearch!: string;
   MatchingResultsN!: string;
   Reports!: string;
-  Income!: string;
+  Incomes!: string;
   Sync!: string;
   Synchronization!: string;
+  IncomesFilter!: string;
+  ApplyFilter!: string;
+  IncomeType!: string;
+  Periodic!: string;
+  Fixed!: string;
 }
