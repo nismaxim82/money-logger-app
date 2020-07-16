@@ -9,11 +9,11 @@ import {
 import { observer } from 'mobx-react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { MenuSubTypesEnum, MenuTypesEnum } from '../../models/Enum';
+import TranslatesStore from '../../stores/TranslatesStore';
+import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import classes from './MenuPanel.module.css';
-import { MenuTypesEnum, MenuSubTypesEnum } from '../../models/Enum';
-import useStores from '../../stores/UseStores';
-import TranslatesStore from '../../stores/TranslatesStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -85,50 +85,6 @@ const MenuPanel = observer(() => {
           </Typography>
         </IconButton>
       ))}
-      {/* <IconButton
-        className={css.card}
-        classes={{ label: css.cardLabel }}
-        onClick={buttonLinkClick}
-        data-link-url={`/${MenuTypesEnum.Menu}/${MenuSubTypesEnum.Properties}`}
-      >
-        <Icon className={css.cardIcon}>settings</Icon>
-        <Typography variant="subtitle1" className={css.cardLabelText}>
-          {translate.MainProperties}
-        </Typography>
-      </IconButton>
-      <IconButton
-        className={css.card}
-        classes={{ label: css.cardLabel }}
-        onClick={buttonLinkClick}
-        data-link-url={`/${MenuTypesEnum.Menu}/${MenuSubTypesEnum.Reports}`}
-      >
-        <Icon className={css.cardIcon}>assignment</Icon>
-        <Typography variant="subtitle1" className={css.cardLabelText}>
-          {translate.Reports}
-        </Typography>
-      </IconButton>
-      <IconButton
-        className={css.card}
-        classes={{ label: css.cardLabel }}
-        onClick={buttonLinkClick}
-        data-link-url={`/${MenuTypesEnum.Menu}/${MenuSubTypesEnum.Income}`}
-      >
-        <Icon className={css.cardIcon}>monetization_on</Icon>
-        <Typography variant="subtitle1" className={css.cardLabelText}>
-          {translate.Income}
-        </Typography>
-      </IconButton>
-      <IconButton
-        className={css.card}
-        classes={{ label: css.cardLabel }}
-        onClick={buttonLinkClick}
-        data-link-url={`/${MenuTypesEnum.Menu}/${MenuSubTypesEnum.Synchronization}`}
-      >
-        <Icon className={css.cardIcon}>settings_system_daydream</Icon>
-        <Typography variant="subtitle1" className={css.cardLabelText}>
-          {translate.Sync}
-        </Typography>
-      </IconButton> */}
     </div>
   );
 });

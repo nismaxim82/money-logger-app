@@ -19,6 +19,7 @@ import Helpers from '../../utility/Helpers';
 import { MenuTypesEnum } from '../../models/Enum';
 import useStores from '../../stores/UseStores';
 import TranslatesStore from '../../stores/TranslatesStore';
+import MainProperties from '../MainProperties/MainProperties';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,14 +52,17 @@ const PropertiesPanel = observer(() => {
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
 
+  const mainPropertiesRef = React.useRef<any>(null);
   const cancelEdit = () => {
     history.push(`/${MenuTypesEnum.Menu}`);
   };
   const saveEdit = async () => {
-    // if (cashStore.validateCashToSave()) {
-    //   await cashStore.saveCash(cashId);
-    //   history.push(`/${MenuTypesEnum.Records}`);
-    // }
+    if (mainPropertiesRef && mainPropertiesRef.current) {
+      const result = await mainPropertiesRef.current.onSave();
+      if (result) {
+        history.push(`/${MenuTypesEnum.Menu}`);
+      }
+    }
   };
 
   return (
@@ -81,7 +85,9 @@ const PropertiesPanel = observer(() => {
               </IconButton>
             </Toolbar>
           </AppBar>
-          <div className={css.body}>Props</div>
+          <div className={css.body}>
+            <MainProperties ref={mainPropertiesRef} />
+          </div>
         </div>
       </Slide>
     </Fade>

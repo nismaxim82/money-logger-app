@@ -4,23 +4,18 @@ import {
   createStyles,
   Fade,
   makeStyles,
-  MenuItem,
   Slide,
-  TextField,
   Theme,
   Toolbar,
   Typography,
 } from '@material-ui/core';
 import { observer } from 'mobx-react';
-import React, { ChangeEvent } from 'react';
-import PropertiesStore from '../../stores/PropertiesStore';
+import React from 'react';
+import TranslatesStore from '../../stores/TranslatesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
-import CurrencyEditPanel from '../CurrencyEditPanel/CurrencyEditPanel';
-import SnackErrors from '../SnackErrors/SnackErrors';
+import MainProperties from '../MainProperties/MainProperties';
 import classes from './FirstTimeShowPanel.module.css';
-import TranslatesStore from '../../stores/TranslatesStore';
-import TypesStore from '../../stores/TypesStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,60 +49,22 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const FirstTimeShowPanel = observer(() => {
   const {
-    propertiesStore,
     translatesStore,
-    typesStore,
   }: {
-    propertiesStore: PropertiesStore;
     translatesStore: TranslatesStore;
-    typesStore: TypesStore;
   } = useStores();
 
   const { translate } = translatesStore;
 
-  const [language, setLanguage] = React.useState('');
-  const [currency, setCurrency] = React.useState('');
-  const [saveErrors, setSaveErrors] = React.useState<Array<string>>([]);
-
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
 
-  const [addNewCurrencyOpened, setAddNewCurrencyOpened] = React.useState(false);
-  const buttonAddCurrency = () => {
-    setAddNewCurrencyOpened(true);
-  };
+  const mainPropertiesRef = React.useRef<any>(null);
 
   const buttonSaveProperties = async () => {
-    const saveResult = await propertiesStore.saveFirstTimeOptions(
-      translate,
-      language,
-      currency
-    );
-    if (!saveResult.success) {
-      setSaveErrors(saveResult.errors);
-    } else {
-      await typesStore.loadTypes();
-      await translatesStore.loadTranslate(language);
+    if (mainPropertiesRef && mainPropertiesRef.current) {
+      await mainPropertiesRef.current.onSave();
     }
-  };
-
-  const addNewCurrencyPanelOnCancelEdit = () => {
-    setAddNewCurrencyOpened(false);
-  };
-  const addNewCurrencyPanelOnSaveEdit = (selectedNewCurrencyName: string) => {
-    setAddNewCurrencyOpened(false);
-    setCurrency(selectedNewCurrencyName);
-  };
-
-  const changeLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLanguage(event.target.value);
-  };
-  const changeCurrency = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrency(event.target.value);
-  };
-
-  const closeErrors = () => {
-    setSaveErrors([]);
   };
 
   return (
@@ -120,60 +77,7 @@ const FirstTimeShowPanel = observer(() => {
             </Toolbar>
           </AppBar>
           <div className={css.body}>
-            <TextField
-              select
-              fullWidth
-              error={!language}
-              value={language}
-              onChange={changeLanguage}
-              label={translate.Language}
-              helperText={!language ? translate.LanguageIsRequired : ''}
-            >
-              {propertiesStore.languages.map((l) => (
-                <MenuItem key={l.name} value={l.name}>
-                  {l.title || l.name}
-                </MenuItem>
-              ))}
-            </TextField>
-            <div className={css.currenciesContainer}>
-              <TextField
-                select
-                fullWidth
-                error={!currency}
-                label={translate.Currency}
-                value={currency}
-                onChange={changeCurrency}
-                className={css.currenciesSelect}
-                helperText={!currency ? translate.CurrencyIsRequired : ''}
-              >
-                {propertiesStore.currencies.map((c) => (
-                  <MenuItem key={c.name} value={c.name}>
-                    {c.symbol || c.name}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <Button
-                fullWidth
-                className={css.addCurrencyButton}
-                color="primary"
-                variant="outlined"
-                size="small"
-                onClick={buttonAddCurrency}
-              >
-                {translate.AddNewCurrency}
-              </Button>
-            </div>
-            <SnackErrors
-              open={saveErrors.length > 0}
-              errors={saveErrors}
-              onClose={closeErrors}
-            />
-            {addNewCurrencyOpened && (
-              <CurrencyEditPanel
-                onCancelEdit={addNewCurrencyPanelOnCancelEdit}
-                onSaveEdit={addNewCurrencyPanelOnSaveEdit}
-              />
-            )}
+            <MainProperties ref={mainPropertiesRef} />
           </div>
           <div className={css.footer}>
             <Button
