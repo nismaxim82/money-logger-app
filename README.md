@@ -74,7 +74,7 @@ This project uses:
 ### How to build and run
 
 The first time after downloading the project you need to install the libraries.<br />
-Open terminal or command prompt window from the root of the project.
+Open terminal or command prompt window from the root of the project.<br />
 In the terminal type:<br />
 ```
   yarn install
@@ -88,6 +88,7 @@ In the terminal window you can write:<br />
   ./rc t    - to run a tests
 ```
 #### Also you can use similar commands from the package.json:
+In the terminal window you can write:<br />
 ```
   yarn start    - to run a development version
   yarn build    - to build an optimized version for publish on your server
