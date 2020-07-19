@@ -54,21 +54,21 @@ By default, the application runs locally without a server.<br />
 All data is stored in local storage.<br />
 But if you do not want to lose your entered data<br />
 you must configure synchronization with the server.<br />
-**All your saved data is confidential and private.**
+### All your saved data is confidential and private
 
 
 ## For developers
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).<br /><br />
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app)<br /><br />
 This project uses:
-##### [Typescript for typing](https://www.typescriptlang.org/)<br />
-##### [eslint to find and auto fix problem code](https://eslint.org/)<br />
-##### [the Material-UI library to display controls.](https://material-ui.com/)<br />
-##### [date-fns for formatting and localizing date and time](https://date-fns.org/)<br />
-##### [MobX global state](https://mobx.js.org/README.html)<br />
-##### [React router for routing](https://reactrouter.com/)<br />
-##### [Formik and Yup for managing forms and their validation](https://formik.org/)<br />
-##### [uuid for guid id generation](https://www.npmjs.com/package/uuid)<br />
+##### [Typescript for typing](https://www.typescriptlang.org/)
+##### [eslint to find and auto fix problem code](https://eslint.org/)
+##### [Material-UI library to display controls.](https://material-ui.com/)
+##### [date-fns for formatting and localizing date and time](https://date-fns.org/)
+##### [MobX global state](https://mobx.js.org/README.html)
+##### [React router for routing](https://reactrouter.com/)
+##### [Formik and Yup for managing forms and their validation](https://formik.org/)
+##### [uuid for guid id generation](https://www.npmjs.com/package/uuid)
 ##### [gh-pages to deploy this project on the Github](https://www.npmjs.com/package/gh-pages)
 
 ### How to build and run
