@@ -43,8 +43,8 @@ In this panel you can generate HTML and PDF reports by selected period.
 
 ### Incomes
 
-Here you can see all your contributed income.
-You can create / edit / delete you incomes here.
+Here you can see all your contributed income.<br />
+You can create / edit / delete you incomes here.<br />
 Income can be of two types: periodic and fixed one-time.
 
 ### Sync
@@ -60,29 +60,33 @@ you must configure synchronization with the server.<br />
 ## For developers
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).<br />
-This project uses [Typescript for typing](https://www.typescriptlang.org/)
-This project uses [eslint to find and auto fix problem code](https://eslint.org/)
+This project uses [Typescript for typing](https://www.typescriptlang.org/)<br />
+This project uses [eslint to find and auto fix problem code](https://eslint.org/)<br />
 This project uses [the Material-UI library to display controls.](https://material-ui.com/)<br />
-This project uses [date-fns for formatting and localizing date and time](https://date-fns.org/)
-This project uses [MobX global state](https://mobx.js.org/README.html)
-This project uses [React router for routing](https://reactrouter.com/)
-This project uses [Formik and Yup for managing forms and their validation](https://formik.org/)
-This project uses [uuid for guid id generation](https://www.npmjs.com/package/uuid)
+This project uses [date-fns for formatting and localizing date and time](https://date-fns.org/)<br />
+This project uses [MobX global state](https://mobx.js.org/README.html)<br />
+This project uses [React router for routing](https://reactrouter.com/)<br />
+This project uses [Formik and Yup for managing forms and their validation](https://formik.org/)<br />
+This project uses [uuid for guid id generation](https://www.npmjs.com/package/uuid)<br />
 This project uses [gh-pages to deploy this project on the Github](https://www.npmjs.com/package/gh-pages)
 
 ### How to build and run
 
 In the root of project folder you have rc.bat.<br />
 In the terminal window you can write:<br />
-&nbsp;&nbsp;&nbsp;./rc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to run a development version.<br />
-&nbsp;&nbsp;&nbsp;./rc b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to build an optimized version for publish on your server.<br />
-&nbsp;&nbsp;&nbsp;./rc t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to run a tests.<br />
+```
+  ./rc      - to run a development version.<br />
+  ./rc b    - to build an optimized version for publish on your server.<br />
+  ./rc t    - to run a tests.<br />
+```
 <br />
 Also you can use similar commands from the package.json:
-&nbsp;&nbsp;&nbsp;yarn start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to run a development version.<br />
-&nbsp;&nbsp;&nbsp;yarn build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to build an optimized version for publish on your server.<br />
-&nbsp;&nbsp;&nbsp;yarn test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to run a tests.<br />
-&nbsp;&nbsp;&nbsp;yarn deploy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to build an optimized version and publish it on the Github pages.<br />
+```
+  yarn start    - to run a development version.<br />
+  yarn build    - to build an optimized version for publish on your server.<br />
+  yarn test     - to run a tests.<br />
+  yarn deploy   - to build an optimized version and publish it on the Github pages.<br />
+```
 <br />
-What's the difference between ./rc and yarn commands -<br />
+**What's the difference between ./rc and yarn commands**<br />
 ./rc will open a new terminal window outside the developer IDE.
