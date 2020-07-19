@@ -1,30 +1,34 @@
-import { observer } from 'mobx-react';
-import React from 'react';
 import {
-  Fade,
-  Slide,
-  makeStyles,
-  Theme,
-  createStyles,
   AppBar,
+  Box,
+  Button,
+  createStyles,
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  Fade,
+  Grid,
+  Icon,
+  IconButton,
+  makeStyles,
+  MenuItem,
+  Slide,
+  TextField,
+  Theme,
   Toolbar,
   Typography,
-  Box,
-  IconButton,
-  Icon,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  Button,
-  MenuItem,
-  TextField,
 } from '@material-ui/core';
+import { observer } from 'mobx-react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import classes from './IncomesPanel.module.css';
-import Helpers from '../../utility/Helpers';
-import useStores from '../../stores/UseStores';
-import TranslatesStore from '../../stores/TranslatesStore';
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { MenuTypesEnum } from '../../models/Enum';
+import PropertiesStore from '../../stores/PropertiesStore';
+import TranslatesStore from '../../stores/TranslatesStore';
+import useStores from '../../stores/UseStores';
+import Helpers from '../../utility/Helpers';
+import DateTimePicker from '../DateTimePicker/DateTimePicker';
+import classes from './IncomesPanel.module.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,7 +52,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const IncomesPanel = observer(() => {
-  const { translatesStore }: { translatesStore: TranslatesStore } = useStores();
+  const {
+    translatesStore,
+    propertiesStore,
+  }: {
+    translatesStore: TranslatesStore;
+    propertiesStore: PropertiesStore;
+  } = useStores();
 
   const { translate } = translatesStore;
 
@@ -57,12 +67,48 @@ const IncomesPanel = observer(() => {
 
   const history = useHistory();
 
+  const now = new Date();
+  const firstDayOfNowMonth = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    1,
+    0,
+    0,
+    0
+  );
+
+  const [incomeType, setIncomeType] = React.useState(0);
+  const [filterDateFrom, setFilterDateFrom] = React.useState(
+    firstDayOfNowMonth
+  );
+  const [filterDateTo, setFilterDateTo] = React.useState(now);
+
   const buttonBackClick = () => {
     history.push(`/${MenuTypesEnum.Menu}`);
   };
 
   const buttonAddIncomeClick = () => {};
 
+  const onIncomeTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newIncomeType = event.target.value || '0';
+    setIncomeType(parseInt(newIncomeType, 10));
+  };
+
+  const pickerDateFromChange = (date: MaterialUiPickersDate) => {
+    const newValue = date || now;
+    setFilterDateFrom(newValue);
+  };
+
+  const pickerDateToChange = (date: MaterialUiPickersDate) => {
+    const newValue = date || now;
+    setFilterDateTo(newValue);
+  };
+
+  const buttonResetFilterClick = () => {
+    setIncomeType(0);
+    setFilterDateFrom(firstDayOfNowMonth);
+    setFilterDateTo(now);
+  };
   const buttonApplyFilterClick = () => {};
 
   return (
@@ -93,23 +139,80 @@ const IncomesPanel = observer(() => {
                 </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <TextField
-                  select
-                  fullWidth
-                  label={translate.IncomeType}
-                  value=""
-                >
-                  <MenuItem value={1}>{translate.Periodic}</MenuItem>
-                  <MenuItem value={2}>{translate.Fixed}</MenuItem>
-                </TextField>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  size="small"
-                  onClick={buttonApplyFilterClick}
-                >
-                  {translate.ApplyFilter}
-                </Button>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <TextField
+                      select
+                      fullWidth
+                      label={translate.IncomeType}
+                      value={incomeType}
+                      onChange={onIncomeTypeChange}
+                    >
+                      <MenuItem value={0}>{translate.All}</MenuItem>
+                      <MenuItem value={1}>{translate.Periodic}</MenuItem>
+                      <MenuItem value={2}>{translate.Fixed}</MenuItem>
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <DateTimePicker
+                      controlType="date"
+                      fullWidth
+                      margin="normal"
+                      label={translate.DateFrom}
+                      format="dd/MM/yyyy"
+                      value={filterDateFrom}
+                      onChange={pickerDateFromChange}
+                      maxDate={filterDateTo}
+                      okLabel={translate.Select}
+                      cancelLabel={translate.Cancel}
+                      DialogProps={{
+                        className: propertiesStore.currentLanguage?.rtl
+                          ? css.pickersRtl
+                          : '',
+                      }}
+                    />
+                    <DateTimePicker
+                      controlType="date"
+                      fullWidth
+                      margin="normal"
+                      label={translate.DateTo}
+                      format="dd/MM/yyyy"
+                      value={filterDateTo}
+                      onChange={pickerDateToChange}
+                      minDate={filterDateFrom}
+                      maxDate={now}
+                      okLabel={translate.Select}
+                      cancelLabel={translate.Cancel}
+                      DialogProps={{
+                        className: propertiesStore.currentLanguage?.rtl
+                          ? css.pickersRtl
+                          : '',
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      fullWidth
+                      color="primary"
+                      variant="outlined"
+                      size="small"
+                      onClick={buttonResetFilterClick}
+                    >
+                      {translate.Reset}
+                    </Button>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      fullWidth
+                      color="primary"
+                      variant="contained"
+                      size="small"
+                      onClick={buttonApplyFilterClick}
+                    >
+                      {translate.ApplyFilter}
+                    </Button>
+                  </Grid>
+                </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </div>

@@ -66,8 +66,12 @@
   "Synchronization": "Синхронизация",
   
   "IncomesFilter": "Фильтр доходов",
+  "Reset": "Очистить",
   "ApplyFilter": "Применить фильтр",
   "IncomeType": "Тип дохода",
+  "All": "Все",
   "Periodic": "Периодический",
-  "Fixed": "Постоянный"
+  "Fixed": "Постоянный",
+  "DateFrom": "Дата с",
+  "DateTo": "Дата до"
 }

@@ -66,8 +66,12 @@
   "Synchronization": "Synchronization",
   
   "IncomesFilter": "Incomes filter",
+  "Reset": "Reset",
   "ApplyFilter": "Apply filter",
   "IncomeType": "Income type",
+  "All": "All",
   "Periodic": "Periodic",
-  "Fixed": "Fixed"
+  "Fixed": "Fixed",
+  "DateFrom": "Date from",
+  "DateTo": "Date to"
 }

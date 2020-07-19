@@ -1,3 +1,7 @@
 .addCurrencyCell {
   align-self: flex-end;
 }
+
+.addCurrencyCellWithError {
+  align-self: center;
+}

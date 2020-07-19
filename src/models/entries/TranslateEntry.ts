@@ -51,8 +51,12 @@ export default class TranslateEntry {
   Sync!: string;
   Synchronization!: string;
   IncomesFilter!: string;
+  Reset!: string;
   ApplyFilter!: string;
   IncomeType!: string;
+  All!: string;
   Periodic!: string;
   Fixed!: string;
+  DateFrom!: string;
+  DateTo!: string;
 }

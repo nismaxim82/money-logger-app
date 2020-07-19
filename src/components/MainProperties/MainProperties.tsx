@@ -147,7 +147,16 @@ const MainProperties = observer(
               ))}
             </FormikField>
           </Grid>
-          <Grid item xs={5} className={css.addCurrencyCell}>
+          <Grid
+            item
+            xs={5}
+            className={`${css.addCurrencyCell} ${
+              formik.errors.Currency && formik.touched.Currency
+                ? css.addCurrencyCellWithError
+                : ''
+            }
+                `}
+          >
             <Button
               fullWidth
               color="primary"

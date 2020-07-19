@@ -1,4 +1,3 @@
-import DateFnsUtils from '@date-io/date-fns';
 import {
   AppBar,
   Box,
@@ -16,26 +15,19 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import {
-  KeyboardDatePicker,
-  KeyboardTimePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { observer } from 'mobx-react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import enPickerLocale from 'date-fns/locale/en-US';
-import hePickerLocale from 'date-fns/locale/he';
-import ruPickerLocale from 'date-fns/locale/ru';
-import { MenuTypesEnum, LanguagesEnum } from '../../models/Enum';
+import { MenuTypesEnum } from '../../models/Enum';
 import CashStore from '../../stores/CashStore';
+import PropertiesStore from '../../stores/PropertiesStore';
+import TranslatesStore from '../../stores/TranslatesStore';
 import TypesStore from '../../stores/TypesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
+import DateTimePicker from '../DateTimePicker/DateTimePicker';
 import classes from './CashEditPanel.module.css';
-import TranslatesStore from '../../stores/TranslatesStore';
-import PropertiesStore from '../../stores/PropertiesStore';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -93,20 +85,6 @@ const CashEditPanel = observer((props: IProps) => {
   const [cashId, setCashId] = React.useState('');
   const [typeId, setTypeId] = React.useState('');
   const [cashCurrency, setCashCurrency] = React.useState('');
-  const [pickerLocale, setPickerLocale] = React.useState(enPickerLocale);
-
-  React.useEffect(() => {
-    if (propertiesStore.currentLanguage?.name === LanguagesEnum.English) {
-      setPickerLocale(enPickerLocale);
-    } else if (propertiesStore.currentLanguage?.name === LanguagesEnum.Hebrew) {
-      setPickerLocale(hePickerLocale);
-    } else if (
-      propertiesStore.currentLanguage?.name === LanguagesEnum.Russian
-    ) {
-      setPickerLocale(ruPickerLocale);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [propertiesStore.currentLanguage?.rtl]);
 
   const history = useHistory();
   React.useEffect(() => {
@@ -272,39 +250,39 @@ const CashEditPanel = observer((props: IProps) => {
                 </MenuItem>
               ))}
             </TextField>
-            <MuiPickersUtilsProvider locale={pickerLocale} utils={DateFnsUtils}>
-              <Grid container justify="space-around" className={css.datesGrid}>
-                <KeyboardDatePicker
-                  fullWidth
-                  margin="normal"
-                  label={translate.Date}
-                  format="dd/MM/yyyy"
-                  value={cashStore.cashToSave?.createdDate || createdDate}
-                  onChange={pickerDateChange}
-                  okLabel={translate.Select}
-                  cancelLabel={translate.Cancel}
-                  DialogProps={{
-                    className: propertiesStore.currentLanguage?.rtl
-                      ? css.pickersRtl
-                      : '',
-                  }}
-                />
-                <KeyboardTimePicker
-                  fullWidth
-                  margin="normal"
-                  label={translate.Time}
-                  value={cashStore.cashToSave?.createdDate || createdDate}
-                  onChange={pickerDateChange}
-                  okLabel={translate.Select}
-                  cancelLabel={translate.Cancel}
-                  DialogProps={{
-                    className: propertiesStore.currentLanguage?.rtl
-                      ? css.pickersRtl
-                      : '',
-                  }}
-                />
-              </Grid>
-            </MuiPickersUtilsProvider>
+            <Grid container justify="space-around" className={css.datesGrid}>
+              <DateTimePicker
+                controlType="date"
+                fullWidth
+                margin="normal"
+                label={translate.Date}
+                format="dd/MM/yyyy"
+                value={cashStore.cashToSave?.createdDate || createdDate}
+                onChange={pickerDateChange}
+                okLabel={translate.Select}
+                cancelLabel={translate.Cancel}
+                DialogProps={{
+                  className: propertiesStore.currentLanguage?.rtl
+                    ? css.pickersRtl
+                    : '',
+                }}
+              />
+              <DateTimePicker
+                controlType="time"
+                fullWidth
+                margin="normal"
+                label={translate.Time}
+                value={cashStore.cashToSave?.createdDate || createdDate}
+                onChange={pickerDateChange}
+                okLabel={translate.Select}
+                cancelLabel={translate.Cancel}
+                DialogProps={{
+                  className: propertiesStore.currentLanguage?.rtl
+                    ? css.pickersRtl
+                    : '',
+                }}
+              />
+            </Grid>
             <TextField
               fullWidth
               className={css.descriptionInput}

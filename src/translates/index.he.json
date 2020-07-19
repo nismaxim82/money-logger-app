@@ -66,8 +66,12 @@
   "Synchronization": "סנכרון",
   
   "IncomesFilter": "מסנן הכנסות",
+  "Reset": "אתחול",
   "ApplyFilter": "החל מסנן",
   "IncomeType": "סוג הכנסה",
+  "All": "הכל",
   "Periodic": "תקופתי",
-  "Fixed": "תוקן"
+  "Fixed": "תוקן",
+  "DateFrom": "תאריך מ",
+  "DateTo": "תאריך ל"
 }
