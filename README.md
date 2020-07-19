@@ -61,15 +61,15 @@ you must configure synchronization with the server.<br />
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).<br />
 This project uses:
-### [Typescript for typing](https://www.typescriptlang.org/)<br />
-### [eslint to find and auto fix problem code](https://eslint.org/)<br />
-### [the Material-UI library to display controls.](https://material-ui.com/)<br />
-### [date-fns for formatting and localizing date and time](https://date-fns.org/)<br />
-### [MobX global state](https://mobx.js.org/README.html)<br />
-### [React router for routing](https://reactrouter.com/)<br />
-### [Formik and Yup for managing forms and their validation](https://formik.org/)<br />
-### [uuid for guid id generation](https://www.npmjs.com/package/uuid)<br />
-### [gh-pages to deploy this project on the Github](https://www.npmjs.com/package/gh-pages)
+#### [Typescript for typing](https://www.typescriptlang.org/)<br />
+#### [eslint to find and auto fix problem code](https://eslint.org/)<br />
+#### [the Material-UI library to display controls.](https://material-ui.com/)<br />
+#### [date-fns for formatting and localizing date and time](https://date-fns.org/)<br />
+#### [MobX global state](https://mobx.js.org/README.html)<br />
+#### [React router for routing](https://reactrouter.com/)<br />
+#### [Formik and Yup for managing forms and their validation](https://formik.org/)<br />
+#### [uuid for guid id generation](https://www.npmjs.com/package/uuid)<br />
+#### [gh-pages to deploy this project on the Github](https://www.npmjs.com/package/gh-pages)
 
 ### How to build and run
 
@@ -80,8 +80,7 @@ In the terminal window you can write:<br />
   ./rc b    - to build an optimized version for publish on your server.
   ./rc t    - to run a tests.
 ```
-<br />
-Also you can use similar commands from the package.json:<br />
+#### Also you can use similar commands from the package.json:
 ```
   yarn start    - to run a development version.
   yarn build    - to build an optimized version for publish on your server.
