@@ -3,7 +3,7 @@ import enLocale from 'date-fns/locale/en-US';
 import heLocale from 'date-fns/locale/he';
 import ruLocale from 'date-fns/locale/ru';
 import DateFnsUtils from '@date-io/date-fns';
-import { LanguagesEnum } from '../models/Enum';
+import { LanguagesEnum, LanguageTitleEnum } from '../models/Enum';
 import CacheService from '../services/CacheService';
 import LanguageEntry from '../models/entries/LanguageEntry';
 import CurrencyEntry from '../models/entries/CurrencyEntry';
@@ -72,9 +72,31 @@ export default class PropertiesStore {
     }
     let currentLanguage = this.languages.find((l) => l.name === language);
     if (!currentLanguage) {
+      let defaultLanguageName = LanguagesEnum.English;
+      let defaultLanguageTitle = LanguageTitleEnum.English;
+      let defaultLanguageFounded = false;
+      navigator.languages.forEach((l: string, i: number) => {
+        if (!defaultLanguageFounded) {
+          const lSplitted = l.split('-').map((lpart) => lpart.toLowerCase());
+          if (
+            lSplitted[0] === 'en' ||
+            lSplitted[0] === 'he' ||
+            lSplitted[0] === 'ru'
+          ) {
+            if (lSplitted[0] === 'he') {
+              defaultLanguageName = LanguagesEnum.Hebrew;
+              defaultLanguageTitle = LanguageTitleEnum.Hebrew;
+            } else if (lSplitted[0] === 'ru') {
+              defaultLanguageName = LanguagesEnum.Russian;
+              defaultLanguageTitle = LanguageTitleEnum.Russian;
+            }
+            defaultLanguageFounded = true;
+          }
+        }
+      });
       currentLanguage = new LanguageEntry();
-      currentLanguage.name = LanguagesEnum.English;
-      currentLanguage.title = 'English';
+      currentLanguage.name = defaultLanguageName;
+      currentLanguage.title = defaultLanguageTitle;
     }
     this.currentLanguage = currentLanguage;
     this.formatsStore.localeChanged(this.currentLanguage.name);

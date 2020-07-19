@@ -1,7 +1,7 @@
 {
   "name": "money-logger-app",
   "homepage": "https://nismaxim82.github.io/money-logger-app",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "1.x",

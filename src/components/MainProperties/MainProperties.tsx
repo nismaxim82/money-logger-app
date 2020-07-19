@@ -82,6 +82,13 @@ const MainProperties = observer(
     }));
 
     React.useEffect(() => {
+      if (propertiesStore.currentLanguage) {
+        translatesStore.loadTranslate(propertiesStore.currentLanguage.name);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [propertiesStore.currentLanguage?.name]);
+
+    React.useEffect(() => {
       if (propertiesStore.currentLanguage?.name) {
         formik.setFieldValue('Language', propertiesStore.currentLanguage?.name);
       }

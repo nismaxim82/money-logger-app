@@ -27,6 +27,12 @@ export enum LanguagesEnum {
   Russian = 'ru-RU',
 }
 
+export enum LanguageTitleEnum {
+  English = 'English',
+  Hebrew = 'עברית',
+  Russian = 'Русский',
+}
+
 export enum PeriodTypeEnum {
   Custom = 1,
   Daily = 2,
