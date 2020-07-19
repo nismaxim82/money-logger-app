@@ -75,7 +75,7 @@ export default class PropertiesStore {
       let defaultLanguageName = LanguagesEnum.English;
       let defaultLanguageTitle = LanguageTitleEnum.English;
       let defaultLanguageFounded = false;
-      navigator.languages.forEach((l: string, i: number) => {
+      navigator.languages.forEach((l: string) => {
         if (!defaultLanguageFounded) {
           const lSplitted = l.split('-').map((lpart) => lpart.toLowerCase());
           if (

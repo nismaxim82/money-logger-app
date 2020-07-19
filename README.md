@@ -1,44 +1,88 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Money logger app
 
-## Available Scripts
+For cash flow and expense management on your mobile.
 
-In the project directory, you can run:
+[Web app can be viewed here.](https://nismaxim82.github.io/money-logger-app/)
 
-### `yarn start`
+### Сreating your own payment types with their unique icons
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+In the third tab you can create / edit your own payment type with its unique color and icon.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Creation of payment for a specific type
 
-### `yarn test`
+In the first tab you can click on any created or predefined type,<br />
+quickly enter the amount of payment and press ↵ on the mobile keyboard to save payment.<br />
+If you want you can change the date / time and provide the payment description here.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### View and manipulate all payments for the selected period
 
-### `yarn build`
+In the second tab you can change selected period,<br />
+enter a search text to find all payments for this period or search text.<br />
+You can click on the specific payment row to edit this payment data.<br />
+You can change view type of payments, table or diagram.<br />
+Also here you see the total amount of payments for the selected period or search and overall global balance.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## More tab
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+In the fourth tab you can change your **Main properties**, **generate Reports**,<br />
+**add Incomes**, **specify server synchronization settings**.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Main properties
 
-### `yarn eject`
+In this panel you can change the language of the application and the selected default currency.<br />
+**Default currency** is a currency that will be selected by default when creating a payment.<br />
+Also in this currency displays the total amount of payments and the total balance.<br />
+When you create a payment, the application receives all the courses of your currencies<br />
+and saves them for this day.<br />
+If in the future you change the default currency,<br />
+you will see the total amount of payments and the balance in the selected currency.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Reports
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+In this panel you can generate HTML and PDF reports by selected period.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Incomes
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Here you can see all your contributed income.
+You can create / edit / delete you incomes here.
+Income can be of two types: periodic and fixed one-time.
 
-## Learn More
+### Sync
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Here you can determine how you want to synchronize with the server.<br />
+By default, the application runs locally without a server.<br />
+All data is stored in local storage.<br />
+But if you do not want to lose your entered data<br />
+you must configure synchronization with the server.<br />
+**All your saved data is confidential and private.**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+
+## For developers
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).<br />
+This project uses [Typescript for typing](https://www.typescriptlang.org/)
+This project uses [eslint to find and auto fix problem code](https://eslint.org/)
+This project uses [the Material-UI library to display controls.](https://material-ui.com/)<br />
+This project uses [date-fns for formatting and localizing date and time](https://date-fns.org/)
+This project uses [MobX global state](https://mobx.js.org/README.html)
+This project uses [React router for routing](https://reactrouter.com/)
+This project uses [Formik and Yup for managing forms and their validation](https://formik.org/)
+This project uses [uuid for guid id generation](https://www.npmjs.com/package/uuid)
+This project uses [gh-pages to deploy this project on the Github](https://www.npmjs.com/package/gh-pages)
+
+### How to build and run
+
+In the root of project folder you have rc.bat.<br />
+In the terminal window you can write:<br />
+&nbsp;&nbsp;&nbsp;./rc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to run a development version.<br />
+&nbsp;&nbsp;&nbsp;./rc b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to build an optimized version for publish on your server.<br />
+&nbsp;&nbsp;&nbsp;./rc t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to run a tests.<br />
+<br />
+Also you can use similar commands from the package.json:
+&nbsp;&nbsp;&nbsp;yarn start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to run a development version.<br />
+&nbsp;&nbsp;&nbsp;yarn build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to build an optimized version for publish on your server.<br />
+&nbsp;&nbsp;&nbsp;yarn test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to run a tests.<br />
+&nbsp;&nbsp;&nbsp;yarn deploy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - to build an optimized version and publish it on the Github pages.<br />
+<br />
+What's the difference between ./rc and yarn commands -<br />
+./rc will open a new terminal window outside the developer IDE.
