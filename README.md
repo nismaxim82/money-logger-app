@@ -44,7 +44,7 @@ In this panel you can generate HTML and PDF reports by selected period.
 ### Incomes
 
 Here you can see all your contributed income.<br />
-You can create / edit / delete you incomes here.<br />
+You can create / edit / delete you incomes.<br />
 Income can be of two types: periodic and fixed one-time.
 
 ### Sync
@@ -60,32 +60,33 @@ you must configure synchronization with the server.<br />
 ## For developers
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).<br />
-This project uses [Typescript for typing](https://www.typescriptlang.org/)<br />
-This project uses [eslint to find and auto fix problem code](https://eslint.org/)<br />
-This project uses [the Material-UI library to display controls.](https://material-ui.com/)<br />
-This project uses [date-fns for formatting and localizing date and time](https://date-fns.org/)<br />
-This project uses [MobX global state](https://mobx.js.org/README.html)<br />
-This project uses [React router for routing](https://reactrouter.com/)<br />
-This project uses [Formik and Yup for managing forms and their validation](https://formik.org/)<br />
-This project uses [uuid for guid id generation](https://www.npmjs.com/package/uuid)<br />
-This project uses [gh-pages to deploy this project on the Github](https://www.npmjs.com/package/gh-pages)
+This project uses:
+### [Typescript for typing](https://www.typescriptlang.org/)<br />
+### [eslint to find and auto fix problem code](https://eslint.org/)<br />
+### [the Material-UI library to display controls.](https://material-ui.com/)<br />
+### [date-fns for formatting and localizing date and time](https://date-fns.org/)<br />
+### [MobX global state](https://mobx.js.org/README.html)<br />
+### [React router for routing](https://reactrouter.com/)<br />
+### [Formik and Yup for managing forms and their validation](https://formik.org/)<br />
+### [uuid for guid id generation](https://www.npmjs.com/package/uuid)<br />
+### [gh-pages to deploy this project on the Github](https://www.npmjs.com/package/gh-pages)
 
 ### How to build and run
 
 In the root of project folder you have rc.bat.<br />
 In the terminal window you can write:<br />
 ```
-  ./rc      - to run a development version.<br />
-  ./rc b    - to build an optimized version for publish on your server.<br />
-  ./rc t    - to run a tests.<br />
+  ./rc      - to run a development version.
+  ./rc b    - to build an optimized version for publish on your server.
+  ./rc t    - to run a tests.
 ```
 <br />
-Also you can use similar commands from the package.json:
+Also you can use similar commands from the package.json:<br />
 ```
-  yarn start    - to run a development version.<br />
-  yarn build    - to build an optimized version for publish on your server.<br />
-  yarn test     - to run a tests.<br />
-  yarn deploy   - to build an optimized version and publish it on the Github pages.<br />
+  yarn start    - to run a development version.
+  yarn build    - to build an optimized version for publish on your server.
+  yarn test     - to run a tests.
+  yarn deploy   - to build an optimized version and publish it on the Github pages.
 ```
 <br />
 **What's the difference between ./rc and yarn commands**<br />
