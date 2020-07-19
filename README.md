@@ -63,7 +63,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 This project uses:
 ##### [Typescript for typing](https://www.typescriptlang.org/)
 ##### [eslint to find and auto fix problem code](https://eslint.org/)
-##### [Material-UI library to display controls.](https://material-ui.com/)
+##### [Material-UI library to display controls](https://material-ui.com/)
 ##### [date-fns for formatting and localizing date and time](https://date-fns.org/)
 ##### [MobX global state](https://mobx.js.org/README.html)
 ##### [React router for routing](https://reactrouter.com/)
@@ -72,6 +72,13 @@ This project uses:
 ##### [gh-pages to deploy this project on the Github](https://www.npmjs.com/package/gh-pages)
 
 ### How to build and run
+
+The first time after downloading the project you need to install the libraries.<br />
+Open terminal or command prompt window from the root of the project.
+In the terminal type:<br />
+```
+  yarn install
+```
 
 In the root of project folder you have rc.bat.<br />
 In the terminal window you can write:<br />
