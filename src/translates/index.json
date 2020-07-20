@@ -73,5 +73,7 @@
   "Periodic": "Periodic",
   "Fixed": "Fixed",
   "DateFrom": "Date from",
-  "DateTo": "Date to"
+  "DateTo": "Date to",
+  "IncomeEdit": "Income edit",
+  "IncomeNew": "New income"
 }

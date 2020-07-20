@@ -1,18 +1,13 @@
-.modalContainer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-}
-
 .emptyBox {
   flex: 1;
 }
 
-.body {
+.filterHeaderContainer {
+  display: flex;
   flex: 1;
-  overflow: auto;
+  align-items: center;
+}
+
+.fitlerHeaderTitle {
+  flex: 1;
 }

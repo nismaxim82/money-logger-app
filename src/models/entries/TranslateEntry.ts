@@ -59,4 +59,6 @@ export default class TranslateEntry {
   Fixed!: string;
   DateFrom!: string;
   DateTo!: string;
+  IncomeEdit!: string;
+  IncomeNew!: string;
 }

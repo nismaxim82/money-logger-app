@@ -1,17 +1,13 @@
 import {
-  AppBar,
   Box,
   createStyles,
-  Fade,
   Grid,
   Icon,
   IconButton,
   makeStyles,
   MenuItem,
-  Slide,
   TextField,
   Theme,
-  Toolbar,
   Typography,
   useTheme,
 } from '@material-ui/core';
@@ -27,25 +23,13 @@ import TypesStore from '../../stores/TypesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import DateTimePicker from '../DateTimePicker/DateTimePicker';
+import PanelBase from '../PanelBase/PanelBase';
 import classes from './CashEditPanel.module.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    modalContainer: {
-      zIndex: theme.zIndex.modal,
-      background: theme.palette.background.paper,
-    },
-    firstBar: {
-      background: theme.palette.primary.light,
-    },
-    secondBar: {
-      background: theme.palette.primary.dark,
-    },
     toolbarIcon: {
       color: theme.palette.background.default,
-    },
-    body: {
-      padding: theme.spacing(2),
     },
     selectTypeIcon: {
       marginRight: theme.spacing(2),
@@ -195,142 +179,137 @@ const CashEditPanel = observer((props: IProps) => {
   }, [cashStore.cashToSave, propertiesStore.defaultCurrency]);
 
   return (
-    <Fade in timeout={1000}>
-      <Slide direction="up" in mountOnEnter unmountOnExit timeout={300}>
-        <div className={css.modalContainer}>
-          <AppBar position="static" className={css.firstBar}>
-            <Toolbar>
-              <Typography variant="h6">
-                {cashId ? translate.PaymentEdit : translate.PaymentNew}
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <AppBar position="static" color="primary" className={css.secondBar}>
-            <Toolbar>
-              <Box className={css.emptyBox} />
-              {cashId && (
-                <IconButton onClick={deleteCash}>
-                  <Icon className={css.toolbarIcon}>delete_forever</Icon>
-                </IconButton>
-              )}
-              <IconButton onClick={cancelEdit}>
-                <Icon className={css.toolbarIcon}>close</Icon>
-              </IconButton>
-              <IconButton onClick={saveEdit}>
-                <Icon className={css.toolbarIcon}>done</Icon>
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <div className={css.body}>
-            <TextField
-              error={!cashStore.cashToSave?.typeName}
-              select
-              fullWidth
-              label={translate.PaymentType}
-              className={css.dialogSelect}
-              value={cashStore.cashToSave?.typeName || ''}
-              onChange={selectTypeChange}
-              helperText={
-                !cashStore.cashToSave?.typeName
-                  ? translate.PaymentTypeIsRequired
-                  : ''
-              }
-            >
-              {typesStore.types.map((type) => (
-                <MenuItem key={type.name} value={type.name}>
-                  <div className={css.dialogSelectBox}>
-                    <Icon
-                      className={css.selectTypeIcon}
-                      style={{ color: getIconColor(type.iconColor) }}
-                    >
-                      {type.icon}
-                    </Icon>
-                    <span>{type.label}</span>
-                  </div>
-                </MenuItem>
-              ))}
-            </TextField>
-            <Grid container justify="space-around" className={css.datesGrid}>
-              <DateTimePicker
-                controlType="date"
-                fullWidth
-                margin="normal"
-                label={translate.Date}
-                format="dd/MM/yyyy"
-                value={cashStore.cashToSave?.createdDate || createdDate}
-                onChange={pickerDateChange}
-                okLabel={translate.Select}
-                cancelLabel={translate.Cancel}
-                DialogProps={{
-                  className: propertiesStore.currentLanguage?.rtl
-                    ? css.pickersRtl
-                    : '',
-                }}
-              />
-              <DateTimePicker
-                controlType="time"
-                fullWidth
-                margin="normal"
-                label={translate.Time}
-                value={cashStore.cashToSave?.createdDate || createdDate}
-                onChange={pickerDateChange}
-                okLabel={translate.Select}
-                cancelLabel={translate.Cancel}
-                DialogProps={{
-                  className: propertiesStore.currentLanguage?.rtl
-                    ? css.pickersRtl
-                    : '',
-                }}
-              />
-            </Grid>
-            <TextField
-              fullWidth
-              className={css.descriptionInput}
-              label={translate.Description}
-              value={cashStore.cashToSave?.description || ''}
-              onChange={changeDescriptionField}
-              onKeyUp={descriptionKeyUp}
-              inputProps={{ 'data-prop-name': 'description' }}
-            />
-            <div className={css.totalContainer}>
-              <TextField
-                inputRef={totalInputRef}
-                error={!cashStore.cashToSave?.total}
-                fullWidth
-                className={css.totalInput}
-                label={translate.PaymentTotal}
-                value={cashStore.cashToSave?.total || ''}
-                onChange={changeTotalField}
-                onFocus={totalFieldFocus}
-                onKeyUp={submitOnEnterKeyUp}
-                type="number"
-                inputProps={{ 'data-prop-name': 'total' }}
-                helperText={
-                  !cashStore.cashToSave?.total
-                    ? translate.PaymentTotalIsRequired
-                    : ''
-                }
-              />
-              <TextField
-                fullWidth
-                select
-                className={css.currencySelect}
-                label={translate.Currency}
-                value={cashCurrency}
-                onChange={changeCurrencyField}
-                inputProps={{ 'data-prop-name': 'currency' }}
-              >
-                {propertiesStore.currencies.map((c) => (
-                  <MenuItem key={c.name} value={c.name}>
-                    {c.symbol}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-          </div>
+    <PanelBase
+      firstBarChildren={
+        <Typography variant="h6">
+          {cashId ? translate.PaymentEdit : translate.PaymentNew}
+        </Typography>
+      }
+      secondBarChildren={
+        <>
+          <Box className={css.emptyBox} />
+          {cashId && (
+            <IconButton onClick={deleteCash}>
+              <Icon className={css.toolbarIcon}>delete_forever</Icon>
+            </IconButton>
+          )}
+          <IconButton onClick={cancelEdit}>
+            <Icon className={css.toolbarIcon}>close</Icon>
+          </IconButton>
+          <IconButton onClick={saveEdit}>
+            <Icon className={css.toolbarIcon}>done</Icon>
+          </IconButton>
+        </>
+      }
+    >
+      <>
+        <TextField
+          error={!cashStore.cashToSave?.typeName}
+          select
+          fullWidth
+          label={translate.PaymentType}
+          className={css.dialogSelect}
+          value={cashStore.cashToSave?.typeName || ''}
+          onChange={selectTypeChange}
+          helperText={
+            !cashStore.cashToSave?.typeName
+              ? translate.PaymentTypeIsRequired
+              : ''
+          }
+        >
+          {typesStore.types.map((type) => (
+            <MenuItem key={type.name} value={type.name}>
+              <div className={css.dialogSelectBox}>
+                <Icon
+                  className={css.selectTypeIcon}
+                  style={{ color: getIconColor(type.iconColor) }}
+                >
+                  {type.icon}
+                </Icon>
+                <span>{type.label}</span>
+              </div>
+            </MenuItem>
+          ))}
+        </TextField>
+        <Grid container justify="space-around" className={css.datesGrid}>
+          <DateTimePicker
+            controlType="date"
+            fullWidth
+            margin="normal"
+            label={translate.Date}
+            format="dd/MM/yyyy"
+            value={cashStore.cashToSave?.createdDate || createdDate}
+            onChange={pickerDateChange}
+            okLabel={translate.Select}
+            cancelLabel={translate.Cancel}
+            DialogProps={{
+              className: propertiesStore.currentLanguage?.rtl
+                ? css.pickersRtl
+                : '',
+            }}
+          />
+          <DateTimePicker
+            controlType="time"
+            fullWidth
+            margin="normal"
+            label={translate.Time}
+            value={cashStore.cashToSave?.createdDate || createdDate}
+            onChange={pickerDateChange}
+            okLabel={translate.Select}
+            cancelLabel={translate.Cancel}
+            DialogProps={{
+              className: propertiesStore.currentLanguage?.rtl
+                ? css.pickersRtl
+                : '',
+            }}
+          />
+        </Grid>
+        <TextField
+          fullWidth
+          className={css.descriptionInput}
+          label={translate.Description}
+          value={cashStore.cashToSave?.description || ''}
+          onChange={changeDescriptionField}
+          onKeyUp={descriptionKeyUp}
+          inputProps={{ 'data-prop-name': 'description' }}
+        />
+        <div className={css.totalContainer}>
+          <TextField
+            inputRef={totalInputRef}
+            error={!cashStore.cashToSave?.total}
+            fullWidth
+            className={css.totalInput}
+            label={translate.PaymentTotal}
+            value={cashStore.cashToSave?.total || ''}
+            onChange={changeTotalField}
+            onFocus={totalFieldFocus}
+            onKeyUp={submitOnEnterKeyUp}
+            type="number"
+            inputProps={{ 'data-prop-name': 'total' }}
+            helperText={
+              !cashStore.cashToSave?.total
+                ? translate.PaymentTotalIsRequired
+                : ''
+            }
+          />
+          <TextField
+            fullWidth
+            select
+            className={css.currencySelect}
+            label={translate.Currency}
+            value={cashCurrency}
+            onChange={changeCurrencyField}
+            inputProps={{ 'data-prop-name': 'currency' }}
+          >
+            {propertiesStore.currencies.map((c) => (
+              <MenuItem key={c.name} value={c.name}>
+                {c.symbol}
+              </MenuItem>
+            ))}
+          </TextField>
         </div>
-      </Slide>
-    </Fade>
+      </>
+    </PanelBase>
   );
 });
 

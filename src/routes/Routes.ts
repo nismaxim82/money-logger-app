@@ -7,6 +7,7 @@ import TypeEditPanel from '../components/TypeEditPanel/TypeEditPanel';
 import CashEditPanel from '../components/CashEditPanel/CashEditPanel';
 import PropertiesPanel from '../components/PropertiesPanel/PropertiesPanel';
 import IncomesPanel from '../components/IncomesPanel/IncomesPanel';
+import IncomeEditPanel from '../components/IncomeEditPanel/IncomeEditPanel';
 
 const routes = [
   {
@@ -68,6 +69,16 @@ const routes = [
     path: `/${MenuTypesEnum.Menu}/${MenuSubTypesEnum.Incomes}`,
     exact: true,
     components: IncomesPanel,
+  },
+  {
+    path: `/${MenuTypesEnum.Menu}/${MenuSubTypesEnum.Incomes}/add`,
+    exact: true,
+    components: IncomeEditPanel,
+  },
+  {
+    path: `/${MenuTypesEnum.Menu}/${MenuSubTypesEnum.Incomes}/edit/:id`,
+    exact: true,
+    components: IncomeEditPanel,
   },
 ];
 
