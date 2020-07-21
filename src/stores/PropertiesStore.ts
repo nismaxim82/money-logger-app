@@ -151,7 +151,7 @@ export default class PropertiesStore {
     return result;
   };
 
-  @action saveFirstTimeOptions = async (
+  @action saveMainProperties = async (
     translate: TranslateEntry,
     languageName: string,
     currencyName: string

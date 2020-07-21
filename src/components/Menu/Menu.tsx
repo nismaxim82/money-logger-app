@@ -98,69 +98,86 @@ const Menu = observer(() => {
 
   const cashesByPeriod = cashStore.getCashesByPeriod(cashStore.cashes);
 
+  useEffect(() => {
+    if (
+      translatesStore.translateLoaded &&
+      propertiesStore.currentLanguage?.name
+    ) {
+      appStore.setLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [propertiesStore.currentLanguage?.name, translatesStore.translateLoaded]);
+
   return (
     <>
-      <AppBar position="static" className={css.firstBar}>
-        <Toolbar>
-          {appStore.selectedMenuIndex === 0 && (
-            <Typography variant="h6" className={css.headerTitle}>
-              {translate.AddPayment}
-            </Typography>
-          )}
-          {appStore.selectedMenuIndex === 1 && (
-            <Box className={css.headerBox}>
-              <IconButton>
-                <MenuIcon className={css.menuIcon} />
-              </IconButton>
-              <Button
-                className={css.comboButton}
-                endIcon={<ArrowDropDownIcon />}
-              >
-                <span className={css.comboButtonTextBox}>
-                  <span>
-                    {propertiesStore.dateFns.format(
-                      cashStore.cashPeriodFilter.from,
-                      'MMMM yyyy'
-                    )}
-                  </span>
-                  <span>
-                    {Helpers.formatString(
-                      translate.RecordsN,
-                      cashesByPeriod.length
-                    )}
-                  </span>
-                </span>
-              </Button>
-              <IconButton>
-                <SearchIcon className={css.searchIcon} />
-              </IconButton>
-            </Box>
-          )}
-          {appStore.selectedMenuIndex === 2 && (
-            <Typography variant="h6" className={css.headerTitle}>
-              {translate.Types}
-            </Typography>
-          )}
-          {appStore.selectedMenuIndex === 3 && (
-            <Typography variant="h6" className={css.headerTitle}>
-              {translate.More}
-            </Typography>
-          )}
-        </Toolbar>
-      </AppBar>
-      <AppBar position="static" color="primary" className={css.secondBar}>
-        <Tabs
-          value={appStore.selectedMenuIndex}
-          onChange={menuTabChanged}
-          aria-label="menu tabs"
-          variant="fullWidth"
-        >
-          <LinkTab {...menuTabProps('cash', '/')} icon={<AttachMoneyIcon />} />
-          <LinkTab {...menuTabProps('records')} icon={<MenuBookIcon />} />
-          <LinkTab {...menuTabProps('types')} icon={<ListIcon />} />
-          <LinkTab {...menuTabProps('menu')} icon={<MoreHorizIcon />} />
-        </Tabs>
-      </AppBar>
+      {!appStore.loading && (
+        <>
+          <AppBar position="static" className={css.firstBar}>
+            <Toolbar>
+              {appStore.selectedMenuIndex === 0 && (
+                <Typography variant="h6" className={css.headerTitle}>
+                  {translate.AddPayment}
+                </Typography>
+              )}
+              {appStore.selectedMenuIndex === 1 && (
+                <Box className={css.headerBox}>
+                  <IconButton>
+                    <MenuIcon className={css.menuIcon} />
+                  </IconButton>
+                  <Button
+                    className={css.comboButton}
+                    endIcon={<ArrowDropDownIcon />}
+                  >
+                    <span className={css.comboButtonTextBox}>
+                      <span>
+                        {propertiesStore.dateFns.format(
+                          cashStore.cashPeriodFilter.from,
+                          'MMMM yyyy'
+                        )}
+                      </span>
+                      <span>
+                        {Helpers.formatString(
+                          translate.RecordsN,
+                          cashesByPeriod.length
+                        )}
+                      </span>
+                    </span>
+                  </Button>
+                  <IconButton>
+                    <SearchIcon className={css.searchIcon} />
+                  </IconButton>
+                </Box>
+              )}
+              {appStore.selectedMenuIndex === 2 && (
+                <Typography variant="h6" className={css.headerTitle}>
+                  {translate.Types}
+                </Typography>
+              )}
+              {appStore.selectedMenuIndex === 3 && (
+                <Typography variant="h6" className={css.headerTitle}>
+                  {translate.More}
+                </Typography>
+              )}
+            </Toolbar>
+          </AppBar>
+          <AppBar position="static" color="primary" className={css.secondBar}>
+            <Tabs
+              value={appStore.selectedMenuIndex}
+              onChange={menuTabChanged}
+              aria-label="menu tabs"
+              variant="fullWidth"
+            >
+              <LinkTab
+                {...menuTabProps('cash', '/')}
+                icon={<AttachMoneyIcon />}
+              />
+              <LinkTab {...menuTabProps('records')} icon={<MenuBookIcon />} />
+              <LinkTab {...menuTabProps('types')} icon={<ListIcon />} />
+              <LinkTab {...menuTabProps('menu')} icon={<MoreHorizIcon />} />
+            </Tabs>
+          </AppBar>
+        </>
+      )}
     </>
   );
 });

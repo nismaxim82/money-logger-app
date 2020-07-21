@@ -1,12 +1,8 @@
 import {
-  AppBar,
   Button,
   createStyles,
-  Fade,
   makeStyles,
-  Slide,
   Theme,
-  Toolbar,
   Typography,
 } from '@material-ui/core';
 import { observer } from 'mobx-react';
@@ -15,6 +11,7 @@ import TranslatesStore from '../../stores/TranslatesStore';
 import useStores from '../../stores/UseStores';
 import Helpers from '../../utility/Helpers';
 import MainProperties from '../MainProperties/MainProperties';
+import PanelBase from '../PanelBase/PanelBase';
 import classes from './FirstTimeShowPanel.module.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -68,30 +65,28 @@ const FirstTimeShowPanel = observer(() => {
   };
 
   return (
-    <Fade in timeout={1000}>
-      <Slide direction="up" in mountOnEnter unmountOnExit timeout={300}>
-        <div className={css.modalContainer}>
-          <AppBar position="static" className={css.firstBar}>
-            <Toolbar>
-              <Typography variant="h6">{translate.MainProperties}</Typography>
-            </Toolbar>
-          </AppBar>
-          <div className={css.body}>
-            <MainProperties ref={mainPropertiesRef} />
-          </div>
-          <div className={css.footer}>
-            <Button
-              fullWidth
-              color="primary"
-              variant="contained"
-              onClick={buttonSaveProperties}
-            >
-              {translate.Save}
-            </Button>
-          </div>
+    <PanelBase
+      firstBarChildren={
+        <Typography variant="h6">{translate.MainProperties}</Typography>
+      }
+      footer={
+        <div className={css.footer}>
+          <Button
+            fullWidth
+            color="primary"
+            variant="contained"
+            onClick={buttonSaveProperties}
+          >
+            {translate.Save}
+          </Button>
         </div>
-      </Slide>
-    </Fade>
+      }
+    >
+      <>
+        {console.log('FirstTimeShowPanel')}
+        <MainProperties ref={mainPropertiesRef} />
+      </>
+    </PanelBase>
   );
 });
 

@@ -33,25 +33,31 @@ interface IProps {
   children: ReactNode;
   firstBarChildren?: ReactNode;
   secondBarChildren?: ReactNode;
+  footer?: ReactNode;
 }
 
 const PanelBase = React.memo((props: IProps) => {
   const styles = useStyles();
   const css = Helpers.combineStyles(styles, classes);
 
-  const { children, firstBarChildren, secondBarChildren } = props;
+  const { children, firstBarChildren, secondBarChildren, footer } = props;
 
   return (
     <Fade in timeout={1000}>
       <Slide direction="up" in mountOnEnter unmountOnExit timeout={300}>
         <div className={css.modalContainer}>
-          <AppBar position="static" className={css.firstBar}>
-            <Toolbar>{firstBarChildren}</Toolbar>
-          </AppBar>
-          <AppBar position="static" color="primary" className={css.secondBar}>
-            <Toolbar>{secondBarChildren}</Toolbar>
-          </AppBar>
+          {Boolean(firstBarChildren) && (
+            <AppBar position="static" className={css.firstBar}>
+              <Toolbar>{firstBarChildren}</Toolbar>
+            </AppBar>
+          )}
+          {Boolean(secondBarChildren) && (
+            <AppBar position="static" color="primary" className={css.secondBar}>
+              <Toolbar>{secondBarChildren}</Toolbar>
+            </AppBar>
+          )}
           <div className={css.body}>{children}</div>
+          {Boolean(footer) && footer}
         </div>
       </Slide>
     </Fade>

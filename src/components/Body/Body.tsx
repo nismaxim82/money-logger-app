@@ -50,11 +50,11 @@ const Body = observer(() => {
     );
   };
 
-  return (
+  return !appStore.loading ? (
     <div className={css.body}>
-      {routes.map((route, i) => (
+      {routes.map((route) => (
         // eslint-disable-next-line react/no-array-index-key
-        <RouteWithSubRoutes key={i} {...route} />
+        <RouteWithSubRoutes key={route.path} {...route} />
       ))}
       {showAddIcon() && (
         <Link to={getAddButtonLinkUrl()}>
@@ -70,6 +70,8 @@ const Body = observer(() => {
       )}
       {!propertiesStore.firstTimeOptionsSelected && <FirstTimeShowPanel />}
     </div>
+  ) : (
+    <></>
   );
 });
 

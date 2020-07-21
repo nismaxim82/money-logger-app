@@ -20,6 +20,7 @@ import { MenuTypesEnum } from '../../models/Enum';
 import useStores from '../../stores/UseStores';
 import TranslatesStore from '../../stores/TranslatesStore';
 import MainProperties from '../MainProperties/MainProperties';
+import PanelBase from '../PanelBase/PanelBase';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -66,31 +67,24 @@ const PropertiesPanel = observer(() => {
   };
 
   return (
-    <Fade in timeout={1000}>
-      <Slide direction="up" in mountOnEnter unmountOnExit timeout={300}>
-        <div className={css.modalContainer}>
-          <AppBar position="static" className={css.firstBar}>
-            <Toolbar>
-              <Typography variant="h6">{translate.MainProperties}</Typography>
-            </Toolbar>
-          </AppBar>
-          <AppBar position="static" color="primary" className={css.secondBar}>
-            <Toolbar>
-              <Box className={css.emptyBox} />
-              <IconButton onClick={cancelEdit}>
-                <Icon className={css.toolbarIcon}>close</Icon>
-              </IconButton>
-              <IconButton onClick={saveEdit}>
-                <Icon className={css.toolbarIcon}>done</Icon>
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <div className={css.body}>
-            <MainProperties ref={mainPropertiesRef} />
-          </div>
-        </div>
-      </Slide>
-    </Fade>
+    <PanelBase
+      firstBarChildren={
+        <Typography variant="h6">{translate.MainProperties}</Typography>
+      }
+      secondBarChildren={
+        <>
+          <Box className={css.emptyBox} />
+          <IconButton onClick={cancelEdit}>
+            <Icon className={css.toolbarIcon}>close</Icon>
+          </IconButton>
+          <IconButton onClick={saveEdit}>
+            <Icon className={css.toolbarIcon}>done</Icon>
+          </IconButton>
+        </>
+      }
+    >
+      <MainProperties ref={mainPropertiesRef} />
+    </PanelBase>
   );
 });
 

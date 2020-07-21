@@ -4,6 +4,7 @@ import {
   jssPreset,
   StylesProvider,
   ThemeProvider,
+  Theme,
 } from '@material-ui/core/styles';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
@@ -13,7 +14,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import * as AppSettings from '../../../package.json';
 import PropertiesStore from '../../stores/PropertiesStore';
 import useStores from '../../stores/UseStores';
-// import { enUS, heIL, ruRU } from '@material-ui/core/locale';
 import Body from '../Body/Body';
 import Menu from '../Menu/Menu';
 import classes from './ThemeCreator.module.css';
@@ -24,11 +24,11 @@ const jssScript = create({ plugins: [...jssPreset().plugins, rtl()] });
 const ThemeCreator = observer(() => {
   const { propertiesStore }: { propertiesStore: PropertiesStore } = useStores();
 
-  const [theme, setTheme] = React.useState(createMuiTheme({}));
+  const [theme, setTheme] = React.useState<Theme | null>(null);
   React.useEffect(() => {
     if (propertiesStore.currentLanguage) {
       const direction = !propertiesStore.currentLanguage?.rtl ? 'ltr' : 'rtl';
-      if (theme.direction !== direction) {
+      if (theme?.direction !== direction) {
         setTheme(
           createMuiTheme({
             direction,
@@ -42,7 +42,7 @@ const ThemeCreator = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [propertiesStore.currentLanguage?.rtl]);
 
-  return (
+  return theme ? (
     <ThemeProvider theme={theme}>
       <StylesProvider jss={jssScript}>
         <CssBaseline />
@@ -54,6 +54,8 @@ const ThemeCreator = observer(() => {
         </Router>
       </StylesProvider>
     </ThemeProvider>
+  ) : (
+    <></>
   );
 });
 

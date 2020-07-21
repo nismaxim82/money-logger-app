@@ -40,3 +40,9 @@ export enum PeriodTypeEnum {
   Monthly = 4,
   Year = 5,
 }
+
+export enum IncomeTypeEnum {
+  All = 0,
+  Periodic = 1,
+  Fixed = 2,
+}

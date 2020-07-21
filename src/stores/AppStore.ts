@@ -9,8 +9,13 @@ class AppStore {
 
   // NOTE: when application is change version, cache will be cleared
   @observable enableCache = true;
+  @observable loading = true;
   @observable selectedMenuIndex = 0;
   @observable selectedMenuUrl = '/';
+
+  @action setLoading = (loading: boolean) => {
+    this.loading = loading;
+  };
 
   @action setSelectedMenuIndex = (newValue: number) => {
     this.selectedMenuIndex = newValue;

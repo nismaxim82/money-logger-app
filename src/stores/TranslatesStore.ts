@@ -5,6 +5,7 @@ import Helpers from '../utility/Helpers';
 
 class TranslatesStore {
   @observable translate: TranslateEntry;
+  @observable translateLoaded = false;
 
   private cacheService: CacheService;
 
@@ -19,6 +20,7 @@ class TranslatesStore {
 
   @action loadTranslate = async (language: string) => {
     this.translate = Helpers.getTranslateByLanguage(language);
+    this.translateLoaded = true;
   };
 }
 

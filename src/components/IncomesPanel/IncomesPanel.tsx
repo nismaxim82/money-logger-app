@@ -19,7 +19,11 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { observer } from 'mobx-react';
 import React, { MouseEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { MenuSubTypesEnum, MenuTypesEnum } from '../../models/Enum';
+import {
+  MenuSubTypesEnum,
+  MenuTypesEnum,
+  IncomeTypeEnum,
+} from '../../models/Enum';
 import PropertiesStore from '../../stores/PropertiesStore';
 import TranslatesStore from '../../stores/TranslatesStore';
 import useStores from '../../stores/UseStores';
@@ -162,9 +166,13 @@ const IncomesPanel = observer(() => {
                 value={incomeType}
                 onChange={onIncomeTypeChange}
               >
-                <MenuItem value={0}>{translate.All}</MenuItem>
-                <MenuItem value={1}>{translate.Periodic}</MenuItem>
-                <MenuItem value={2}>{translate.Fixed}</MenuItem>
+                <MenuItem value={IncomeTypeEnum.All}>{translate.All}</MenuItem>
+                <MenuItem value={IncomeTypeEnum.Periodic}>
+                  {translate.Periodic}
+                </MenuItem>
+                <MenuItem value={IncomeTypeEnum.Fixed}>
+                  {translate.Fixed}
+                </MenuItem>
               </TextField>
             </Grid>
             <Grid item xs={12}>

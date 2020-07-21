@@ -48,10 +48,10 @@ const MainProperties = observer(
 
     const [saveErrors, setSaveErrors] = React.useState<Array<string>>([]);
 
-    const initialValues: IMainProperties = {
-      Language: '',
-      Currency: '',
-    };
+    const [initialValues] = React.useState<IMainProperties>({
+      Language: propertiesStore.currentLanguage.name,
+      Currency: propertiesStore.defaultCurrency.name,
+    });
 
     const formik = useFormik({
       initialValues,
@@ -60,7 +60,7 @@ const MainProperties = observer(
         Currency: Yup.string().required(translate.CurrencyIsRequired),
       }),
       onSubmit: async (values: IMainProperties) => {
-        const saveResult = await propertiesStore.saveFirstTimeOptions(
+        const saveResult = await propertiesStore.saveMainProperties(
           translate,
           values.Language,
           values.Currency
@@ -81,23 +81,6 @@ const MainProperties = observer(
       },
     }));
 
-    React.useEffect(() => {
-      if (propertiesStore.currentLanguage) {
-        translatesStore.loadTranslate(propertiesStore.currentLanguage.name);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [propertiesStore.currentLanguage?.name]);
-
-    React.useEffect(() => {
-      if (propertiesStore.currentLanguage?.name) {
-        formik.setFieldValue('Language', propertiesStore.currentLanguage?.name);
-      }
-      if (propertiesStore.defaultCurrency?.name) {
-        formik.setFieldValue('Currency', propertiesStore.defaultCurrency?.name);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [propertiesStore.currentLanguage, propertiesStore.defaultCurrency]);
-
     const [addNewCurrencyOpened, setAddNewCurrencyOpened] = React.useState(
       false
     );
@@ -116,29 +99,42 @@ const MainProperties = observer(
       setSaveErrors([]);
     };
 
+    const languagesItems = React.useRef(
+      propertiesStore.languages.map((l) => (
+        <MenuItem key={l.name} value={l.name}>
+          {l.title || l.name}
+        </MenuItem>
+      ))
+    );
+
     return (
       <form onSubmit={formik.handleSubmit} noValidate>
+        {console.log('%c MainProperties', 'color: red; font-weight: 700;')}
         <Grid container alignItems="flex-start" spacing={2}>
           <Grid item xs={12}>
             <FormikField
-              formik={formik}
               name="Language"
               label={translate.Language}
               select
+              values={formik.values}
+              errors={formik.errors}
+              touched={formik.touched}
+              handleChange={formik.handleChange}
+              handleBlur={formik.handleBlur}
             >
-              {propertiesStore.languages.map((l) => (
-                <MenuItem key={l.name} value={l.name}>
-                  {l.title || l.name}
-                </MenuItem>
-              ))}
+              {languagesItems.current}
             </FormikField>
           </Grid>
-          <Grid item xs={7}>
+          {/* <Grid item xs={7}>
             <FormikField
-              formik={formik}
               name="Currency"
               label={translate.Currency}
               select
+              values={formik.values}
+              errors={formik.errors}
+              touched={formik.touched}
+              handleChange={formik.handleChange}
+              handleBlur={formik.handleBlur}
             >
               {propertiesStore.currencies.map((c) => (
                 <MenuItem key={c.name} value={c.name}>
@@ -166,19 +162,19 @@ const MainProperties = observer(
             >
               {translate.AddNewCurrency}
             </Button>
-          </Grid>
+          </Grid> */}
         </Grid>
-        {addNewCurrencyOpened && (
+        {/* {addNewCurrencyOpened && (
           <CurrencyEditPanel
             onCancelEdit={addNewCurrencyPanelOnCancelEdit}
             onSaveEdit={addNewCurrencyPanelOnSaveEdit}
           />
-        )}
-        <SnackErrors
+        )} */}
+        {/* <SnackErrors
           open={saveErrors.length > 0}
           errors={saveErrors}
           onClose={closeErrors}
-        />
+        /> */}
       </form>
     );
   })
