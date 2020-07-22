@@ -82,10 +82,7 @@ const FirstTimeShowPanel = observer(() => {
         </div>
       }
     >
-      <>
-        {console.log('FirstTimeShowPanel')}
-        <MainProperties ref={mainPropertiesRef} />
-      </>
+      <MainProperties ref={mainPropertiesRef} />
     </PanelBase>
   );
 });

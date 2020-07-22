@@ -1,26 +1,22 @@
-import { observer } from 'mobx-react';
-import React from 'react';
 import {
+  Box,
+  createStyles,
+  Icon,
+  IconButton,
   makeStyles,
   Theme,
-  createStyles,
-  Fade,
-  AppBar,
-  Toolbar,
   Typography,
-  Slide,
-  IconButton,
-  Box,
-  Icon,
 } from '@material-ui/core';
+import { observer } from 'mobx-react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import classes from './PropertiesPanel.module.css';
-import Helpers from '../../utility/Helpers';
 import { MenuTypesEnum } from '../../models/Enum';
-import useStores from '../../stores/UseStores';
 import TranslatesStore from '../../stores/TranslatesStore';
+import useStores from '../../stores/UseStores';
+import Helpers from '../../utility/Helpers';
 import MainProperties from '../MainProperties/MainProperties';
 import PanelBase from '../PanelBase/PanelBase';
+import classes from './PropertiesPanel.module.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
