@@ -13,6 +13,7 @@ import Helpers from '../../utility/Helpers';
 import MainProperties from '../MainProperties/MainProperties';
 import PanelBase from '../PanelBase/PanelBase';
 import classes from './FirstTimeShowPanel.module.css';
+import TestForm from '../TestForm/TestForm';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -82,7 +83,8 @@ const FirstTimeShowPanel = observer(() => {
         </div>
       }
     >
-      <MainProperties ref={mainPropertiesRef} />
+      <TestForm />
+      {/* <MainProperties ref={mainPropertiesRef} /> */}
     </PanelBase>
   );
 });

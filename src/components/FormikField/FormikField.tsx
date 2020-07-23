@@ -5,6 +5,7 @@ import { useField } from 'formik';
 interface IProps extends StandardTextFieldProps {
   name: string;
   label?: string;
+  values?: any;
 }
 
 // const areEqual = (prevProps: any, nextProps: any) => {
@@ -21,18 +22,20 @@ interface IProps extends StandardTextFieldProps {
 // };
 
 const FormikField = React.memo((props: IProps) => {
-  const { name, label, children, fullWidth, ...otherProps } = props;
+  const { name, label, values, children, fullWidth, ...otherProps } = props;
 
-  const [field, meta] = useField({ name, type: name });
+  // const [field, meta] = useField({ name, type: name });
 
   console.log(`%c FormikField ${name}`, 'color: red');
   return (
     <TextField
       fullWidth={fullWidth !== undefined ? fullWidth : true}
+      name={name}
       label={label}
-      error={meta.touched && Boolean(meta.error)}
-      helperText={meta.error}
-      {...field}
+      // error={touched && Boolean(error)}
+      // helperText={error}
+      // {...field}
+      value={values[name]}
       {...otherProps}
     >
       {children}

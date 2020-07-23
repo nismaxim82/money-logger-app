@@ -6,7 +6,7 @@ import {
   createStyles,
   Theme,
 } from '@material-ui/core';
-import { useFormik, Formik, Form } from 'formik';
+import { useFormik, Formik, Form, FormikProvider, Field } from 'formik';
 import { observer } from 'mobx-react';
 import React, { forwardRef, useImperativeHandle } from 'react';
 import * as Yup from 'yup';
@@ -75,8 +75,6 @@ const MainProperties = observer(
     //   },
     // });
 
-    const formikRef = React.useRef<any>(null);
-
     const formSubmit = async (values: IMainProperties, actions: any) => {
       const saveResult = await propertiesStore.saveMainProperties(
         translate,
@@ -94,7 +92,7 @@ const MainProperties = observer(
 
     useImperativeHandle(ref, () => ({
       onSave() {
-        return formikRef.current.submitForm();
+        // return formikRef.current.submitForm();
         // return formik.submitForm();
       },
     }));
@@ -110,7 +108,7 @@ const MainProperties = observer(
     };
     const addNewCurrencyPanelOnSaveEdit = (selectedNewCurrencyName: string) => {
       setAddNewCurrencyOpened(false);
-      formikRef.current.setFieldValue('Currency', selectedNewCurrencyName);
+      // formikRef.current.setFieldValue('Currency', selectedNewCurrencyName);
       // formik.setFieldValue('Currency', selectedNewCurrencyName);
     };
 
@@ -135,7 +133,6 @@ const MainProperties = observer(
 
     return (
       <Formik
-        ref={formikRef}
         initialValues={initialValues}
         onSubmit={formSubmit}
         validationSchema={Yup.object({
@@ -143,53 +140,56 @@ const MainProperties = observer(
           Currency: Yup.string().required(translate.CurrencyIsRequired),
         })}
       >
-        <Form>
-          {console.log('%c MainProperties', 'color: red; font-weight: 700;')}
-          <Grid container alignItems="flex-start" spacing={2}>
-            <Grid item xs={12}>
-              <FormikField name="Language" label={translate.Language} select>
-                {languagesItems}
-              </FormikField>
-            </Grid>
-            <Grid item xs={7}>
-              <FormikField name="Currency" label={translate.Currency} select>
-                {currenciesItems}
-              </FormikField>
-            </Grid>
-            <Grid
-              item
-              xs={5}
-              className={`${css.addCurrencyCell} ${
-                formikRef.current?.errors.Currency &&
-                formikRef.current?.touched.Currency
-                  ? css.addCurrencyCellWithError
-                  : ''
-              }
+        {({ errors, touched }) => (
+          <Form>
+            {console.log('%c MainProperties', 'color: red; font-weight: 700;')}
+            <label htmlFor="Language">First Name</label>
+            <Field id="Language" name="Language" placeholder="Language" />
+            {/* <Grid container alignItems="flex-start" spacing={2}>
+              <Grid item xs={12}>
+                <FormikField name="Language" label={translate.Language} select>
+                  {languagesItems}
+                </FormikField>
+              </Grid>
+              <Grid item xs={7}>
+                <FormikField name="Currency" label={translate.Currency} select>
+                  {currenciesItems}
+                </FormikField>
+              </Grid>
+              <Grid
+                item
+                xs={5}
+                className={`${css.addCurrencyCell} ${
+                  errors.Currency && touched.Currency
+                    ? css.addCurrencyCellWithError
+                    : ''
+                }
                 `}
-            >
-              <Button
-                fullWidth
-                color="primary"
-                variant="outlined"
-                size="small"
-                onClick={buttonAddCurrency}
               >
-                {translate.AddNewCurrency}
-              </Button>
+                <Button
+                  fullWidth
+                  color="primary"
+                  variant="outlined"
+                  size="small"
+                  onClick={buttonAddCurrency}
+                >
+                  {translate.AddNewCurrency}
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-          {addNewCurrencyOpened && (
-            <CurrencyEditPanel
-              onCancelEdit={addNewCurrencyPanelOnCancelEdit}
-              onSaveEdit={addNewCurrencyPanelOnSaveEdit}
-            />
-          )}
-          <SnackErrors
-            open={saveErrors.length > 0}
-            errors={saveErrors}
-            onClose={closeErrors}
-          />
-        </Form>
+            {addNewCurrencyOpened && (
+              <CurrencyEditPanel
+                onCancelEdit={addNewCurrencyPanelOnCancelEdit}
+                onSaveEdit={addNewCurrencyPanelOnSaveEdit}
+              />
+            )}
+            <SnackErrors
+              open={saveErrors.length > 0}
+              errors={saveErrors}
+              onClose={closeErrors}
+            /> */}
+          </Form>
+        )}
       </Formik>
     );
   })
